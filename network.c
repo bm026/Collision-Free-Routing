@@ -12,7 +12,6 @@ typedef struct {
 	int nextRead;
 	int nextWrite;
 	int count;
-	bool full;
 } Buffer;
 
 typedef struct {
@@ -37,7 +36,7 @@ typedef struct {
 
 typedef struct {
 	Core *cores[NUM_CORES];
-	Link *links[NUM_LAYERS][NUM_CORES*2];
+	Link *links[NUM_LAYERS][2*NUM_CORES];
 	Switch *switches[NUM_LAYERS][NUM_CORES];
 } Network;
 
@@ -50,6 +49,8 @@ int main (int argc,  char* argv[]) {
 	Network *n = NULL;
 	n = init_network(n);
 
+	printf("Network initialised\n");
+
 	return 0;
 }
 
@@ -58,15 +59,22 @@ Network *init_network (Network *n) {
 	int i,j;
 	int base;
 
+	// initialise network
+	n = (Network *)malloc(sizeof(Network));
+
 	// initialise core memory
 	for (i=0; i<NUM_CORES; i++) {
 		n -> cores[i] = (Core *)malloc(sizeof(Core));
+		n -> cores[i] -> send = NULL;
+		n -> cores[i] -> recv = NULL;
 	}
 
 	// initialise link memory
 	for (i=0; i<NUM_LAYERS; i++) {
-		for (j=0; j<NUM_CORES; j++) {
+		for (j=0; j<2*NUM_CORES; j++) {
 			n -> links[i][j] = (Link *)malloc(sizeof(Link));
+			n -> links[i][j] -> comm = NULL;
+			n -> links[i][j] -> temp = NULL;
 		}
 	}
 
@@ -74,6 +82,8 @@ Network *init_network (Network *n) {
 	for (i=0; i<NUM_LAYERS; i++) {
 		for (j=0; j<NUM_CORES; j++) {
 			n -> switches[i][j] = (Switch *)malloc(sizeof(Switch));
+			n -> switches[i][j] -> buffer.nextWrite = 0;
+			n -> switches[i][j] -> buffer.count = 0;
 		}
 	}
 
@@ -82,6 +92,21 @@ Network *init_network (Network *n) {
 		n -> cores[i] -> io0 = n -> links[0][2*i];
 		n -> cores[i] -> io1 = n -> links[0][2*i+1];	
 	}
+
+	/*---------------------------------------------------+
+	|                                                    |
+	|   LAYOUT OF LINK/SWITCH LAYERS                     |
+	|   ----------------------------                     |
+	|                                                    |
+	|   0   1   2   3   4   5   6   7     : link id      |
+	|                                                    |
+	|   l   l   l   l   l   l   l   l                    |
+	|    \ /     \ /     \ /     \ /      ...            |
+	|     s       s       s       s                      |
+	|                                                    |
+	|     0       1       2       3       : switch id    |
+	|                                                    |
+	+----------------------------------------------------*/
 
 	// connect links to switches
 	for (i=1; i<=NUM_LAYERS; i++) {
@@ -113,6 +138,5 @@ Network *init_network (Network *n) {
 		}
 	}
 
-	
-
+	return n;
 }
