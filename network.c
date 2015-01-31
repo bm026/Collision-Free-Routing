@@ -39,8 +39,22 @@ Network *init_network (Network *n) {
 	for (i=0; i<NUM_LAYERS; i++) {
 		for (j=0; j<NUM_CORES; j++) {
 			n -> switches[i][j] = (Switch *)malloc(sizeof(Switch));
-			n -> switches[i][j] -> buffer.nextWrite = 0;
-			n -> switches[i][j] -> buffer.count = 0;
+			n -> switches[i][j] -> c0buffer = (Buffer *)malloc(sizeof(Buffer));
+			n -> switches[i][j] -> c1buffer = (Buffer *)malloc(sizeof(Buffer));
+			n -> switches[i][j] -> e0buffer = (Buffer *)malloc(sizeof(Buffer));
+			n -> switches[i][j] -> e1buffer = (Buffer *)malloc(sizeof(Buffer));
+			n -> switches[i][j] -> c0buffer -> nextRead = 0;
+			n -> switches[i][j] -> c0buffer -> nextWrite = 0;
+			n -> switches[i][j] -> c0buffer -> count = 0;
+			n -> switches[i][j] -> c1buffer -> nextRead = 0;
+			n -> switches[i][j] -> c1buffer -> nextWrite = 0;
+			n -> switches[i][j] -> c1buffer -> count = 0;
+			n -> switches[i][j] -> e0buffer -> nextRead = 0;
+			n -> switches[i][j] -> e0buffer -> nextWrite = 0;
+			n -> switches[i][j] -> e0buffer -> count = 0;
+			n -> switches[i][j] -> e1buffer -> nextRead = 0;
+			n -> switches[i][j] -> e1buffer -> nextWrite = 0;
+			n -> switches[i][j] -> e1buffer -> count = 0;
 		}
 	}
 
@@ -108,6 +122,7 @@ Packet *create_packet(Packet *p, int data, int count, char *edge_route, char *co
 	// add packet data
 	p -> data = data;
 	p -> count = count;
+	p -> direction = EDGE;
 
 	// interpret route
 	for (i=0; i<count; i++) {
@@ -130,4 +145,75 @@ Packet *create_packet(Packet *p, int data, int count, char *edge_route, char *co
 	}
 
 	return p;
+}
+
+Network *network_timestep(Network *n) {
+
+	int i,j;
+
+	for (i=0; i<NUM_LAYERS; i++) {
+		for (j=0; j<NUM_CORES; j++) {
+
+			// send packets first (emulating parallelism)
+			if (n -> switches[i][j] -> core0 -> temp == NULL) {
+				n -> switches[i][j] -> core0 -> temp = buffer_read(n -> switches[i][j] -> c0buffer);
+			}
+			else if (n -> switches[i][j] -> c0buffer -> count != 0) {
+				printf("COLLISION\n");
+			}
+
+			if (n -> switches[i][j] -> core1 -> temp == NULL) {
+				n -> switches[i][j] -> core1 -> temp = buffer_read(n -> switches[i][j] -> c1buffer);
+			}
+			else if (n -> switches[i][j] -> c1buffer -> count != 0) {
+				printf("COLLISION\n");
+			}
+
+			if (n -> switches[i][j] -> edge0 -> temp == NULL) {
+				n -> switches[i][j] -> edge0 -> temp = buffer_read(n -> switches[i][j] -> e0buffer);
+			}
+			else if (n -> switches[i][j] -> e0buffer -> count != 0) {
+				printf("COLLISION\n");
+			}
+
+			if (n -> switches[i][j] -> edge1 -> temp == NULL) {
+				n -> switches[i][j] -> edge1 -> temp = buffer_read(n -> switches[i][j] -> e1buffer);
+			}
+			else if (n -> switches[i][j] -> e1buffer -> count != 0) {
+				printf("COLLISION\n");
+			}
+
+			// receive packages
+			if (n -> switches[i][j] -> core0 -> comm != NULL) {
+				
+			}
+
+		}
+	}
+
+}
+
+Packet *buffer_read(Buffer *buffer) {
+
+	Packet *p = NULL;
+
+	if (buffer -> count != 0) {
+		p = buffer -> queue[nextRead]; 
+		buffer -> nextRead = (buffer -> nextRead + 1) % BUFF_SIZE;
+	}
+
+	return p;
+}
+
+void buffer_write(Buffer *buffer, Packet *p) {
+
+	if (buffer -> count < BUFF_SIZE) {
+		buffer -> queue[nextWrite] = p;
+		buffer -> nextWrite = (buffer -> nextWrite + 1) % BUFF_SIZE;
+	}
+	else {
+		printf("ERROR: FULL BUFFER\n");
+	}
+
+	// FULL BUFFER OCCUPANCY NOT ACCOUNTED FOR
 }

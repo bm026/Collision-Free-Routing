@@ -13,12 +13,19 @@
 #define NUM_LAYERS 3
 #define NUM_CORES 8
 
+// enumerator
+typedef enum {
+	EDGE,
+	CORE
+} Direction;
+
 // data structures
 typedef struct {
 	int count;
 	char rout[NUM_LAYERS];
 	char addr[NUM_LAYERS];
 	int data;
+	Direction direction;
 } Packet;
 
 typedef struct {
@@ -38,7 +45,10 @@ typedef struct {
 	Link *core1;
 	Link *edge0;
 	Link *edge1;
-	Buffer buffer;
+	Buffer *c0buffer;
+	Buffer *c1buffer;
+	Buffer *e0buffer;
+	Buffer *e1buffer;
 } Switch;
 
 typedef struct {
@@ -57,6 +67,8 @@ typedef struct {
 // functions
 Network *init_network (Network *n);
 Packet *create_packet(Packet *p, int data, int count, char *edge_route, char *core_route);
-
+Network *network_timestep(Network *n);
+Packet *buffer_read(Buffer *buffer);
+void buffer_write(Buffer *buffer, Packet *p);
 
 #endif
