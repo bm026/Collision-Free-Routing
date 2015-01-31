@@ -5,8 +5,10 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define BUFF_SIZE 4
-#define LAYERS 4
+#define NUM_LAYERS 4
+#define NUM_CORES 8
 
 #endif
