@@ -1,55 +1,12 @@
 #include "network.h"
 
-typedef struct {
-	int count;
-	char rout[NUM_LAYERS];
-	char addr[NUM_LAYERS];
-	int data;
-} Packet;
-
-typedef struct {
-	Packet *queue[BUFF_SIZE];
-	int nextRead;
-	int nextWrite;
-	int count;
-} Buffer;
-
-typedef struct {
-	Packet *comm;
-	Packet *temp;
-} Link;
-
-typedef struct {
-	Link *core0;
-	Link *core1;
-	Link *edge0;
-	Link *edge1;
-	Buffer buffer;
-} Switch;
-
-typedef struct {
-	Link *io0;
-	Link *io1;
-	Packet *send;
-	Packet *recv;
-} Core;
-
-typedef struct {
-	Core *cores[NUM_CORES];
-	Link *links[NUM_LAYERS][2*NUM_CORES];
-	Switch *switches[NUM_LAYERS][NUM_CORES];
-} Network;
-
-
-Network *init_network (Network *n);
-
-
 int main (int argc,  char* argv[]) {
 
 	Network *n = NULL;
-	n = init_network(n);
+	Packet *p = NULL;
 
-	printf("Network initialised\n");
+	n = init_network(n);
+	p = create_packet(p, 42, 3, "101", "110");
 
 	return 0;
 }
@@ -106,7 +63,7 @@ Network *init_network (Network *n) {
 	|                                                    |
 	|     0       1       2       3       : switch id    |
 	|                                                    |
-	+----------------------------------------------------*/
+	+---------------------------------------------------*/
 
 	// connect links to switches
 	for (i=1; i<=NUM_LAYERS; i++) {
@@ -139,4 +96,38 @@ Network *init_network (Network *n) {
 	}
 
 	return n;
+}
+
+Packet *create_packet(Packet *p, int data, int count, char *edge_route, char *core_route) {
+
+	int i;
+
+	// initialise packet memory
+	p = (Packet *)malloc(sizeof(Packet));
+
+	// add packet data
+	p -> data = data;
+	p -> count = count;
+
+	// interpret route
+	for (i=0; i<count; i++) {
+		
+		// edge route
+		if (edge_route[i] == '1') {
+			p -> rout[i] = 1; 
+		}
+		else {
+			p -> rout[i] = 0;
+		}
+
+		// core route
+		if (core_route[i] == '1') {
+			p -> addr[i] = 1;
+		}
+		else {
+			p -> addr[i] = 0;
+		}
+	}
+
+	return p;
 }
