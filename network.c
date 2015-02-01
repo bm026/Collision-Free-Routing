@@ -7,14 +7,13 @@ int main (int argc,  char* argv[]) {
 	Packet *p = NULL;
 
 	n = init_network(n);
-	p = create_packet(p, 42, 3, "101", "010");
+	p = create_packet(p, 42, 3, "101", "011");
 	add_packet_to_core(n, p, 3);
 
-	for (i=0; i<30; i++) {
+	for (i=0; i<12; i++) {
 		n = network_timestep(n);
+		print_network_state(n);
 	}
-
-	print_network_state(n);
 
 	return 0;
 }
@@ -160,6 +159,9 @@ Network *network_timestep(Network *n) {
 	int i,j;
 	int full;
 
+	// check cores for received packets from previous timestep
+	check_for_received_packets(n);
+
 	// sends all packets from cores
 	for (i=0; i<NUM_CORES; i++) {
 		send_packet_from_core(n, i);
@@ -212,12 +214,12 @@ Network *network_timestep(Network *n) {
 			// core0: if there is a packet in the link ... 
 			if (n -> switches[i][j] -> core0 -> comm != NULL) {
 				// ... going in the correct direction ...
-				if (n -> switches[i][j] -> core0 -> comm -> direction = EDGE) {
+				if (n -> switches[i][j] -> core0 -> comm -> direction == EDGE) {
 					n -> switches[i][j] -> core0 -> comm -> count--;
 					// ... if it is to be forwarded in the same direction ...
 					if (n -> switches[i][j] -> core0 -> comm -> count != 0) {
 						// ... down which link ...
-						if (n -> switches[i][j] -> core0 -> comm -> rout[i] == 0) {
+						if (n -> switches[i][j] -> core0 -> comm -> rout[i+1] == 0) {
 							full = buffer_write(n -> switches[i][j] -> e0buffer, n -> switches[i][j] -> core0 -> comm);
 						}
 						else {
@@ -244,10 +246,10 @@ Network *network_timestep(Network *n) {
 
 			// core1 
 			if (n -> switches[i][j] -> core1 -> comm != NULL) {
-				if (n -> switches[i][j] -> core1 -> comm -> direction = EDGE) {
+				if (n -> switches[i][j] -> core1 -> comm -> direction == EDGE) {
 					n -> switches[i][j] -> core1 -> comm -> count--;
 					if (n -> switches[i][j] -> core1 -> comm -> count != 0) {
-						if (n -> switches[i][j] -> core1 -> comm -> rout[i] == 0) {
+						if (n -> switches[i][j] -> core1 -> comm -> rout[i+1] == 0) {
 							full = buffer_write(n -> switches[i][j] -> e0buffer, n -> switches[i][j] -> core1 -> comm);
 						}
 						else {
@@ -274,7 +276,7 @@ Network *network_timestep(Network *n) {
 			if (i != NUM_LAYERS-1) {
 			// edge0
 				if (n -> switches[i][j] -> edge0 -> comm != NULL) {
-					if (n -> switches[i][j] -> edge0 -> comm -> direction = CORE) {
+					if (n -> switches[i][j] -> edge0 -> comm -> direction == CORE) {
 						if (n -> switches[i][j] -> edge0 -> comm -> addr[i] == 0) {
 							full = buffer_write(n -> switches[i][j] -> c0buffer, n -> switches[i][j] -> edge0 -> comm);
 						}
@@ -290,7 +292,7 @@ Network *network_timestep(Network *n) {
 
 				// edge1
 				if (n -> switches[i][j] -> edge1 -> comm != NULL) {
-					if (n -> switches[i][j] -> edge1 -> comm -> direction = CORE) {
+					if (n -> switches[i][j] -> edge1 -> comm -> direction == CORE) {
 						if (n -> switches[i][j] -> edge1 -> comm -> addr[i] == 0) {
 							full = buffer_write(n -> switches[i][j] -> c0buffer, n -> switches[i][j] -> edge1 -> comm);
 						}
@@ -319,9 +321,6 @@ Network *network_timestep(Network *n) {
 			}
 		}
 	}
-
-	// check cores for received packets
-	check_for_received_packets(n);
 
 	return n;
 }
@@ -398,6 +397,7 @@ void check_for_received_packets(Network *n) {
 			if (n -> cores[i] -> io0 -> comm -> direction == CORE) {
 				n -> cores[i] -> recv = n -> cores[i] -> io0 -> comm;
 				printf("Packet received on core %d with data: %d\n", i, n -> cores[i] -> recv -> data);
+				n -> cores[i] -> io0 -> comm = NULL;
 			}
 		}
 
@@ -407,6 +407,7 @@ void check_for_received_packets(Network *n) {
 			if (n -> cores[i] -> io1 -> comm -> direction == CORE) {
 				n -> cores[i] -> recv = n -> cores[i] -> io1 -> comm;
 				printf("Packet received on core %d with data: %d\n", i, n -> cores[i] -> recv -> data);
+				n -> cores[i] -> io1 -> comm = NULL;
 			}
 		}
 	}
@@ -419,7 +420,7 @@ void print_network_state(Network *n) {
 	// print each network layer
 	for (i=NUM_LAYERS-1; i>=0; i--) {
 
-		printf("LAYER %d\n---------------------\n\nActive switch buffers:\n\n", i);
+		printf("\nLAYER %d\n----------------------\n\nActive switch buffers:\n\n", i);
 
 		// print each active switch buffer
 		for (j=0; j<NUM_CORES; j++) {
