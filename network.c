@@ -150,6 +150,7 @@ Packet *create_packet(Packet *p, int data, int count, char *edge_route, char *co
 Network *network_timestep(Network *n) {
 
 	int i,j;
+	int full;
 
 	for (i=0; i<NUM_LAYERS; i++) {
 		for (j=0; j<NUM_CORES; j++) {
@@ -158,6 +159,8 @@ Network *network_timestep(Network *n) {
 			if (n -> switches[i][j] -> core0 -> temp == NULL) {
 				n -> switches[i][j] -> core0 -> temp = buffer_read(n -> switches[i][j] -> c0buffer);
 			}
+			// if the link is full and the buffer wants to send another packet down it, a
+			// collision occurs 
 			else if (n -> switches[i][j] -> c0buffer -> count != 0) {
 				printf("COLLISION\n");
 			}
@@ -184,13 +187,116 @@ Network *network_timestep(Network *n) {
 			}
 
 			// receive packages
+
+			// core0: if there is a packet in the link ... 
 			if (n -> switches[i][j] -> core0 -> comm != NULL) {
-				
+				// ... going in the correct direction ...
+				if (n -> switches[i][j] -> core0 -> comm -> direction = EDGE) {
+					n -> switches[i][j] -> core0 -> comm -> count--;
+					// ... if it is to be forwarded in the same direction ...
+					if (n -> switches[i][j] -> core0 -> comm -> count != 0) {
+						// ... down which link ...
+						if (n -> switches[i][j] -> core0 -> comm -> rout[i] == 0) {
+							full = buffer_write(n -> switches[i][j] -> e0buffer, n -> switches[i][j] -> core0 -> comm);
+						}
+						else {
+							full = buffer_write(n -> switches[i][j] -> e1buffer, n -> switches[i][j] -> core0 -> comm);
+						}
+					}
+					// ... or if the direction is to be changed ...
+					else {
+						n -> switches[i][j] -> core0 -> comm -> direction = CORE;
+						// ... down which link ...
+						if (n -> switches[i][j] -> core0 -> comm -> addr[i] == 0) {
+							full = buffer_write(n -> switches[i][j] -> c0buffer, n -> switches[i][j] -> core0 -> comm);
+						}
+						else {
+							full = buffer_write(n -> switches[i][j] -> c1buffer, n -> switches[i][j] -> core0 -> comm);
+						}
+					}
+					// tidy up old packet from link
+					if (full == 0) {
+						n -> switches[i][j] -> core0 -> comm = NULL;
+					}
+				}
 			}
 
+			// core1 
+			if (n -> switches[i][j] -> core1 -> comm != NULL) {
+				if (n -> switches[i][j] -> core1 -> comm -> direction = EDGE) {
+					n -> switches[i][j] -> core1 -> comm -> count--;
+					if (n -> switches[i][j] -> core1 -> comm -> count != 0) {
+						if (n -> switches[i][j] -> core1 -> comm -> rout[i] == 0) {
+							full = buffer_write(n -> switches[i][j] -> e0buffer, n -> switches[i][j] -> core1 -> comm);
+						}
+						else {
+							full = buffer_write(n -> switches[i][j] -> e1buffer, n -> switches[i][j] -> core1 -> comm);
+						}
+					}
+					else {
+						n -> switches[i][j] -> core1 -> comm -> direction = CORE;
+						if (n -> switches[i][j] -> core1 -> comm -> addr[i] == 0) {
+							full = buffer_write(n -> switches[i][j] -> c0buffer, n -> switches[i][j] -> core1 -> comm);
+						}
+						else {
+							full = buffer_write(n -> switches[i][j] -> c1buffer, n -> switches[i][j] -> core1 -> comm);
+						}
+					}
+					// tidy up old packet from link
+					if (full == 0) {
+						n -> switches[i][j] -> core1 -> comm = NULL;
+					}
+				}
+			}
+
+			// edge0
+			if (n -> switches[i][j] -> edge0 -> comm != NULL) {
+				if (n -> switches[i][j] -> edge0 -> comm -> direction = CORE) {
+					if (n -> switches[i][j] -> edge0 -> comm -> addr[i] == 0) {
+						full = buffer_write(n -> switches[i][j] -> c0buffer, n -> switches[i][j] -> edge0 -> comm);
+					}
+					else {
+						full = buffer_write(n -> switches[i][j] -> c1buffer, n -> switches[i][j] -> edge0 -> comm);
+					}
+					// tidy up old packet from link
+					if (full == 0) {
+						n -> switches[i][j] -> edge0 -> comm = NULL;
+					}
+				}
+			}
+
+			// edge1
+			if (n -> switches[i][j] -> edge1 -> comm != NULL) {
+				if (n -> switches[i][j] -> edge1 -> comm -> direction = CORE) {
+					if (n -> switches[i][j] -> edge1 -> comm -> addr[i] == 0) {
+						full = buffer_write(n -> switches[i][j] -> c0buffer, n -> switches[i][j] -> edge1 -> comm);
+					}
+					else {
+						full = buffer_write(n -> switches[i][j] -> c1buffer, n -> switches[i][j] -> edge1 -> comm);
+					}
+					// tidy up old packet from link
+					if (full == 0) {
+						n -> switches[i][j] -> edge1 -> comm = NULL;
+					}
+				}
+			}
 		}
 	}
 
+	// move temp values to links, completing parallel emulation
+	for (i=0; i<NUM_LAYERS; i++) {
+		for (j=0; j<2*NUM_CORES; j++) {
+			if (n -> links[i][j] -> comm == NULL) {
+				n -> links[i][j] -> comm = n -> links[i][j] -> temp;
+				n -> links[i][j] -> temp = NULL;
+			}
+			else if (n -> links[i][j] -> temp != NULL) {
+				printf("COLLISION\n");
+			}
+		}
+	}
+
+	return n;
 }
 
 Packet *buffer_read(Buffer *buffer) {
@@ -205,7 +311,7 @@ Packet *buffer_read(Buffer *buffer) {
 	return p;
 }
 
-void buffer_write(Buffer *buffer, Packet *p) {
+int buffer_write(Buffer *buffer, Packet *p) {
 
 	if (buffer -> count < BUFF_SIZE) {
 		buffer -> queue[nextWrite] = p;
@@ -213,7 +319,8 @@ void buffer_write(Buffer *buffer, Packet *p) {
 	}
 	else {
 		printf("ERROR: FULL BUFFER\n");
+		return 1;
 	}
 
-	// FULL BUFFER OCCUPANCY NOT ACCOUNTED FOR
+	return 0;
 }

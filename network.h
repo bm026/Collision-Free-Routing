@@ -69,6 +69,6 @@ Network *init_network (Network *n);
 Packet *create_packet(Packet *p, int data, int count, char *edge_route, char *core_route);
 Network *network_timestep(Network *n);
 Packet *buffer_read(Buffer *buffer);
-void buffer_write(Buffer *buffer, Packet *p);
+int buffer_write(Buffer *buffer, Packet *p);
 
 #endif
