@@ -2,12 +2,19 @@
 
 int main (int argc,  char* argv[]) {
 
+	int i;
 	Network *n = NULL;
 	Packet *p = NULL;
 
 	n = init_network(n);
-	p = create_packet(p, 42, 3, "101", "110");
-	n = network_timestep(n);
+	p = create_packet(p, 42, 3, "101", "010");
+	add_packet_to_core(n, p, 3);
+
+	for (i=0; i<30; i++) {
+		n = network_timestep(n);
+	}
+
+	print_network_state(n);
 
 	return 0;
 }
@@ -152,6 +159,11 @@ Network *network_timestep(Network *n) {
 
 	int i,j;
 	int full;
+
+	// sends all packets from cores
+	for (i=0; i<NUM_CORES; i++) {
+		send_packet_from_core(n, i);
+	}
 
 	for (i=0; i<NUM_LAYERS; i++) {
 		for (j=0; j<NUM_CORES; j++) {
@@ -308,6 +320,9 @@ Network *network_timestep(Network *n) {
 		}
 	}
 
+	// check cores for received packets
+	check_for_received_packets(n);
+
 	return n;
 }
 
@@ -337,4 +352,113 @@ int buffer_write(Buffer *buffer, Packet *p) {
 	}
 
 	return 0;
+}
+
+void add_packet_to_core(Network *n, Packet *p, int core_num) {
+	n -> cores[core_num] -> send = p;
+}
+
+void send_packet_from_core(Network *n, int core_num) {
+
+	// checks for packet to send
+	if (n -> cores[core_num] -> send != NULL) {
+		// checks which link to send down
+		if (n -> cores[core_num] -> send -> rout[0] == 0) {
+			// checks link is free
+			if (n -> cores[core_num] -> io0 -> temp == NULL) {
+				n -> cores[core_num] -> io0 -> temp = n -> cores[core_num] -> send;
+			}
+			// if link is not free, collision
+			else {
+				printf("COLLISION\n");
+			}
+		}
+		else {
+			if (n -> cores[core_num] -> io1 -> temp == NULL) {
+				n -> cores[core_num] -> io1 -> temp = n -> cores[core_num] -> send;
+			}
+			else {
+				printf("COLLISION\n");
+			}
+		}
+
+		// reset packet status
+		n -> cores[core_num] -> send = NULL;
+	}
+}
+
+void check_for_received_packets(Network *n) {
+
+	int i;
+
+	for (i=0; i<NUM_CORES; i++) {
+		// checks for packet in link0
+		if (n -> cores[i] -> io0 -> comm != NULL) {
+			// checks for correct direction
+			if (n -> cores[i] -> io0 -> comm -> direction == CORE) {
+				n -> cores[i] -> recv = n -> cores[i] -> io0 -> comm;
+				printf("Packet received on core %d with data: %d\n", i, n -> cores[i] -> recv -> data);
+			}
+		}
+
+		// checks for packet in link1
+		if (n -> cores[i] -> io1 -> comm != NULL) {
+			// checks for correct direction
+			if (n -> cores[i] -> io1 -> comm -> direction == CORE) {
+				n -> cores[i] -> recv = n -> cores[i] -> io1 -> comm;
+				printf("Packet received on core %d with data: %d\n", i, n -> cores[i] -> recv -> data);
+			}
+		}
+	}
+}
+
+void print_network_state(Network *n) {
+
+	int i, j;
+
+	// print each network layer
+	for (i=NUM_LAYERS-1; i>=0; i--) {
+
+		printf("LAYER %d\n---------------------\n\nActive switch buffers:\n\n", i);
+
+		// print each active switch buffer
+		for (j=0; j<NUM_CORES; j++) {
+			if (n -> switches[i][j] -> c0buffer -> count != 0) {
+				printf("Core %d c0buffer[%d]\n", j, n -> switches[i][j] -> c0buffer -> count);
+			}
+			if (n -> switches[i][j] -> c1buffer -> count != 0) {
+				printf("Core %d c1buffer[%d]\n", j, n -> switches[i][j] -> c1buffer -> count);
+			}
+			// exclude top layer
+			if (i != NUM_LAYERS-1) {
+				if (n -> switches[i][j] -> e0buffer -> count != 0) {
+					printf("Core %d e0buffer[%d]\n", j, n -> switches[i][j] -> e0buffer -> count);
+				}
+				if (n -> switches[i][j] -> e1buffer -> count != 0) {
+					printf("Core %d e1buffer[%d]\n", j, n -> switches[i][j] -> e1buffer -> count);
+				}
+			}
+		}
+
+		printf("\nActive links:\n\n");
+
+		// print each active link
+		for (j=0; j<2*NUM_CORES; j++) {
+			if (n -> links[i][j] -> comm != NULL) {
+				printf("Link %d occupied\n", j);
+			}
+		}
+	}
+
+	printf("\nActive cores:\n\n");
+
+	// print each active core
+	for (j=0; j<NUM_CORES; j++) {
+		if (n -> cores[j] -> send != NULL) {
+			printf("Core %d data to send: %d\n", j, n -> cores[j] -> send -> data);
+		}
+		if (n -> cores[j] -> recv != NULL) {
+			printf("Core %d data received: %d\n", j, n -> cores[j] -> recv -> data);
+		}
+	}
 }
