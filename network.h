@@ -67,12 +67,15 @@ typedef struct {
 // functions
 Network *init_network (Network *n);
 Packet *create_packet(Packet *p, int data, int count, char *edge_route, char *core_route);
-Network *network_timestep(Network *n);
+void network_timesteps(Network *n, int iterations);
 Packet *buffer_read(Buffer *buffer);
 int buffer_write(Buffer *buffer, Packet *p);
 void add_packet_to_core(Network *n, Packet *p, int core_num);
-void send_packet_from_core(Network *n, int core_num);
-void check_for_received_packets(Network *n);
+void send_packets_from_switches(Network *n);
+void check_switches_for_received_packets(Network *n);
+void send_packets_from_cores(Network *n);
+void check_cores_for_received_packets(Network *n);
+void link_cleanup(Network *n);
 void print_network_state(Network *n);
 
 #endif
