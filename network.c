@@ -84,8 +84,8 @@ Network *init_network (Network *n) {
 
 	/*---------------------------------------------------+
 	|                                                    |
-	|   LAYOUT OF LINK/SWITCH LAYERS                     |
-	|   ----------------------------                     |
+	|   LAYOUT OF LINK/SWITCH IDS                        |
+	|   -------------------------                        |
 	|                                                    |
 	|   0   1   2   3   4   5   6   7     : link id      |
 	|                                                    |
