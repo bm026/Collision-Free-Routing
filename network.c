@@ -16,9 +16,9 @@ int main (int argc,  char* argv[]) {
 	p = create_packet(p, 42, 1, "1", "0");
 	add_packet_to_core(n, p, 1);
 
-	print_network_state(n);
+	//print_network_state(n);
 
-	network_timesteps(n, 1);
+	network_timesteps(n, 5);
 
 	// testing each timestep
 	/*for (i=0; i<13; i++) {
@@ -187,7 +187,7 @@ void network_timesteps(Network *n, int iterations) {
 		link_cleanup(n);
 
 		// for testing
-		print_network_state(n);
+		//print_network_state(n);
 	}
 }
 
@@ -235,7 +235,7 @@ void send_packets_from_switches(Network *n) {
 			s = n -> switches[i][j];
 
 			// core0
-			if (s -> core0 -> temp == NULL) {
+			if (s -> core0 -> temp == NULL && s -> core0 -> comm == NULL) {
 				s -> core0 -> temp = buffer_read(s -> c0buffer);
 			}
 			// if the link is full and the buffer wants to send another packet down it, a
@@ -245,7 +245,7 @@ void send_packets_from_switches(Network *n) {
 			}
 
 			// core1
-			if (s -> core1 -> temp == NULL) {
+			if (s -> core1 -> temp == NULL && s -> core1 -> comm == NULL) {
 				s -> core1 -> temp = buffer_read(s -> c1buffer);
 			}
 			else if (s -> c1buffer -> count != 0) {
@@ -255,7 +255,7 @@ void send_packets_from_switches(Network *n) {
 			// exclude top layer
 			if (i != NUM_LAYERS-1) {
 				// edge0
-				if (s -> edge0 -> temp == NULL) {
+				if (s -> edge0 -> temp == NULL && s -> edge0 -> comm == NULL) {
 					s -> edge0 -> temp = buffer_read(s -> e0buffer);
 				}
 				else if (s -> e0buffer -> count != 0) {
@@ -263,7 +263,7 @@ void send_packets_from_switches(Network *n) {
 				}
 
 				// edge1
-				if (s -> edge1 -> temp == NULL) {
+				if (s -> edge1 -> temp == NULL && s -> edge1 -> comm == NULL) {
 					s -> edge1 -> temp = buffer_read(s -> e1buffer);
 				}
 				else if (s -> e1buffer -> count != 0) {
@@ -350,33 +350,33 @@ void check_switches_for_received_packets(Network *n) {
 			// exclude top layer
 			if (i != NUM_LAYERS-1) {
 			// edge0
-				if (n -> switches[i][j] -> edge0 -> comm != NULL) {
-					if (n -> switches[i][j] -> edge0 -> comm -> direction == CORE) {
-						if (n -> switches[i][j] -> edge0 -> comm -> addr[i] == 0) {
-							full = buffer_write(n -> switches[i][j] -> c0buffer, n -> switches[i][j] -> edge0 -> comm);
+				if (s -> edge0 -> comm != NULL) {
+					if (s -> edge0 -> comm -> direction == CORE) {
+						if (s -> edge0 -> comm -> addr[i] == 0) {
+							full = buffer_write(s -> c0buffer, s -> edge0 -> comm);
 						}
 						else {
-							full = buffer_write(n -> switches[i][j] -> c1buffer, n -> switches[i][j] -> edge0 -> comm);
+							full = buffer_write(s -> c1buffer, s -> edge0 -> comm);
 						}
 						// tidy up old packet from link
 						if (full == 0) {
-							n -> switches[i][j] -> edge0 -> comm = NULL;
+							s -> edge0 -> comm = NULL;
 						}
 					}
 				}
 
 				// edge1
-				if (n -> switches[i][j] -> edge1 -> comm != NULL) {
-					if (n -> switches[i][j] -> edge1 -> comm -> direction == CORE) {
-						if (n -> switches[i][j] -> edge1 -> comm -> addr[i] == 0) {
-							full = buffer_write(n -> switches[i][j] -> c0buffer, n -> switches[i][j] -> edge1 -> comm);
+				if (s -> edge1 -> comm != NULL) {
+					if (s -> edge1 -> comm -> direction == CORE) {
+						if (s -> edge1 -> comm -> addr[i] == 0) {
+							full = buffer_write(s -> c0buffer, s -> edge1 -> comm);
 						}
 						else {
-							full = buffer_write(n -> switches[i][j] -> c1buffer, n -> switches[i][j] -> edge1 -> comm);
+							full = buffer_write(s -> c1buffer, s -> edge1 -> comm);
 						}
 						// tidy up old packet from link
 						if (full == 0) {
-							n -> switches[i][j] -> edge1 -> comm = NULL;
+							s -> edge1 -> comm = NULL;
 						}
 					}
 				}
@@ -388,15 +388,21 @@ void check_switches_for_received_packets(Network *n) {
 void send_packets_from_cores(Network *n) {
 
 	int i;
+	Core *c;
 
 	for (i=0; i<NUM_CORES; i++) {
+
+		// current core pointer
+		c = n -> cores[i];
+
 		// checks for packet to send
-		if (n -> cores[i] -> send != NULL) {
+		if (c -> send != NULL) {
 			// checks which link to send down
-			if (n -> cores[i] -> send -> rout[0] == 0) {
+			if (c -> send -> rout[0] == 0) {
 				// checks link is free
-				if (n -> cores[i] -> io0 -> temp == NULL) {
-					n -> cores[i] -> io0 -> temp = n -> cores[i] -> send;
+				if (c -> io0 -> temp == NULL && c -> io0 -> comm == NULL) {
+					c -> io0 -> temp = c -> send;
+					c -> send = NULL;
 				}
 				// if link is not free, collision
 				else {
@@ -404,16 +410,14 @@ void send_packets_from_cores(Network *n) {
 				}
 			}
 			else {
-				if (n -> cores[i] -> io1 -> temp == NULL) {
-					n -> cores[i] -> io1 -> temp = n -> cores[i] -> send;
+				if (c -> io1 -> temp == NULL && c -> io1 -> comm == NULL) {
+					c -> io1 -> temp = c -> send;
+					c -> send = NULL;
 				}
 				else {
 					printf("COLLISION\n");
 				}
 			}	
-
-			// reset packet status
-			n -> cores[i] -> send = NULL;
 		}
 	}
 }
@@ -457,6 +461,7 @@ void link_cleanup(Network *n) {
 			// current link pointer
 			l = n -> links[i][j];
 
+			// collision already checked?
 			if (l -> comm == NULL) {
 				l -> comm = l -> temp;
 				l -> temp = NULL;
@@ -464,6 +469,9 @@ void link_cleanup(Network *n) {
 			else if (l -> temp != NULL) {
 				printf("COLLISION\n");
 			}
+
+			//l -> comm = l -> temp;
+			//l -> temp = NULL;
 		}
 	}
 }
