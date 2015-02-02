@@ -221,11 +221,13 @@ int buffer_write(Buffer *buffer, Packet *p) {
 
 void add_packet_to_core(Network *n, Packet *p, int core_num) {
 	n -> cores[core_num] -> send = p;
+	printf("Packet added to core %d\n", core_num);
 }
 
 void send_packets_from_switches(Network *n) {
 
 	int i, j;
+	int base;
 	Switch *s;
 
 	for (i=0; i<NUM_LAYERS; i++) {
@@ -241,7 +243,14 @@ void send_packets_from_switches(Network *n) {
 			// if the link is full and the buffer wants to send another packet down it, a
 			// collision occurs 
 			else if (s -> c0buffer -> count != 0) {
-				printf("COLLISION\n");
+				// get link number and report collision
+				base = (int) pow(2, i+1);
+				if (j % base < base/2) {
+					printf("COLLISION on layer:%d, link:%d\n", i, 2*j);
+				}
+				else {
+					printf("COLLISION on layer:%d, link:%d\n", i, 2*j+1-base);
+				}
 			}
 
 			// core1
@@ -249,7 +258,14 @@ void send_packets_from_switches(Network *n) {
 				s -> core1 -> temp = buffer_read(s -> c1buffer);
 			}
 			else if (s -> c1buffer -> count != 0) {
-				printf("COLLISION\n");
+				// get link number and report collision
+				base = (int) pow(2, i+1);
+				if (j % base < base/2) {
+					printf("COLLISION on layer:%d, link:%d\n", i, 2*j+base);
+				}
+				else {
+					printf("COLLISION on layer:%d, link:%d\n", i, 2*j+1);
+				}
 			}
 
 			// exclude top layer
@@ -259,7 +275,7 @@ void send_packets_from_switches(Network *n) {
 					s -> edge0 -> temp = buffer_read(s -> e0buffer);
 				}
 				else if (s -> e0buffer -> count != 0) {
-					printf("COLLISION\n");
+					printf("COLLISION on layer:%d, link:%d\n", i+1, 2*j);
 				}
 
 				// edge1
@@ -267,7 +283,7 @@ void send_packets_from_switches(Network *n) {
 					s -> edge1 -> temp = buffer_read(s -> e1buffer);
 				}
 				else if (s -> e1buffer -> count != 0) {
-					printf("COLLISION\n");
+					printf("COLLISION on layer:%d, link:%d\n", i+1, 2*j+1);
 				}
 			}
 		}
@@ -402,20 +418,22 @@ void send_packets_from_cores(Network *n) {
 				// checks link is free
 				if (c -> io0 -> temp == NULL && c -> io0 -> comm == NULL) {
 					c -> io0 -> temp = c -> send;
+					printf("Packet sent from core %d with data: %d\n", i, c -> send -> data);
 					c -> send = NULL;
 				}
 				// if link is not free, collision
 				else {
-					printf("COLLISION\n");
+					printf("COLLISION on layer:0, link:%d\n", 2*i);
 				}
 			}
 			else {
 				if (c -> io1 -> temp == NULL && c -> io1 -> comm == NULL) {
 					c -> io1 -> temp = c -> send;
+					printf("Packet sent from core %d with data: %d\n", i, c -> send -> data);
 					c -> send = NULL;
 				}
 				else {
-					printf("COLLISION\n");
+					printf("COLLISION on layer:0, link:%d\n", 2*i+1);
 				}
 			}	
 		}
@@ -425,25 +443,29 @@ void send_packets_from_cores(Network *n) {
 void check_cores_for_received_packets(Network *n) {
 
 	int i;
+	Core *c;
 
 	for (i=0; i<NUM_CORES; i++) {
+
+		// current core pointer
+		c = n -> cores[i];
 		// checks for packet in link0
-		if (n -> cores[i] -> io0 -> comm != NULL) {
+		if (c -> io0 -> comm != NULL) {
 			// checks for correct direction
-			if (n -> cores[i] -> io0 -> comm -> direction == CORE) {
-				n -> cores[i] -> recv = n -> cores[i] -> io0 -> comm;
-				printf("Packet received on core %d with data: %d\n", i, n -> cores[i] -> recv -> data);
-				n -> cores[i] -> io0 -> comm = NULL;
+			if (c -> io0 -> comm -> direction == CORE) {
+				c -> recv = c -> io0 -> comm;
+				printf("Packet received on core %d with data: %d\n", i, c -> recv -> data);
+				c -> io0 -> comm = NULL;
 			}
 		}
 
 		// checks for packet in link1
-		if (n -> cores[i] -> io1 -> comm != NULL) {
+		if (c -> io1 -> comm != NULL) {
 			// checks for correct direction
-			if (n -> cores[i] -> io1 -> comm -> direction == CORE) {
-				n -> cores[i] -> recv = n -> cores[i] -> io1 -> comm;
-				printf("Packet received on core %d with data: %d\n", i, n -> cores[i] -> recv -> data);
-				n -> cores[i] -> io1 -> comm = NULL;
+			if (c -> io1 -> comm -> direction == CORE) {
+				c -> recv = c -> io1 -> comm;
+				printf("Packet received on core %d with data: %d\n", i, c -> recv -> data);
+				c -> io1 -> comm = NULL;
 			}
 		}
 	}
@@ -462,16 +484,16 @@ void link_cleanup(Network *n) {
 			l = n -> links[i][j];
 
 			// collision already checked?
-			if (l -> comm == NULL) {
-				l -> comm = l -> temp;
-				l -> temp = NULL;
-			}
-			else if (l -> temp != NULL) {
-				printf("COLLISION\n");
-			}
+			//if (l -> comm == NULL) {
+			//	l -> comm = l -> temp;
+			//	l -> temp = NULL;
+			//}
+			//else if (l -> temp != NULL) {
+			//	printf("COLLISION\n");
+			//}
 
-			//l -> comm = l -> temp;
-			//l -> temp = NULL;
+			l -> comm = l -> temp;
+			l -> temp = NULL;
 		}
 	}
 }
