@@ -21,6 +21,8 @@ typedef enum {
 
 // data structures
 typedef struct {
+	int source;
+	int destination;
 	int count;
 	char rout[NUM_LAYERS];
 	char addr[NUM_LAYERS];
@@ -66,7 +68,7 @@ typedef struct {
 
 // functions
 Network *init_network (Network *n);
-Packet *create_packet(Packet *p, int data, int count, char *edge_route, char *core_route);
+//Packet *create_packet(Packet *p, int data, int count, char *edge_route, char *core_route);
 void network_timesteps(Network *n, int iterations);
 Packet *buffer_read(Buffer *buffer);
 int buffer_write(Buffer *buffer, Packet *p);
@@ -77,5 +79,7 @@ void send_packets_from_cores(Network *n);
 void check_cores_for_received_packets(Network *n);
 void link_cleanup(Network *n);
 void print_network_state(Network *n);
+Packet **offline_route_planner();
+Packet *create_packet(int source, int destination, int data);
 
 #endif
