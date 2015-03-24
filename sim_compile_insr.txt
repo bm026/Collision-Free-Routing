@@ -1,0 +1,37 @@
+To make this lot work, you have to compile the simulator using (eg)
+
+gcc upsim.c
+
+Then you can copy xup.bin to a.bin:
+
+cp xup.bin a.bin
+
+and run the simulator; the compiler binary expects source from
+standard input so the command is:
+
+a.out <xup.x
+
+This will produce a binary output in a file sim2.
+
+You can copy sim2 to a.bin and compile again:
+
+cp sim2 a.bin
+
+a.out <xup.x
+
+You should be able to do this over and over again with the same
+result.
+
+To see what is being compiled, you can compile xupa.x:
+
+a.out <xupa.x
+
+Now you can copy sim2 to a.bin and compile again:
+
+cp sim2 a.bin
+
+a.out <xup.x
+
+This will produce the assembly code for the compiler,
+corresponding to the code that is being executed by the
+simulator. 
