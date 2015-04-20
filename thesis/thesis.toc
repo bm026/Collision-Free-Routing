@@ -1,0 +1,27 @@
+\contentsline {section}{\numberline {1}Introduction}{4}
+\contentsline {section}{\numberline {2}Background}{5}
+\contentsline {subsection}{\numberline {2.1}General-purpose processors: a need for parallelism}{5}
+\contentsline {subsection}{\numberline {2.2}An introduction to parallel systems}{7}
+\contentsline {subsection}{\numberline {2.3}An introduction to interconnects}{8}
+\contentsline {subsection}{\numberline {2.4}Interconnection networks}{9}
+\contentsline {subsection}{\numberline {2.5}Network topologies}{9}
+\contentsline {subsection}{\numberline {2.6}Routing}{11}
+\contentsline {subsubsection}{\numberline {2.6.1}Oblivious routing}{11}
+\contentsline {subsubsection}{\numberline {2.6.2}Adaptive routing}{12}
+\contentsline {subsubsection}{\numberline {2.6.3}Two-phase randomised routing}{12}
+\contentsline {subsection}{\numberline {2.7}Switching}{12}
+\contentsline {subsubsection}{\numberline {2.7.1}Packet switching}{12}
+\contentsline {subsubsection}{\numberline {2.7.2}Circuit switching}{13}
+\contentsline {subsubsection}{\numberline {2.7.3}Wormhole switching}{13}
+\contentsline {subsection}{\numberline {2.8}Flow control}{13}
+\contentsline {subsubsection}{\numberline {2.8.1}Credit-based control flow}{13}
+\contentsline {subsubsection}{\numberline {2.8.2}Virtual channel control flow}{13}
+\contentsline {subsection}{\numberline {2.9}Modern interconnection networks}{14}
+\contentsline {subsubsection}{\numberline {2.9.1}InfiniBand}{14}
+\contentsline {subsubsection}{\numberline {2.9.2}IBM Blue Gene/L 3D Torus Network}{14}
+\contentsline {section}{\numberline {3}System Specification}{15}
+\contentsline {section}{\numberline {4}System Design}{16}
+\contentsline {section}{\numberline {5}Implementation}{17}
+\contentsline {section}{\numberline {6}System Testing}{18}
+\contentsline {section}{\numberline {7}Conclusion}{19}
+\contentsline {section}{\numberline {8}References}{20}
