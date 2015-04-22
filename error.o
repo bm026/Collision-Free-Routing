@@ -1,0 +1,5 @@
+error near line 1: name expected
+error near line 1: '(' expected
+error near line 1: ')' expected
+error near line 1: 'is' expected
+error near line 1: error in command tree size

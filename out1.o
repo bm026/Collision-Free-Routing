@@ -1,0 +1,325 @@
+
+tree size: 206
+C0
+  DATA    200000
+  LDWCP   C0
+  OPR     SETSP
+  ADJ     -2
+  LDAWSP  2
+  STWSP   1
+  LDAP    L4
+  OPR     CALL
+  LDC     0
+  OPR     SVC
+L4
+L2
+  LDWSP   1
+  ADJ     -5
+  STWSP   1
+  LDC     1
+  STWSP   2
+  LDAP    L3
+  OPR     CALL
+  ADJ     5
+  OPR     RET
+L3
+  LDWSP   1
+  ADJ     -3
+  STWSP   1
+L6
+  LDC     -1
+  BRF     L5
+  LDWSP   2
+  ADDC    1
+  LDWSP   5
+  OPR     OUTPUT
+  LDC     0
+  OPR     INPUT
+  STWSP   2
+  BR      L6
+L5
+  ADJ     3
+  OPR     RET
+C0
+  DATA    200000
+  LDWCP   C0
+  OPR     SETSP
+  ADJ     -2
+  LDAWSP  2
+  STWSP   1
+  LDAP    L4
+  OPR     CALL
+  LDC     0
+  OPR     SVC
+L4
+L2
+  LDWSP   1
+  ADJ     -5
+  STWSP   1
+  LDC     2
+  STWSP   2
+  LDAP    L3
+  OPR     CALL
+  ADJ     5
+  OPR     RET
+L3
+  LDWSP   1
+  ADJ     -3
+  STWSP   1
+L6
+  LDC     -1
+  BRF     L5
+  LDWSP   2
+  ADDC    1
+  LDWSP   5
+  OPR     OUTPUT
+  LDC     0
+  OPR     INPUT
+  STWSP   2
+  BR      L6
+L5
+  ADJ     3
+  OPR     RET
+C0
+  DATA    200000
+  LDWCP   C0
+  OPR     SETSP
+  ADJ     -2
+  LDAWSP  2
+  STWSP   1
+  LDAP    L4
+  OPR     CALL
+  LDC     0
+  OPR     SVC
+L4
+L2
+  LDWSP   1
+  ADJ     -5
+  STWSP   1
+  LDC     3
+  STWSP   2
+  LDAP    L3
+  OPR     CALL
+  ADJ     5
+  OPR     RET
+L3
+  LDWSP   1
+  ADJ     -3
+  STWSP   1
+L6
+  LDC     -1
+  BRF     L5
+  LDWSP   2
+  ADDC    1
+  LDWSP   5
+  OPR     OUTPUT
+  LDC     0
+  OPR     INPUT
+  STWSP   2
+  BR      L6
+L5
+  ADJ     3
+  OPR     RET
+C0
+  DATA    200000
+  LDWCP   C0
+  OPR     SETSP
+  ADJ     -2
+  LDAWSP  2
+  STWSP   1
+  LDAP    L4
+  OPR     CALL
+  LDC     0
+  OPR     SVC
+L4
+L2
+  LDWSP   1
+  ADJ     -5
+  STWSP   1
+  LDC     4
+  STWSP   2
+  LDAP    L3
+  OPR     CALL
+  ADJ     5
+  OPR     RET
+L3
+  LDWSP   1
+  ADJ     -3
+  STWSP   1
+L6
+  LDC     -1
+  BRF     L5
+  LDWSP   2
+  ADDC    1
+  LDWSP   5
+  OPR     OUTPUT
+  LDC     0
+  OPR     INPUT
+  STWSP   2
+  BR      L6
+L5
+  ADJ     3
+  OPR     RET
+C0
+  DATA    200000
+  LDWCP   C0
+  OPR     SETSP
+  ADJ     -2
+  LDAWSP  2
+  STWSP   1
+  LDAP    L4
+  OPR     CALL
+  LDC     0
+  OPR     SVC
+L4
+L2
+  LDWSP   1
+  ADJ     -5
+  STWSP   1
+  LDC     5
+  STWSP   2
+  LDAP    L3
+  OPR     CALL
+  ADJ     5
+  OPR     RET
+L3
+  LDWSP   1
+  ADJ     -3
+  STWSP   1
+L6
+  LDC     -1
+  BRF     L5
+  LDWSP   2
+  ADDC    1
+  LDWSP   5
+  OPR     OUTPUT
+  LDC     0
+  OPR     INPUT
+  STWSP   2
+  BR      L6
+L5
+  ADJ     3
+  OPR     RET
+C0
+  DATA    200000
+  LDWCP   C0
+  OPR     SETSP
+  ADJ     -2
+  LDAWSP  2
+  STWSP   1
+  LDAP    L4
+  OPR     CALL
+  LDC     0
+  OPR     SVC
+L4
+L2
+  LDWSP   1
+  ADJ     -5
+  STWSP   1
+  LDC     6
+  STWSP   2
+  LDAP    L3
+  OPR     CALL
+  ADJ     5
+  OPR     RET
+L3
+  LDWSP   1
+  ADJ     -3
+  STWSP   1
+L6
+  LDC     -1
+  BRF     L5
+  LDWSP   2
+  ADDC    1
+  LDWSP   5
+  OPR     OUTPUT
+  LDC     0
+  OPR     INPUT
+  STWSP   2
+  BR      L6
+L5
+  ADJ     3
+  OPR     RET
+C0
+  DATA    200000
+  LDWCP   C0
+  OPR     SETSP
+  ADJ     -2
+  LDAWSP  2
+  STWSP   1
+  LDAP    L4
+  OPR     CALL
+  LDC     0
+  OPR     SVC
+L4
+L2
+  LDWSP   1
+  ADJ     -5
+  STWSP   1
+  LDC     7
+  STWSP   2
+  LDAP    L3
+  OPR     CALL
+  ADJ     5
+  OPR     RET
+L3
+  LDWSP   1
+  ADJ     -3
+  STWSP   1
+L6
+  LDC     -1
+  BRF     L5
+  LDWSP   2
+  ADDC    1
+  LDWSP   5
+  OPR     OUTPUT
+  LDC     0
+  OPR     INPUT
+  STWSP   2
+  BR      L6
+L5
+  ADJ     3
+  OPR     RET
+C0
+  DATA    200000
+  LDWCP   C0
+  OPR     SETSP
+  ADJ     -2
+  LDAWSP  2
+  STWSP   1
+  LDAP    L4
+  OPR     CALL
+  LDC     0
+  OPR     SVC
+L4
+L2
+  LDWSP   1
+  ADJ     -5
+  STWSP   1
+  LDC     8
+  STWSP   2
+  LDAP    L3
+  OPR     CALL
+  ADJ     5
+  OPR     RET
+L3
+  LDWSP   1
+  ADJ     -3
+  STWSP   1
+L6
+  LDC     -1
+  BRF     L5
+  LDWSP   2
+  ADDC    1
+  LDWSP   5
+  OPR     OUTPUT
+  LDC     0
+  OPR     INPUT
+  STWSP   2
+  BR      L6
+L5
+  ADJ     3
+  OPR     RET
+nodes: 8
+program size: 45
+size: 45

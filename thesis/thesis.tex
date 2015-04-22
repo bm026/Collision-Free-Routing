@@ -55,13 +55,13 @@ In the beginning processors were designed and built in a serial manner, using a 
 
 At first, work was able to be done using the SISD architecture to increase processing performance. Techniques such as the pipelining of the fetch-execute cycle were introduced, which allowed different parts of the cycle to be carried out on different instructions in a concurrent manner, resulting in an instruction being executed on every clock cycle \cite{Iba08}. This is an important increase compared to the whole fetch-execute cycle being carried out fully on each instruction before moving on to the next; assuming each step in the fetch-execute cycle takes one clock cycle, the resulting performance would be one instruction executed every three clock cycles. This suggests pipelining increased processor performance by a factor of three.
 
-However, techniques such as pipelining were not the main source of increased performance for SISD architectures. It was clear that clock speed determined the speed at which instructions were executed, so the faster the clock speed, the better the resulting processor performance. To increase clock speed, the voltage of the power supply to the processor needed to be increased. This was not much of a problem, so the voltage was slowly increased to match performance increase stated by Moore's law, which observes that the number of transistors (therefore the processing power) in a processor should double every two years \cite{Moo65}. Figure \ref{cpu_trends} below shows the rise of power input, clock speed and processor performance of Intel processors in the last 40 years or so.
+However, techniques such as pipelining were not the main source of increased performance for SISD architectures. It was clear that clock speed determined the speed at which instructions were executed, so the faster the clock speed, the better the resulting processor performance. To increase clock speed, the voltage of the power supply to the processor needed to be increased. This was not much of a problem, so the voltage was slowly increased to match performance increase stated by Moore's law, which observes that the number of transistors (therefore the processing power) in a processor should double every two years \cite{Moo65}. Figure \ref{fig:cpu_trends} below shows the rise of power input, clock speed and processor performance of Intel processors in the last 40 years or so.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{trend_graph.png}
 \caption[A subset of Intel CPU introductions between 1970 and 2010]{A subset of Intel CPU introductions between 1970 and 2010. \cite{Sut05}}
-\label{cpu_trends}
+\label{fig:cpu_trends}
 \end{figure}
 
 The number of transistors, shown by the green line, shows that processor performance is consistently growing at an exponential rate, which matches Moore's law. The growth of power input and clock speed are shown by the light and dark blue lines respectively. It can be seen that these values also rose exponentially, until about 2002 when they both seem to level out. This point indicates the beginning of the use of parallelism in general-purpose processors.
@@ -117,7 +117,7 @@ A topology represents an abstracted layout of a network, in terms of cores/switc
 	\includegraphics[width=65mm]{benes_network.png}
 }
 \caption[Different network topologies used in parallel architectures]{Different network topologies used in parallel architectures. \cite{Han14}}
-\label{topologies}
+\label{fig:topologies}
 \end{figure}
 
 Mesh and toroidal networks have a regular layout similar to arrays. Cores in mesh networks are only connected to adjacent positions in the array, with the cores in the middle of the array having more connections than the cores at the edge. Toroidal networks remove this non-uniformity, allowing cores at the edge of the array to 'wrap around' the array to connect to the adjacent node at the other end of the dimension.
@@ -126,7 +126,7 @@ Hypercubic networks have a symmetric and recursive structure. A $d+1$ dimensiona
 
 Tree networks have a root node connecting one or more child nodes, which in turn connect one or more child nodes until all nodes are connected. The fact that all nodes have the common root node means that every node is reachable, which is a requirement of a network topology. However because there is only one root node, traffic around this node can get quite busy when lots of communication is taking place. Fat trees address this problem, giving interconnects closer to the root of the tree more bandwidth so that more data can be transmitted on each clock cycle.
 
-Clos networks were originally designed for use in telecommunications \cite{Clo53}. They use non-blocking switches to allow continuous transfer of data over multiple connections. Each connection has three stages: an ingress stage where data is sent from a core, a middle stage where data passes through one or more switching nodes, and an egress stage where data is received by the receiving core. The middle stage can be made up of further Clos networks, making a chain structure which gives more paths for each connecting nodes. Bene\v{s} networks are a type of Clos network, where each node is connected to exactly two other nodes \cite{Ben65}. Due to the symmetry of Clos and Bene\v{s} networks, they can be folded across the middle stage as shown in figure \ref{topologies}f. This merges the ingress and egress stages by using bidirectional communications links, allowing more efficient traversal of the network.
+Clos networks were originally designed for use in telecommunications \cite{Clo53}. They use non-blocking switches to allow continuous transfer of data over multiple connections. Each connection has three stages: an ingress stage where data is sent from a core, a middle stage where data passes through one or more switching nodes, and an egress stage where data is received by the receiving core. The middle stage can be made up of further Clos networks, making a chain structure which gives more paths for each connecting nodes. Bene\v{s} networks are a type of Clos network, where each node is connected to exactly two other nodes \cite{Ben65}. Due to the symmetry of Clos and Bene\v{s} networks, they can be folded across the middle stage as shown in figure \ref{fig:topologies}f. This merges the ingress and egress stages by using bidirectional communications links, allowing more efficient traversal of the network.
 
 \subsection{Routing}
 

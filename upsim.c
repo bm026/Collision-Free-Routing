@@ -1,5 +1,8 @@
 
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+#define NUM_PROCESSORS 2
 
 #define true     -1
 #define false    0
@@ -53,154 +56,181 @@ char connected[] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 #define o_svc    0xE
 
+#define o_in     0x10
+#define o_out    0x11
 
 
-unsigned int mem[200000];
-unsigned char *pmem = (unsigned char *) mem;
 
-unsigned int pc;
-unsigned int sp;
+unsigned int global_running;
+unsigned int i;
 
-unsigned int areg;
-unsigned int breg;
-unsigned int oreg;
+unsigned int mem[NUM_PROCESSORS][200000];
+unsigned char *pmem[NUM_PROCESSORS];
 
-unsigned int inst;
+unsigned int pc[NUM_PROCESSORS];
+unsigned int sp[NUM_PROCESSORS];
 
-unsigned int running;
+unsigned int areg[NUM_PROCESSORS];
+unsigned int breg[NUM_PROCESSORS];
+unsigned int oreg[NUM_PROCESSORS];
 
-main() 
-{
+unsigned int inst[NUM_PROCESSORS];
+unsigned int running[NUM_PROCESSORS];
+
+main() {
+
+    for (i=0; i<NUM_PROCESSORS; i++) {
+        //pmem[i] = (unsigned char *) malloc (200000*sizeof(unsigned char));
+        pmem[i] = (unsigned char *) mem[i];
+    }
 		
-printf("\n");
-	
-load();
-	
-running = true;	
-	
-oreg = 0;	
-	
-while (running) 
+	printf("\n");
+	global_running = true;
 
-{ 
-  inst = pmem[pc]; 
-  pc = pc + 1;	
+	for (i=0; i<NUM_PROCESSORS; i++) {
+        load();
+        running[i] = true;
+        oreg[i] = 0;
+    }	
+	
+    for (i=0; i<NUM_PROCESSORS; i++) {	
+	//while (global_running) {
+        while (running[i]) {
 
-  oreg = oreg | (inst & 0xf);	
-	
-  switch ((inst >> 4) & 0xf)
-  {
-	case i_ldwsp:  breg = areg; areg = mem[sp + oreg]; oreg = 0; break;
-	case i_stwsp:  mem[sp + oreg] = areg; areg = breg; oreg = 0; break;
-	case i_ldawsp: breg = areg; areg = sp + oreg; oreg = 0; break;   
-		  
-	case i_ldc:    breg = areg; areg = oreg; oreg = 0; break;
-	case i_ldwcp:  breg = areg; areg = mem[oreg]; oreg = 0; break;
-	case i_ldap:   breg = areg; areg = pc + oreg; oreg = 0; break;
-		  
-	case i_ldwi:   areg = mem[areg + oreg]; oreg = 0; break;
-	case i_stwi:   mem[areg + oreg] = breg; oreg = 0; break;
-		  
-	case i_br:     pc = pc + oreg; oreg = 0; break;
-	case i_brf:    if (areg == 0) pc = pc + oreg; oreg = 0; break;
-	case i_adj:    sp = sp + oreg; oreg = 0; break; 
-		  
-	case i_eqc:    if (areg == oreg) areg = true; else areg = false; oreg = 0; break;
-	case i_addc:   areg = areg + oreg; oreg = 0; break; 
-		  
-	case i_pfix:   oreg = oreg << 4; break;
-	case i_nfix:   oreg = 0xFFFFFF00 | (oreg << 4); break;
-		  
-	case i_opr:
-	switch (oreg)
-	  {
-		case o_add:  areg = areg + breg; break;
-		case o_sub:  areg = breg - areg; break;
-		case o_eq:   if (areg == breg) areg = true; else areg = false; break;
-		case o_lss:  if (((int)breg) < ((int)areg)) areg = true; else areg = false; break;
-		  
-		case o_and:  areg = areg & breg; break;
-		case o_or:   areg = areg | breg; break;
-		case o_xor:  areg = areg ^ breg; break;
-		case o_not:  areg = ~ areg; break;
-		  
-		case o_shl:  areg = breg << areg; break;
-		case o_shr:  areg = breg >> areg; break;
-		  
-		case o_brx:  pc = areg; areg = breg; break;
-		case o_call: mem[sp] = pc; pc = areg; areg = breg; break;
-		case o_ret:  pc = mem[sp]; break;
-		case o_setsp: sp = areg; areg = breg; break;		  
-		  
-		  case o_svc:  svc(); break;
-	  };
-	oreg = 0; break;		  
-  
-  };
-	
-}
-	
+        //for (i=0; i<NUM_PROCESSORS; i++) {
+
+            if (running[i]) {
+
+        	    inst[i] = pmem[i][pc[i]];
+        	    pc[i] = pc[i] + 1;
+        	    oreg[i] = oreg[i] | (inst[i] & 0xf);	
+        		
+        	    switch ((inst[i] >> 4) & 0xf) {
+
+            		case i_ldwsp:  breg[i] = areg[i]; areg[i] = mem[i][sp[i] + oreg[i]]; oreg[i] = 0; break;
+            		case i_stwsp:  mem[i][sp[i] + oreg[i]] = areg[i]; areg[i] = breg[i]; oreg[i] = 0; break;
+            		case i_ldawsp: breg[i] = areg[i]; areg[i] = sp[i] + oreg[i]; oreg[i] = 0; break;   
+            			  
+            		case i_ldc:    breg[i] = areg[i]; areg[i] = oreg[i]; oreg[i] = 0; break;
+            		case i_ldwcp:  breg[i] = areg[i]; areg[i] = mem[i][oreg[i]]; oreg[i] = 0; break;
+            		case i_ldap:   breg[i] = areg[i]; areg[i] = pc[i] + oreg[i]; oreg[i] = 0; break;
+            			  
+            		case i_ldwi:   areg[i] = mem[i][areg[i] + oreg[i]]; oreg[i] = 0; break;
+            		case i_stwi:   mem[i][areg[i] + oreg[i]] = breg[i]; oreg[i] = 0; break;
+            			  
+            		case i_br:     pc[i] = pc[i] + oreg[i]; oreg[i] = 0; break;
+            		case i_brf:    if (areg[i] == 0) pc[i] = pc[i] + oreg[i]; oreg[i] = 0; break;
+            		case i_adj:    sp[i] = sp[i] + oreg[i]; oreg[i] = 0; break; 
+            			  
+            		case i_eqc:    if (areg[i] == oreg[i]) areg[i] = true; else areg[i] = false; oreg[i] = 0; break;
+            		case i_addc:   areg[i] = areg[i] + oreg[i]; oreg[i] = 0; break; 
+            			  
+            		case i_pfix:   oreg[i] = oreg[i] << 4; break;
+            		case i_nfix:   oreg[i] = 0xFFFFFF00 | (oreg[i] << 4); break;
+            			  
+            		case i_opr:
+
+            			switch (oreg[i]) {
+
+            				case o_add:  areg[i] = areg[i] + breg[i]; break;
+            				case o_sub:  areg[i] = breg[i] - areg[i]; break;
+            				case o_eq:   if (areg[i] == breg[i]) areg[i] = true; else areg[i] = false; break;
+            				case o_lss:  if (((int)breg[i]) < ((int)areg[i])) areg[i] = true; else areg[i] = false; break;
+            				  
+            				case o_and:  areg[i] = areg[i] & breg[i]; break;
+            				case o_or:   areg[i] = areg[i] | breg[i]; break;
+            				case o_xor:  areg[i] = areg[i] ^ breg[i]; break;
+            				case o_not:  areg[i] = ~ areg[i]; break;
+            				  
+            				case o_shl:  areg[i] = breg[i] << areg[i]; break;
+            				case o_shr:  areg[i] = breg[i] >> areg[i]; break;
+            				  
+            				case o_brx:  pc[i] = areg[i]; areg[i] = breg[i]; break;
+            				case o_call: mem[i][sp[i]] = pc[i]; pc[i] = areg[i]; areg[i] = breg[i]; break;
+            				case o_ret:  pc[i] = mem[i][sp[i]]; break;
+            				case o_setsp: sp[i] = areg[i]; areg[i] = breg[i]; break;		  
+            				  
+            				case o_svc:  svc(); break;
+
+                            case o_in: break;
+                            case o_out: break;
+            		  	};
+
+            			oreg[i] = 0; break;		  
+        	    };
+            }
+        }
+
+        // check for finish
+        global_running = false;
+        for (i=0; i<NUM_PROCESSORS; i++) {
+            global_running |= running[i];
+        }
+	}
 }	
 		  		  		  
-load()
-{ int low;
-  int length;	
-  int n;
-  codefile = fopen("a.bin", "rb");
-  low = inbin();	
-  length = ((inbin() << 16) | low) << 2;
-  low = inbin();	
-  pc = ((inbin() << 16) | low) << 2;	
-  for (n = 0; n < length; n++)
-    pmem[n] = fgetc(codefile);
+load() { 
+    int low;
+    int length;	
+    int n;
+    codefile = fopen("a.bin", "rb");
+    low = inbin();	
+    length = ((inbin() << 16) | low) << 2;
+    printf("length: %d\n", length);
+    low = inbin();	
+    pc[i] = ((inbin() << 16) | low) << 2;
+    for (n = 0; n < length; n++) {
+        pmem[i][n] = fgetc(codefile);
+    }
+    fclose(codefile);
 };
 
-inbin(d) 
-{ int lowbits;
-  int highbits;
-  lowbits = fgetc(codefile);
-  highbits = fgetc(codefile);
-  return (highbits << 8) | lowbits;
+inbin(d) {
+    int lowbits;
+    int highbits;
+    lowbits = fgetc(codefile);
+    highbits = fgetc(codefile);
+    return (highbits << 8) | lowbits;
 };
 
-svc() 
-{ switch (areg)
-  { case 0: running = false; break;
-	case 1: simout(mem[sp + 2], mem[sp + 3]); break;
-	case 2: areg = simin(mem[sp + 2]) & 0xFF; break;
-  }			
-}
-
-simout(b, s)
-{ char fname[] = {'s', 'i', 'm', ' ', 0};
-  int f;
-  if (s < 256)
-	putchar(b);
-  else 
-  { f = (s >> 8) & 7;
-	if (! connected[f])
-	{ fname[3] = f + '0';
-	  simio[f] = fopen(fname, "w");
-	  connected[f] = true;
-	};	
-	fputc(b, simio[f]);
-  };	  
+svc() { 
+    switch (areg[i]) {
+        case 0: running[i] = false; break;
+    	case 1: simout(mem[i][sp[i] + 2], mem[i][sp[i] + 3]); break;
+    	case 2: areg[i] = simin(mem[i][sp[i] + 2]) & 0xFF; break;
+    };		
 };
 
-simin(s)
-{ char fname[] = {'s', 'i', 'm', ' ', 0};
-  int f;
-  if (s < 256)
-	return getchar();
-  else 
-  { f = (s >> 8) & 7;
-	fname[3] = f + '0';
-	if (! connected[f])
-	{ simio[f] = fopen(fname, "r");
-	  connected[f] = true;
-	}	
-	return fgetc(simio[f]) ;	  
-  };
+simout(b, s) { 
+    char fname[] = {'s', 'i', 'm', ' ', 0};
+    int f;
+    if (s < 256)
+	    putchar(b);
+    else {
+        f = (s >> 8) & 7;
+	    if (! connected[f]) { 
+            fname[3] = f + '0';
+	        simio[f] = fopen(fname, "w");
+	        connected[f] = true;
+	    };	
+	    fputc(b, simio[f]);
+    };	  
+};
+
+simin(s) { 
+    char fname[] = {'s', 'i', 'm', ' ', 0};
+    int f;
+    if (s < 256)
+	    return getchar();
+    else {
+        f = (s >> 8) & 7;
+	    fname[3] = f + '0';
+	    if (! connected[f]) { 
+            simio[f] = fopen(fname, "r");
+	        connected[f] = true;
+	    }	
+	    return fgetc(simio[f]) ;	  
+    };
 };
 
 
