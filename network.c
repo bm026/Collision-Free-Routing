@@ -68,7 +68,7 @@ Network *init_network (Network *n) {
 	for (i=0; i<NUM_CORES; i++) {
 		n -> cores[i] = (Core *)malloc(sizeof(Core));
 		n -> cores[i] -> send = NULL;
-		n -> cores[i] -> recv = NULL;
+		for (j=0; j<NUM_PORTS; j++) n -> cores[i] -> ports[j] = NULL;
 	}
 
 	// initialise link memory
@@ -480,8 +480,9 @@ void check_cores_for_received_packets(Network *n) {
 		if (c -> io0 -> comm != NULL) {
 			// checks for correct direction
 			if (c -> io0 -> comm -> direction == CORE) {
-				c -> recv = c -> io0 -> comm;
-				printf("Packet received on core %d with data: %d\n", i, c -> recv -> data);
+				c -> ports[c -> io0 -> comm -> port] = c -> io0 -> comm;
+				printf("Packet received on core %d (port %d) with data: %d\n", i, 
+					c -> io0 -> comm -> port, c -> io0 -> comm -> data);
 				c -> io0 -> comm = NULL;
 			}
 		}
@@ -490,8 +491,9 @@ void check_cores_for_received_packets(Network *n) {
 		if (c -> io1 -> comm != NULL) {
 			// checks for correct direction
 			if (c -> io1 -> comm -> direction == CORE) {
-				c -> recv = c -> io1 -> comm;
-				printf("Packet received on core %d with data: %d\n", i, c -> recv -> data);
+				c -> ports[c -> io1 -> comm -> port] = c -> io1 -> comm;
+				printf("Packet received on core %d (port %d) with data: %d\n", i, 
+					c -> io1 -> comm -> port, c -> io1 -> comm -> data);
 				c -> io1 -> comm = NULL;
 			}
 		}
@@ -570,8 +572,10 @@ void print_network_state(Network *n) {
 		if (n -> cores[j] -> send != NULL) {
 			printf("Core %d data to send: %d\n", j, n -> cores[j] -> send -> data);
 		}
-		if (n -> cores[j] -> recv != NULL) {
-			printf("Core %d data received: %d\n", j, n -> cores[j] -> recv -> data);
+		for (i=0; i<NUM_PORTS; i++) {
+			if (n -> cores[j] -> ports[i] != NULL) {
+				printf("Core %d data received on port %d: %d\n", j, i, n -> cores[j] -> ports[i] -> data);
+			}
 		}
 	}
 }
@@ -589,14 +593,14 @@ Packet **offline_route_planner() {
 	}
 
 	// example permutations
-	packets[0] = create_packet(0, 2, 2);
-	packets[1] = create_packet(1, 4, 14);
-	packets[2] = create_packet(2, 6, 26);
-	packets[3] = create_packet(3, 1, 31);
-	packets[4] = create_packet(4, 7, 47);
-	packets[5] = create_packet(5, 0, 50);
-	packets[6] = create_packet(6, 5, 65);
-	packets[7] = create_packet(7, 3, 73);
+	packets[0] = create_packet(0, 2, 0, 2);
+	packets[1] = create_packet(1, 4, 0, 14);
+	packets[2] = create_packet(2, 6, 0, 26);
+	packets[3] = create_packet(3, 1, 0, 31);
+	packets[4] = create_packet(4, 7, 0, 47);
+	packets[5] = create_packet(5, 0, 0, 50);
+	packets[6] = create_packet(6, 5, 0, 65);
+	packets[7] = create_packet(7, 3, 0, 73);
 
 	for (i=1; i<=NUM_LAYERS; i++) {
 		base = (int)pow(2,i);
@@ -704,14 +708,14 @@ Packet **tprr_route_planner() {
 	int packet_pos;
 
 	// example permutations
-	packets[0] = create_packet(0, 2, 2);
-	packets[1] = create_packet(1, 4, 14);
-	packets[2] = create_packet(2, 6, 26);
-	packets[3] = create_packet(3, 1, 31);
-	packets[4] = create_packet(4, 7, 47);
-	packets[5] = create_packet(5, 0, 50);
-	packets[6] = create_packet(6, 5, 65);
-	packets[7] = create_packet(7, 3, 73);
+	packets[0] = create_packet(0, 2, 0, 2);
+	packets[1] = create_packet(1, 4, 1, 14);
+	packets[2] = create_packet(2, 6, 2, 26);
+	packets[3] = create_packet(3, 1, 3, 31);
+	packets[4] = create_packet(4, 7, 0, 47);
+	packets[5] = create_packet(5, 0, 1, 50);
+	packets[6] = create_packet(6, 5, 2, 65);
+	packets[7] = create_packet(7, 3, 3, 73);
 
 
 	for (i=0; i<NUM_CORES; i++) {
@@ -763,7 +767,7 @@ Packet **tprr_route_planner() {
 	return packets;
 }
 
-Packet *create_packet(int source, int destination, int data) {
+Packet *create_packet(int source, int destination, int port, int data) {
 
 	//int i;
 	Packet *p;
@@ -774,6 +778,7 @@ Packet *create_packet(int source, int destination, int data) {
 	// add packet data
 	p -> source = source;
 	p -> destination = destination;
+	p -> port = port;
 	p -> data = data;
 	p -> count = 0;
 	p -> direction = EDGE;

@@ -13,6 +13,7 @@
 #define BUFF_SIZE 4
 #define NUM_LAYERS 3
 #define NUM_CORES 8
+#define NUM_PORTS 4
 
 // enumerator
 typedef enum {
@@ -24,6 +25,7 @@ typedef enum {
 typedef struct {
 	int source;
 	int destination;
+	int port;
 	int count;
 	char rout[NUM_LAYERS];
 	char addr[NUM_LAYERS];
@@ -58,7 +60,8 @@ typedef struct {
 	Link *io0;
 	Link *io1;
 	Packet *send;
-	Packet *recv;
+	//Packet *recv;
+	Packet *ports[NUM_PORTS];
 } Core;
 
 typedef struct {
@@ -82,6 +85,6 @@ void link_cleanup(Network *n);
 void print_network_state(Network *n);
 Packet **offline_route_planner();
 Packet **tprr_route_planner();
-Packet *create_packet(int source, int destination, int data);
+Packet *create_packet(int source, int destination, int port, int data);
 
 #endif
