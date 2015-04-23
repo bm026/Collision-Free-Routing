@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NUM_PROCESSORS 2
+#define NUM_PROCESSORS 1
 
 #define true     -1
 #define false    0
@@ -82,6 +82,7 @@ main() {
     for (i=0; i<NUM_PROCESSORS; i++) {
         //pmem[i] = (unsigned char *) malloc (200000*sizeof(unsigned char));
         pmem[i] = (unsigned char *) mem[i];
+        //printf("proc %d: mem: %p, pmem: %p\n", i, mem[i], pmem[i]);
     }
 		
 	printf("\n");
@@ -93,17 +94,17 @@ main() {
         oreg[i] = 0;
     }	
 	
-    for (i=0; i<NUM_PROCESSORS; i++) {	
-	//while (global_running) {
-        while (running[i]) {
+    //for (i=0; i<NUM_PROCESSORS; i++) {	
+	while (global_running) {
+        //while (running[i]) {
 
-        //for (i=0; i<NUM_PROCESSORS; i++) {
+        for (i=0; i<NUM_PROCESSORS; i++) {
 
             if (running[i]) {
 
         	    inst[i] = pmem[i][pc[i]];
         	    pc[i] = pc[i] + 1;
-        	    oreg[i] = oreg[i] | (inst[i] & 0xf);	
+        	    oreg[i] = oreg[i] | (inst[i] & 0xf);
         		
         	    switch ((inst[i] >> 4) & 0xf) {
 
@@ -176,7 +177,6 @@ load() {
     codefile = fopen("a.bin", "rb");
     low = inbin();	
     length = ((inbin() << 16) | low) << 2;
-    printf("length: %d\n", length);
     low = inbin();	
     pc[i] = ((inbin() << 16) | low) << 2;
     for (n = 0; n < length; n++) {
@@ -198,12 +198,13 @@ svc() {
         case 0: running[i] = false; break;
     	case 1: simout(mem[i][sp[i] + 2], mem[i][sp[i] + 3]); break;
     	case 2: areg[i] = simin(mem[i][sp[i] + 2]) & 0xFF; break;
-    };		
+    };
 };
 
 simout(b, s) { 
     char fname[] = {'s', 'i', 'm', ' ', 0};
     int f;
+    //if (i==0) {
     if (s < 256)
 	    putchar(b);
     else {
@@ -214,7 +215,8 @@ simout(b, s) {
 	        connected[f] = true;
 	    };	
 	    fputc(b, simio[f]);
-    };	  
+    };
+    //}  
 };
 
 simin(s) { 

@@ -7,6 +7,7 @@
 #include <math.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 
 // definitions
 #define BUFF_SIZE 4
@@ -80,6 +81,7 @@ void check_cores_for_received_packets(Network *n);
 void link_cleanup(Network *n);
 void print_network_state(Network *n);
 Packet **offline_route_planner();
+Packet **tprr_route_planner();
 Packet *create_packet(int source, int destination, int data);
 
 #endif

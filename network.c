@@ -6,9 +6,12 @@ int main (int argc,  char* argv[]) {
 	Network *n = NULL;
 	Packet **p;
 
+	srand(time(NULL));
+
 	n = init_network(n);
 
-	p = offline_route_planner();
+	//p = offline_route_planner();
+	p = tprr_route_planner();
 
 	for (i=0; i<NUM_CORES; i++) {
 		add_packet_to_core(n, p[i], i);
@@ -689,6 +692,72 @@ Packet **offline_route_planner() {
 				}
 			}
 		}
+	}
+
+	return packets;
+}
+
+Packet **tprr_route_planner() {
+
+	int i, j, base;
+	Packet **packets = (Packet **) malloc (NUM_CORES*sizeof(Packet *));
+	int packet_pos;
+
+	// example permutations
+	packets[0] = create_packet(0, 2, 2);
+	packets[1] = create_packet(1, 4, 14);
+	packets[2] = create_packet(2, 6, 26);
+	packets[3] = create_packet(3, 1, 31);
+	packets[4] = create_packet(4, 7, 47);
+	packets[5] = create_packet(5, 0, 50);
+	packets[6] = create_packet(6, 5, 65);
+	packets[7] = create_packet(7, 3, 73);
+
+
+	for (i=0; i<NUM_CORES; i++) {
+
+		packet_pos = packets[i] -> source;
+		packets[i] -> count = NUM_LAYERS;
+
+		// out route
+		for (j=1; j<=NUM_LAYERS; j++) {
+			base = (int) pow(2,j);
+
+			// pick random route
+			packets[i] -> rout[j-1] = rand() % 2;
+
+			// if route is 0
+			if (packets[i] -> rout[j-1] == 0) {
+				if (packet_pos % base < base/2) {
+					// packet position stays same
+				}
+				else {
+					packet_pos -= (base/2);
+				}
+			}
+			// if route is 1
+			else {
+				if (packet_pos % base < base/2) {
+					packet_pos += (base/2);
+				}
+				else {
+					// packet position stays same
+				}
+			}
+		}
+
+		// in route
+		for (j=NUM_LAYERS; j>0; j--) {
+			base = (int) pow(2,j);
+
+			if (packets[i] -> destination % base < base/2) {
+				packets[i] -> addr[j-1] = 0;
+			}
+			else {
+				packets[i] -> addr[j-1] = 1;
+			}
+		}
+
 	}
 
 	return packets;
