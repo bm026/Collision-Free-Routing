@@ -1,4 +1,6 @@
-\contentsline {section}{\numberline {1}Introduction}{4}
+\contentsline {section}{\numberline {1}Introduction}{3}
+\contentsline {subsection}{\numberline {1.1}Definitions}{3}
+\contentsline {subsection}{\numberline {1.2}Outline of the problem}{3}
 \contentsline {section}{\numberline {2}Background}{5}
 \contentsline {subsection}{\numberline {2.1}General-purpose processors: a need for parallelism}{5}
 \contentsline {subsection}{\numberline {2.2}An introduction to parallel systems}{7}

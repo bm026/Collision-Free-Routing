@@ -35,6 +35,7 @@
 \thispagestyle{empty}
 \newpage
 \pagenumbering{arabic}
+\setcounter{tocdepth}{2}
 \tableofcontents
 \newpage
 \listoffigures
@@ -42,7 +43,30 @@
 \newpage
 \section{Introduction}
 
+\subsection{Definitions}
 
+This thesis includes a number of terms that have been clarified below to avoid any potential ambiguity.
+\begin{itemize}
+
+\item \textbf{Processor}: An integrated circuit which contains at least an arithmetic logic unit (ALU), registers, and a block of memory. Used to execute instructions outlined by programming code.
+
+\item \textbf{Network}: A number of processors connected together by physical wires and intermediate nodes, allowing each processor to communicate with others in the network.
+
+\item \textbf{Link}: A single wire in the network connecting either two processors, a processor and an intermediate node, or two intermediate nodes.
+
+\item \textbf{Routing algorithm}: The algorithm that decides which links in the network are to be used when a communication is required between two processors on the network.
+
+\item \textbf{Collision}: When two packets of communication data in the network try to use the same link at the same time, resulting in one of the packets having to wait until the link becomes free again before continuing its transmission.
+
+\end{itemize}
+
+\subsection{Outline of the problem}
+
+The world of computer programming is currently undergoing a paradigm shift from sequential programming to parallel programming. Sequential programs execute their set of instructions one after another in order, which means they can be run using a single processor. Parallel programs on the other hand include sections of instructions that can be executed independently from one another, which means they can be run on more than one processor in parallel. Applying parallelism to a sequential program means that the execution time of the program is reduced -- providing the program has independent sections suitable for parallel execution -- because some of the computation is being carried out concurrently.
+
+However parallel computing is not without its drawbacks. While parallel programs are generally faster than sequential programs, they require more hardware and suffer larger overhead costs in order for the program to be executed correctly. In other words, a fully parallel version of a sequential program executed on $n$ processors will not run $n$ times faster than the sequential program runs on one processor, because of the additional overheads that parallelism introduces.
+
+The main source of overhead during execution of a parallel program is communication between processors. Communication is an essential part of parallel computing because it allows processors to share their calculated data with the other processors they are working in collaboration with, which is necessary in almost all parallel programs. This communication is facilitated by a network of links which carry communication data from processor to processor. It is in these physical links where the majority of the overhead associated with parallel computing is sourced, resulting in slower execution time and reduced efficiency of parallel programs.
 
 \newpage
 \section{Background}
