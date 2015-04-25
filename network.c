@@ -95,6 +95,12 @@ int main (int argc,  char* argv[]) {
             }
         }
 
+        // add new data packets to network
+         
+
+        // carry out one timestep of network routing
+        network_timesteps(n, 1);
+
         // check for finish
         global_running = false;
         for (i=0; i<NUM_CORES; i++) {

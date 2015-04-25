@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-//#include <stdbool.h>
 #include <time.h>
 
 // network definitions
@@ -66,6 +65,10 @@ unsigned int running[NUM_CORES];
 FILE *codefile;
 FILE *simio[8];
 char connected[] = {0, 0, 0, 0, 0, 0, 0, 0};
+
+// network global variables
+int timestep_count = 0;
+int collision_count = 0;
 
 // link enumerator
 typedef enum {
