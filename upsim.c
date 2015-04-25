@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NUM_PROCESSORS 1
+#define NUM_PROCESSORS 8
 
 #define true     -1
 #define false    0
@@ -80,23 +80,19 @@ unsigned int running[NUM_PROCESSORS];
 main() {
 
     for (i=0; i<NUM_PROCESSORS; i++) {
-        //pmem[i] = (unsigned char *) malloc (200000*sizeof(unsigned char));
         pmem[i] = (unsigned char *) mem[i];
-        //printf("proc %d: mem: %p, pmem: %p\n", i, mem[i], pmem[i]);
     }
 		
 	printf("\n");
 	global_running = true;
+    load();
 
 	for (i=0; i<NUM_PROCESSORS; i++) {
-        load();
         running[i] = true;
         oreg[i] = 0;
     }	
-	
-    //for (i=0; i<NUM_PROCESSORS; i++) {	
+		
 	while (global_running) {
-        //while (running[i]) {
 
         for (i=0; i<NUM_PROCESSORS; i++) {
 
@@ -175,14 +171,18 @@ load() {
     int length;	
     int n;
     codefile = fopen("a.bin", "rb");
-    low = inbin();	
-    length = ((inbin() << 16) | low) << 2;
-    low = inbin();	
-    pc[i] = ((inbin() << 16) | low) << 2;
-    for (n = 0; n < length; n++) {
-        pmem[i][n] = fgetc(codefile);
+    
+    for (i=0; i<NUM_PROCESSORS; i++) {
+        low = inbin();	
+        length = ((inbin() << 16) | low);// << 2;
+        printf("length[%d]: %d\n", i, length);
+        low = inbin();	
+        pc[i] = ((inbin() << 16) | low) << 2;
+        printf("pc[%d]: %d\n", i, pc[i]);
+        for (n = 0; n < length; n++) {
+            pmem[i][n] = fgetc(codefile);
+        }
     }
-    fclose(codefile);
 };
 
 inbin(d) {
@@ -204,7 +204,6 @@ svc() {
 simout(b, s) { 
     char fname[] = {'s', 'i', 'm', ' ', 0};
     int f;
-    //if (i==0) {
     if (s < 256)
 	    putchar(b);
     else {
@@ -216,7 +215,6 @@ simout(b, s) {
 	    };	
 	    fputc(b, simio[f]);
     };
-    //}  
 };
 
 simin(s) { 

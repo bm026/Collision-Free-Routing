@@ -6,22 +6,74 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include <stdbool.h>
+//#include <stdbool.h>
 #include <time.h>
 
-// definitions
+// network definitions
 #define BUFF_SIZE 4
 #define NUM_LAYERS 3
 #define NUM_CORES 8
 #define NUM_PORTS 4
 
-// enumerator
+// processor definitions
+#define true     -1
+#define false    0
+#define i_ldwsp  0x0
+#define i_stwsp  0x1
+#define i_ldawsp 0x2
+#define i_ldc    0x3
+#define i_ldwcp  0x4
+#define i_ldap   0x5
+#define i_ldwi   0x6 
+#define i_stwi   0x7
+#define i_br     0x8
+#define i_brf    0x9 
+#define i_adj    0xA
+#define i_eqc    0xB
+#define i_addc   0xC
+#define i_pfix   0xD
+#define i_nfix   0xE
+#define i_opr    0xF
+#define o_add    0x0
+#define o_sub    0x1
+#define o_eq     0x2
+#define o_lss    0x3
+#define o_and    0x4
+#define o_or     0x5
+#define o_xor    0x6
+#define o_not    0x7
+#define o_shl    0x8
+#define o_shr    0x9
+#define o_brx    0xA
+#define o_call   0xB
+#define o_ret    0xC
+#define o_setsp  0xD
+#define o_svc    0xE
+#define o_in     0x10
+#define o_out    0x11
+
+// processor global variables
+unsigned int global_running;
+unsigned int mem[NUM_CORES][200000];
+unsigned char *pmem[NUM_CORES];
+unsigned int pc[NUM_CORES];
+unsigned int sp[NUM_CORES];
+unsigned int areg[NUM_CORES];
+unsigned int breg[NUM_CORES];
+unsigned int oreg[NUM_CORES];
+unsigned int inst[NUM_CORES];
+unsigned int running[NUM_CORES];
+FILE *codefile;
+FILE *simio[8];
+char connected[] = {0, 0, 0, 0, 0, 0, 0, 0};
+
+// link enumerator
 typedef enum {
 	EDGE,
 	CORE
 } Direction;
 
-// data structures
+// network data structures
 typedef struct {
 	int source;
 	int destination;
@@ -70,9 +122,15 @@ typedef struct {
 	Switch *switches[NUM_LAYERS][NUM_CORES];
 } Network;
 
-// functions
+// processor functions
+void load();
+int inbin();
+void svc(int i);
+void simout(int b, int s);
+int simin(int s);
+
+// network functions
 Network *init_network (Network *n);
-//Packet *create_packet(Packet *p, int data, int count, char *edge_route, char *core_route);
 void network_timesteps(Network *n, int iterations);
 Packet *buffer_read(Buffer *buffer);
 int buffer_write(Buffer *buffer, Packet *p);
@@ -83,8 +141,10 @@ void send_packets_from_cores(Network *n);
 void check_cores_for_received_packets(Network *n);
 void link_cleanup(Network *n);
 void print_network_state(Network *n);
+Packet *create_packet(int source, int destination, int port, int data);
+
+// routing functions
 Packet **offline_route_planner();
 Packet **tprr_route_planner();
-Packet *create_packet(int source, int destination, int port, int data);
 
 #endif

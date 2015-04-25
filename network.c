@@ -6,11 +6,103 @@ int main (int argc,  char* argv[]) {
 	Network *n = NULL;
 	Packet **p;
 
+	// set random seed
 	srand(time(NULL));
 
+	// initialise network
 	n = init_network(n);
 
-	//p = offline_route_planner();
+	// initialise processor memory
+	for (i=0; i<NUM_CORES; i++) {
+        pmem[i] = (unsigned char *) mem[i];
+    }
+	
+	// load binary program
+	printf("\n");
+	global_running = true;
+    load();
+
+    // ready to run program
+	for (i=0; i<NUM_CORES; i++) {
+        running[i] = true;
+        oreg[i] = 0;
+    }	
+		
+	// execute program on parallel processors
+	while (global_running) {
+
+        for (i=0; i<NUM_CORES; i++) {
+
+            if (running[i]) {
+
+        	    inst[i] = pmem[i][pc[i]];
+        	    pc[i] = pc[i] + 1;
+        	    oreg[i] = oreg[i] | (inst[i] & 0xf);
+        		
+        	    switch ((inst[i] >> 4) & 0xf) {
+
+            		case i_ldwsp:  breg[i] = areg[i]; areg[i] = mem[i][sp[i] + oreg[i]]; oreg[i] = 0; break;
+            		case i_stwsp:  mem[i][sp[i] + oreg[i]] = areg[i]; areg[i] = breg[i]; oreg[i] = 0; break;
+            		case i_ldawsp: breg[i] = areg[i]; areg[i] = sp[i] + oreg[i]; oreg[i] = 0; break;   
+            			  
+            		case i_ldc:    breg[i] = areg[i]; areg[i] = oreg[i]; oreg[i] = 0; break;
+            		case i_ldwcp:  breg[i] = areg[i]; areg[i] = mem[i][oreg[i]]; oreg[i] = 0; break;
+            		case i_ldap:   breg[i] = areg[i]; areg[i] = pc[i] + oreg[i]; oreg[i] = 0; break;
+            			  
+            		case i_ldwi:   areg[i] = mem[i][areg[i] + oreg[i]]; oreg[i] = 0; break;
+            		case i_stwi:   mem[i][areg[i] + oreg[i]] = breg[i]; oreg[i] = 0; break;
+            			  
+            		case i_br:     pc[i] = pc[i] + oreg[i]; oreg[i] = 0; break;
+            		case i_brf:    if (areg[i] == 0) pc[i] = pc[i] + oreg[i]; oreg[i] = 0; break;
+            		case i_adj:    sp[i] = sp[i] + oreg[i]; oreg[i] = 0; break; 
+            			  
+            		case i_eqc:    if (areg[i] == oreg[i]) areg[i] = true; else areg[i] = false; oreg[i] = 0; break;
+            		case i_addc:   areg[i] = areg[i] + oreg[i]; oreg[i] = 0; break; 
+            			  
+            		case i_pfix:   oreg[i] = oreg[i] << 4; break;
+            		case i_nfix:   oreg[i] = 0xFFFFFF00 | (oreg[i] << 4); break;
+            			  
+            		case i_opr:
+
+            			switch (oreg[i]) {
+
+            				case o_add:  areg[i] = areg[i] + breg[i]; break;
+            				case o_sub:  areg[i] = breg[i] - areg[i]; break;
+            				case o_eq:   if (areg[i] == breg[i]) areg[i] = true; else areg[i] = false; break;
+            				case o_lss:  if (((int)breg[i]) < ((int)areg[i])) areg[i] = true; else areg[i] = false; break;
+            				  
+            				case o_and:  areg[i] = areg[i] & breg[i]; break;
+            				case o_or:   areg[i] = areg[i] | breg[i]; break;
+            				case o_xor:  areg[i] = areg[i] ^ breg[i]; break;
+            				case o_not:  areg[i] = ~ areg[i]; break;
+            				  
+            				case o_shl:  areg[i] = breg[i] << areg[i]; break;
+            				case o_shr:  areg[i] = breg[i] >> areg[i]; break;
+            				  
+            				case o_brx:  pc[i] = areg[i]; areg[i] = breg[i]; break;
+            				case o_call: mem[i][sp[i]] = pc[i]; pc[i] = areg[i]; areg[i] = breg[i]; break;
+            				case o_ret:  pc[i] = mem[i][sp[i]]; break;
+            				case o_setsp: sp[i] = areg[i]; areg[i] = breg[i]; break;		  
+            				  
+            				case o_svc:  svc(i); break;
+
+                            case o_in: break;
+                            case o_out: break;
+            		  	};
+
+            			oreg[i] = 0; break;		  
+        	    };
+            }
+        }
+
+        // check for finish
+        global_running = false;
+        for (i=0; i<NUM_CORES; i++) {
+            global_running |= running[i];
+        }
+	}
+
+	/*//p = offline_route_planner();
 	p = tprr_route_planner();
 
 	for (i=0; i<NUM_CORES; i++) {
@@ -48,13 +140,83 @@ int main (int argc,  char* argv[]) {
 	network_timesteps(n, 20);
 
 	// testing each timestep
-	/*for (i=0; i<13; i++) {
+	for (i=0; i<13; i++) {
 		network_timestep(n, 1);
 		print_network_state(n);
 	}*/
 
 	return 0;
 }
+
+
+void load() { 
+    int low;
+    int length;	
+    int n, i;
+    codefile = fopen("a.bin", "rb");
+    
+    for (i=0; i<NUM_CORES; i++) {
+        low = inbin();	
+        length = ((inbin() << 16) | low);// << 2;
+        printf("length[%d]: %d\n", i, length);
+        low = inbin();	
+        pc[i] = ((inbin() << 16) | low) << 2;
+        printf("pc[%d]: %d\n", i, pc[i]);
+        for (n = 0; n < length; n++) {
+            pmem[i][n] = fgetc(codefile);
+        }
+    }
+    fclose(codefile);
+}
+
+int inbin() {
+    int lowbits;
+    int highbits;
+    lowbits = fgetc(codefile);
+    highbits = fgetc(codefile);
+    return (highbits << 8) | lowbits;
+}
+
+void svc(int i) { 
+    switch (areg[i]) {
+        case 0: running[i] = false; break;
+    	case 1: simout(mem[i][sp[i] + 2], mem[i][sp[i] + 3]); break;
+    	case 2: areg[i] = simin(mem[i][sp[i] + 2]) & 0xFF; break;
+    }
+}
+
+void simout(int b, int s) { 
+    char fname[] = {'s', 'i', 'm', ' ', 0};
+    int f;
+    if (s < 256)
+	    putchar(b);
+    else {
+        f = (s >> 8) & 7;
+	    if (! connected[f]) { 
+            fname[3] = f + '0';
+	        simio[f] = fopen(fname, "w");
+	        connected[f] = true;
+	    }
+	    fputc(b, simio[f]);
+    }
+}
+
+int simin(int s) { 
+    char fname[] = {'s', 'i', 'm', ' ', 0};
+    int f;
+    if (s < 256)
+	    return getchar();
+    else {
+        f = (s >> 8) & 7;
+	    fname[3] = f + '0';
+	    if (! connected[f]) { 
+            simio[f] = fopen(fname, "r");
+	        connected[f] = true;
+	    }	
+	    return fgetc(simio[f]);  
+    }
+}
+
 
 Network *init_network (Network *n) {
 
@@ -156,41 +318,6 @@ Network *init_network (Network *n) {
 
 	return n;
 }
-
-/*Packet *create_packet(Packet *p, int data, int count, char *edge_route, char *core_route) {
-
-	int i;
-
-	// initialise packet memory
-	p = (Packet *)malloc(sizeof(Packet));
-
-	// add packet data
-	p -> data = data;
-	p -> count = count;
-	p -> direction = EDGE;
-
-	// interpret route
-	for (i=0; i<count; i++) {
-		
-		// edge route
-		if (edge_route[i] == '1') {
-			p -> rout[i] = 1; 
-		}
-		else {
-			p -> rout[i] = 0;
-		}
-
-		// core route
-		if (core_route[i] == '1') {
-			p -> addr[i] = 1;
-		}
-		else {
-			p -> addr[i] = 0;
-		}
-	}
-
-	return p;
-}*/
 
 void network_timesteps(Network *n, int iterations) {
 
@@ -580,10 +707,28 @@ void print_network_state(Network *n) {
 	}
 }
 
+Packet *create_packet(int source, int destination, int port, int data) {
+
+	Packet *p;
+
+	// initialise packet memory
+	p = (Packet *)malloc(sizeof(Packet));
+
+	// add packet data
+	p -> source = source;
+	p -> destination = destination;
+	p -> port = port;
+	p -> data = data;
+	p -> count = 0;
+	p -> direction = EDGE;
+
+	return p;
+}
+
+
 Packet **offline_route_planner() {
 
 	int i, j, base;
-	//Packet *packets[NUM_CORES];
 	char switch_state[NUM_CORES*NUM_LAYERS];
 	int route_positions[2][NUM_CORES];
 	Packet **packets = (Packet **) malloc (NUM_CORES*sizeof(Packet *));
@@ -765,43 +910,4 @@ Packet **tprr_route_planner() {
 	}
 
 	return packets;
-}
-
-Packet *create_packet(int source, int destination, int port, int data) {
-
-	//int i;
-	Packet *p;
-
-	// initialise packet memory
-	p = (Packet *)malloc(sizeof(Packet));
-
-	// add packet data
-	p -> source = source;
-	p -> destination = destination;
-	p -> port = port;
-	p -> data = data;
-	p -> count = 0;
-	p -> direction = EDGE;
-
-	/*// interpret route
-	for (i=0; i<count; i++) {
-		
-		// edge route
-		if (edge_route[i] == '1') {
-			p -> rout[i] = 1; 
-		}
-		else {
-			p -> rout[i] = 0;
-		}
-
-		// core route
-		if (core_route[i] == '1') {
-			p -> addr[i] = 1;
-		}
-		else {
-			p -> addr[i] = 0;
-		}
-	}*/
-
-	return p;
 }
