@@ -175,10 +175,10 @@ load() {
     for (i=0; i<NUM_PROCESSORS; i++) {
         low = inbin();	
         length = ((inbin() << 16) | low) << 2;
-        printf("length[%d]: %d\n", i, length);
+        //printf("length[%d]: %d\n", i, length);
         low = inbin();	
         pc[i] = ((inbin() << 16) | low) << 2;
-        printf("pc[%d]: %d\n", i, pc[i]);
+        //printf("pc[%d]: %d\n", i, pc[i]);
         for (n = 0; n < length; n++) {
             pmem[i][n] = fgetc(codefile);
         }

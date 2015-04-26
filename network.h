@@ -72,7 +72,7 @@ int collision_count = 0;
 int packet_count = 0;
 unsigned int verbose = false;
 
-unsigned int routing_code = 1;
+unsigned int routing_code = 0;
 // 0: developed algorithm
 // 1: two-phase randomised routing
 
