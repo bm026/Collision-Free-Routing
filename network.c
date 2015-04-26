@@ -100,7 +100,8 @@ int main (int argc,  char* argv[]) {
                             case o_in: 
 
                             	if (n -> cores[i] -> ports[areg[i]] == NULL) {
-                            		pc[i] = pc[i] - 1;
+                            		pc[i] = pc[i] - 2;
+                            		//printf("core %d waiting for input\n", i);
                             	}
                             	else {
                             		breg[i] = areg[i];
@@ -134,34 +135,42 @@ int main (int argc,  char* argv[]) {
         if (is_packets) {
 
         	// run routing algorithm
-        	p = offline_route_planner(active_cores, active_core_data);
-			//p = tprr_route_planner(active_cores, active_core_data);
+        	if (routing_code == 0) {
+        		// developed algorithm
+        		p = offline_route_planner(active_cores, active_core_data);
+        	}
+        	else {
+        		// two-phase randomised routing
+				p = tprr_route_planner(active_cores, active_core_data);
+			}
 
         	// add packets to cores
 			for (i=0; i<NUM_CORES; i++) {
 				if (active_cores[i] == 1) {
 					add_packet_to_core(n, p[i], i);
 
-					// print all routes
-					// out route
-					printf("Packet %d. Out: ", i);
-					for (k=0; k<p[i] -> count; k++) {
-						if (p[i] -> rout[k] == 0) printf("0");
-						else printf("1");
+					if (verbose) {
+						// print all routes
+						// out route
+						printf("Packet %d. Out: ", i);
+						for (k=0; k<p[i] -> count; k++) {
+							if (p[i] -> rout[k] == 0) printf("0");
+							else printf("1");
+						}
+						// in route
+						printf(". In: ");
+						for (k=p[i] -> count-1; k >= 0; k--) {
+							if (p[i] -> addr[k] == 0) printf("0");
+							else printf("1");
+						}
+						printf(".\n");
 					}
-					// in route
-					printf(". In: ");
-					for (k=p[i] -> count-1; k >= 0; k--) {
-						if (p[i] -> addr[k] == 0) printf("0");
-						else printf("1");
-					}
-					printf(".\n");
 				}
 			}
         }
 
         // carry out one timestep of network routing
-        network_timesteps(n, 2);
+        network_timesteps(n,1);
 
         // check for finish
         global_running = false;
@@ -170,48 +179,9 @@ int main (int argc,  char* argv[]) {
         }
 	}
 
-	/*//p = offline_route_planner();
-	p = tprr_route_planner();
-
-	for (i=0; i<NUM_CORES; i++) {
-		add_packet_to_core(n, p[i], i);
-
-		// print all routes
-		// out route
-		printf("Packet %d. Out: ", i);
-		for (k=0; k<p[i] -> count; k++) {
-			if (p[i] -> rout[k] == 0) printf("0");
-			else printf("1");
-		}
-		printf(". In: ");
-		for (k=p[i] -> count-1; k >= 0; k--) {
-			if (p[i] -> addr[k] == 0) printf("0");
-			else printf("1");
-		}
-		printf(".\n");
-	}
-
-
-
-	//p = create_packet(p, 41, 1, "1", "1");
-	//add_packet_to_core(n, p, 0);
-
-	//network_timesteps(n, 3);
-
-	//p = create_packet(p, 42, 1, "1", "0");
-	//add_packet_to_core(n, p, 1);
-
-	//print_network_state(n);
-
-
-
-	network_timesteps(n, 20);
-
-	// testing each timestep
-	for (i=0; i<13; i++) {
-		network_timestep(n, 1);
-		print_network_state(n);
-	}*/
+	if (verbose) printf("\n");
+	printf("Packets sent: %d\nTimesteps completed: %d\nCollisions detected: %d\n", packet_count,
+		timestep_count, collision_count);
 
 	return 0;
 }
@@ -393,6 +363,9 @@ void network_timesteps(Network *n, int iterations) {
 
 	for (i=0; i<iterations; i++) {
 
+		// update timestep count
+		timestep_count++;
+
 		// sends all packets from cores
 		send_packets_from_cores(n);
 
@@ -443,7 +416,9 @@ int buffer_write(Buffer *buffer, Packet *p) {
 
 void add_packet_to_core(Network *n, Packet *p, int core_num) {
 	n -> cores[core_num] -> send = p;
-	printf("Packet added to core %d\n", core_num);
+	if (verbose) {
+		printf("Packet added to core %d\n", core_num);
+	}
 }
 
 void send_packets_from_switches(Network *n) {
@@ -468,10 +443,16 @@ void send_packets_from_switches(Network *n) {
 				// get link number and report collision
 				base = (int) pow(2, i+1);
 				if (j % base < base/2) {
-					printf("COLLISION on layer:%d, link:%d\n", i, 2*j);
+					if (verbose) {
+						printf("COLLISION on layer:%d, link:%d\n", i, 2*j);
+					}
+					collision_count++;
 				}
 				else {
-					printf("COLLISION on layer:%d, link:%d\n", i, 2*j+1-base);
+					if (verbose) {
+						printf("COLLISION on layer:%d, link:%d\n", i, 2*j+1-base);
+					}
+					collision_count++;
 				}
 			}
 
@@ -483,10 +464,16 @@ void send_packets_from_switches(Network *n) {
 				// get link number and report collision
 				base = (int) pow(2, i+1);
 				if (j % base < base/2) {
-					printf("COLLISION on layer:%d, link:%d\n", i, 2*j+base);
+					if (verbose) {
+						printf("COLLISION on layer:%d, link:%d\n", i, 2*j+base);
+					}
+					collision_count++;
 				}
 				else {
-					printf("COLLISION on layer:%d, link:%d\n", i, 2*j+1);
+					if (verbose) {
+						printf("COLLISION on layer:%d, link:%d\n", i, 2*j+1);
+					}
+					collision_count++;
 				}
 			}
 
@@ -497,7 +484,10 @@ void send_packets_from_switches(Network *n) {
 					s -> edge0 -> temp = buffer_read(s -> e0buffer);
 				}
 				else if (s -> e0buffer -> count != 0) {
-					printf("COLLISION on layer:%d, link:%d\n", i+1, 2*j);
+					if (verbose) {
+						printf("COLLISION on layer:%d, link:%d\n", i+1, 2*j);
+					}
+					collision_count++;
 				}
 
 				// edge1
@@ -505,7 +495,10 @@ void send_packets_from_switches(Network *n) {
 					s -> edge1 -> temp = buffer_read(s -> e1buffer);
 				}
 				else if (s -> e1buffer -> count != 0) {
-					printf("COLLISION on layer:%d, link:%d\n", i+1, 2*j+1);
+					if (verbose) {
+						printf("COLLISION on layer:%d, link:%d\n", i+1, 2*j+1);
+					}
+					collision_count++;
 				}
 			}
 		}
@@ -640,22 +633,32 @@ void send_packets_from_cores(Network *n) {
 				// checks link is free
 				if (c -> io0 -> temp == NULL && c -> io0 -> comm == NULL) {
 					c -> io0 -> temp = c -> send;
-					printf("Packet sent from core %d with data: %d\n", i, c -> send -> data);
+					if (verbose) {
+						printf("Packet sent from core %d with data: %d\n", i, c -> send -> data);
+					}
 					c -> send = NULL;
 				}
 				// if link is not free, collision
 				else {
-					printf("COLLISION on layer:0, link:%d\n", 2*i);
+					if (verbose) {
+						printf("COLLISION on layer:0, link:%d\n", 2*i);
+					}
+					collision_count++;
 				}
 			}
 			else {
 				if (c -> io1 -> temp == NULL && c -> io1 -> comm == NULL) {
 					c -> io1 -> temp = c -> send;
-					printf("Packet sent from core %d with data: %d\n", i, c -> send -> data);
+					if (verbose) {
+						printf("Packet sent from core %d with data: %d\n", i, c -> send -> data);
+					}
 					c -> send = NULL;
 				}
 				else {
-					printf("COLLISION on layer:0, link:%d\n", 2*i+1);
+					if (verbose) {
+						printf("COLLISION on layer:0, link:%d\n", 2*i+1);
+					}
+					collision_count++;
 				}
 			}	
 		}
@@ -676,8 +679,10 @@ void check_cores_for_received_packets(Network *n) {
 			// checks for correct direction
 			if (c -> io0 -> comm -> direction == CORE) {
 				c -> ports[c -> io0 -> comm -> port] = c -> io0 -> comm;
-				printf("Packet received on core %d (port %d) with data: %d\n", i, 
-					c -> io0 -> comm -> port, c -> io0 -> comm -> data);
+				if (verbose) {
+					printf("Packet received on core %d (port %d) with data: %d\n", i, 
+						c -> io0 -> comm -> port, c -> io0 -> comm -> data);
+				}
 				c -> io0 -> comm = NULL;
 			}
 		}
@@ -687,8 +692,10 @@ void check_cores_for_received_packets(Network *n) {
 			// checks for correct direction
 			if (c -> io1 -> comm -> direction == CORE) {
 				c -> ports[c -> io1 -> comm -> port] = c -> io1 -> comm;
-				printf("Packet received on core %d (port %d) with data: %d\n", i, 
-					c -> io1 -> comm -> port, c -> io1 -> comm -> data);
+				if (verbose) {
+					printf("Packet received on core %d (port %d) with data: %d\n", i, 
+						c -> io1 -> comm -> port, c -> io1 -> comm -> data);
+				}
 				c -> io1 -> comm = NULL;
 			}
 		}
@@ -706,15 +713,6 @@ void link_cleanup(Network *n) {
 
 			// current link pointer
 			l = n -> links[i][j];
-
-			// collision already checked?
-			//if (l -> comm == NULL) {
-			//	l -> comm = l -> temp;
-			//	l -> temp = NULL;
-			//}
-			//else if (l -> temp != NULL) {
-			//	printf("COLLISION\n");
-			//}
 
 			l -> comm = l -> temp;
 			l -> temp = NULL;
@@ -805,16 +803,6 @@ Packet **offline_route_planner(char *active_cores, int **active_core_data) {
 		switch_state[i] = 0;
 	}
 
-	// example permutations
-	/*packets[0] = create_packet(0, 2, 0, 2);
-	packets[1] = create_packet(1, 4, 0, 14);
-	packets[2] = create_packet(2, 6, 0, 26);
-	packets[3] = create_packet(3, 1, 0, 31);
-	packets[4] = create_packet(4, 7, 0, 47);
-	packets[5] = create_packet(5, 0, 0, 50);
-	packets[6] = create_packet(6, 5, 0, 65);
-	packets[7] = create_packet(7, 3, 0, 73);*/
-
 	// create packets
 	for (i=0; i<NUM_CORES; i++) {
 		if (active_cores[i] == 1) {
@@ -832,7 +820,12 @@ Packet **offline_route_planner(char *active_cores, int **active_core_data) {
 				if (packets[j] -> count == 0) {
 					// for first link, pick random
 					if (i == 1) {
-						packets[j] -> rout[0] = rand() % 2;
+
+						// evenly distribute packets across halves of network
+						packets[j] -> rout[0] = packet_count % 2;
+
+						// update packet count
+						packet_count++;
 						
 						if (packets[j] -> rout[0] == 0) {
 							// update route position and set back route
@@ -931,21 +924,12 @@ Packet **tprr_route_planner(char *active_cores, int **active_core_data) {
 	Packet **packets = (Packet **) malloc (NUM_CORES*sizeof(Packet *));
 	int packet_pos;
 
-	// example permutations
-	/*packets[0] = create_packet(0, 2, 0, 2);
-	packets[1] = create_packet(1, 4, 1, 14);
-	packets[2] = create_packet(2, 6, 2, 26);
-	packets[3] = create_packet(3, 1, 3, 31);
-	packets[4] = create_packet(4, 7, 0, 47);
-	packets[5] = create_packet(5, 0, 1, 50);
-	packets[6] = create_packet(6, 5, 2, 65);
-	packets[7] = create_packet(7, 3, 3, 73);*/
-
 	// create packets
 	for (i=0; i<NUM_CORES; i++) {
 		if (active_cores[i] == 1) {
 			packets[i] = create_packet(active_core_data[i][0], active_core_data[i][1],
 				active_core_data[i][2], active_core_data[i][3]);
+			packet_count++;
 		}
 		else packets[i] = NULL;
 	}

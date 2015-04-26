@@ -69,6 +69,12 @@ char connected[] = {0, 0, 0, 0, 0, 0, 0, 0};
 // network global variables
 int timestep_count = 0;
 int collision_count = 0;
+int packet_count = 0;
+unsigned int verbose = false;
+
+unsigned int routing_code = 1;
+// 0: developed algorithm
+// 1: two-phase randomised routing
 
 // link enumerator
 typedef enum {
