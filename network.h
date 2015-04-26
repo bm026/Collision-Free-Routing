@@ -70,7 +70,7 @@ char connected[] = {0, 0, 0, 0, 0, 0, 0, 0};
 int timestep_count = 0;
 int collision_count = 0;
 int packet_count = 0;
-unsigned int verbose = false;
+unsigned int verbose = true;
 
 unsigned int routing_code = 0;
 // 0: developed algorithm

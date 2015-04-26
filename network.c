@@ -180,7 +180,7 @@ int main (int argc,  char* argv[]) {
 	}
 
 	if (verbose) printf("\n");
-	printf("Packets sent: %d\nTimesteps completed: %d\nCollisions detected: %d\n", packet_count,
+	printf("Packets sent: %d\nTimesteps completed: %d\nCollisions detected: %d\n\n", packet_count,
 		timestep_count, collision_count);
 
 	return 0;
