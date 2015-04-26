@@ -147,7 +147,7 @@ void print_network_state(Network *n);
 Packet *create_packet(int source, int destination, int port, int data);
 
 // routing functions
-Packet **offline_route_planner();
-Packet **tprr_route_planner();
+Packet **offline_route_planner(char *active_cores, int **active_core_data);
+Packet **tprr_route_planner(char *active_cores, int **active_core_data);
 
 #endif

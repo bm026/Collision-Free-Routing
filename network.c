@@ -6,6 +6,13 @@ int main (int argc,  char* argv[]) {
 	Network *n = NULL;
 	Packet **p;
 
+	char *active_cores = (char *) malloc ((NUM_CORES+2)*sizeof(char));
+	int **active_core_data = (int **) malloc (NUM_CORES*sizeof(int *));
+	for (i=0; i<NUM_CORES; i++) {
+		active_core_data[i] = (int *) malloc (4*sizeof(int));
+	}
+	char is_packets;
+
 	// set random seed
 	srand(time(NULL));
 
@@ -22,7 +29,7 @@ int main (int argc,  char* argv[]) {
 	global_running = true;
     load();
 
-    // ready to run program
+    // ready processors
 	for (i=0; i<NUM_CORES; i++) {
         running[i] = true;
         oreg[i] = 0;
@@ -31,7 +38,11 @@ int main (int argc,  char* argv[]) {
 	// execute program on parallel processors
 	while (global_running) {
 
+		is_packets = false;
+
         for (i=0; i<NUM_CORES; i++) {
+
+        	active_cores[i] = 0;
 
             if (running[i]) {
 
@@ -86,20 +97,71 @@ int main (int argc,  char* argv[]) {
             				  
             				case o_svc:  svc(i); break;
 
-                            case o_in: break;
-                            case o_out: break;
-            		  	};
+                            case o_in: 
+
+                            	if (n -> cores[i] -> ports[areg[i]] == NULL) {
+                            		pc[i] = pc[i] - 1;
+                            	}
+                            	else {
+                            		breg[i] = areg[i];
+                            		areg[i] = n -> cores[i] -> ports[breg[i]] -> data;
+                            		n -> cores[i] -> ports[breg[i]] == NULL;
+                            	}
+                            	break;
+                            
+                            case o_out:
+
+                            	// indicate core has packet to send
+                            	is_packets = true;
+                            	active_cores[i] = 1;
+                            	// set packet source
+                            	active_core_data[i][0] = i;
+                            	// set packet destination
+                            	active_core_data[i][1] = areg[i];
+                            	// set destination port
+                            	active_core_data[i][2] = 0;
+                            	// set packet data
+                            	active_core_data[i][3] = breg[i];
+                            	break;
+            		  	}
 
             			oreg[i] = 0; break;		  
-        	    };
+        	    }
             }
         }
 
         // add new data packets to network
-         
+        if (is_packets) {
+
+        	// run routing algorithm
+        	p = offline_route_planner(active_cores, active_core_data);
+			//p = tprr_route_planner(active_cores, active_core_data);
+
+        	// add packets to cores
+			for (i=0; i<NUM_CORES; i++) {
+				if (active_cores[i] == 1) {
+					add_packet_to_core(n, p[i], i);
+
+					// print all routes
+					// out route
+					printf("Packet %d. Out: ", i);
+					for (k=0; k<p[i] -> count; k++) {
+						if (p[i] -> rout[k] == 0) printf("0");
+						else printf("1");
+					}
+					// in route
+					printf(". In: ");
+					for (k=p[i] -> count-1; k >= 0; k--) {
+						if (p[i] -> addr[k] == 0) printf("0");
+						else printf("1");
+					}
+					printf(".\n");
+				}
+			}
+        }
 
         // carry out one timestep of network routing
-        network_timesteps(n, 1);
+        network_timesteps(n, 2);
 
         // check for finish
         global_running = false;
@@ -164,10 +226,10 @@ void load() {
     for (i=0; i<NUM_CORES; i++) {
         low = inbin();	
         length = ((inbin() << 16) | low);// << 2;
-        printf("length[%d]: %d\n", i, length);
+        //printf("length[%d]: %d\n", i, length);
         low = inbin();	
         pc[i] = ((inbin() << 16) | low) << 2;
-        printf("pc[%d]: %d\n", i, pc[i]);
+        //printf("pc[%d]: %d\n", i, pc[i]);
         for (n = 0; n < length; n++) {
             pmem[i][n] = fgetc(codefile);
         }
@@ -732,7 +794,7 @@ Packet *create_packet(int source, int destination, int port, int data) {
 }
 
 
-Packet **offline_route_planner() {
+Packet **offline_route_planner(char *active_cores, int **active_core_data) {
 
 	int i, j, base;
 	char switch_state[NUM_CORES*NUM_LAYERS];
@@ -744,106 +806,117 @@ Packet **offline_route_planner() {
 	}
 
 	// example permutations
-	packets[0] = create_packet(0, 2, 0, 2);
+	/*packets[0] = create_packet(0, 2, 0, 2);
 	packets[1] = create_packet(1, 4, 0, 14);
 	packets[2] = create_packet(2, 6, 0, 26);
 	packets[3] = create_packet(3, 1, 0, 31);
 	packets[4] = create_packet(4, 7, 0, 47);
 	packets[5] = create_packet(5, 0, 0, 50);
 	packets[6] = create_packet(6, 5, 0, 65);
-	packets[7] = create_packet(7, 3, 0, 73);
+	packets[7] = create_packet(7, 3, 0, 73);*/
+
+	// create packets
+	for (i=0; i<NUM_CORES; i++) {
+		if (active_cores[i] == 1) {
+			packets[i] = create_packet(active_core_data[i][0], active_core_data[i][1],
+				active_core_data[i][2], active_core_data[i][3]);
+		}
+		else packets[i] = NULL;
+	}
 
 	for (i=1; i<=NUM_LAYERS; i++) {
 		base = (int)pow(2,i);
 		for (j=0; j<NUM_CORES; j++) {
 
-			if (packets[j] -> count == 0 && packets[j] != NULL) {
-				// for first link, pick random
-				if (i == 1) {
-					packets[j] -> rout[0] = rand() % 2;
-					
-					if (packets[j] -> rout[0] == 0) {
-						// update route position and set back route
-						if (packets[j] -> source % 2 == 0) {
-							route_positions[0][j] = packets[j] -> source;
-						}
-						else {
-							route_positions[0][j] = packets[j] -> source-1;
-						}
-						if (packets[j] -> destination % 2 == 0) {
-							route_positions[1][j] = packets[j] -> destination;
-							packets[j] -> addr[0] = 0;
-						}
-						else {
-							route_positions[1][j] = packets[j] -> destination-1;
-							packets[j] -> addr[0] = 1;
-						}
+			if (packets[j] != NULL) {
+				if (packets[j] -> count == 0) {
+					// for first link, pick random
+					if (i == 1) {
+						packets[j] -> rout[0] = rand() % 2;
+						
+						if (packets[j] -> rout[0] == 0) {
+							// update route position and set back route
+							if (packets[j] -> source % 2 == 0) {
+								route_positions[0][j] = packets[j] -> source;
+							}
+							else {
+								route_positions[0][j] = packets[j] -> source-1;
+							}
+							if (packets[j] -> destination % 2 == 0) {
+								route_positions[1][j] = packets[j] -> destination;
+								packets[j] -> addr[0] = 0;
+							}
+							else {
+								route_positions[1][j] = packets[j] -> destination-1;
+								packets[j] -> addr[0] = 1;
+							}
 
+						}
+						else {
+							// update route position and set back route
+							if (packets[j] -> source % 2 == 0) {
+								route_positions[0][j] = packets[j] -> source+1;
+							}
+							else {
+								route_positions[0][j] = packets[j] -> source;
+							}
+							if (packets[j] -> destination % 2 == 0) {
+								route_positions[1][j] = packets[j] -> destination+1;
+								packets[j] -> addr[0] = 0;
+							}
+							else {
+								route_positions[1][j] = packets[j] -> destination;
+								packets[j] -> addr[0] = 1;
+							}
+						}
 					}
+
+					// main network traversal
 					else {
-						// update route position and set back route
-						if (packets[j] -> source % 2 == 0) {
-							route_positions[0][j] = packets[j] -> source+1;
+						// switch is unused, take link 0
+						if (switch_state[(i-2)*NUM_CORES+route_positions[0][j]] == 0) {
+							// change switch state
+							switch_state[(i-2)*NUM_CORES+route_positions[0][j]] = 1;
+							// route left
+							packets[j] -> rout[i-1] = 0;
+							// update route position and set back route
+							if (route_positions[0][j] % base < base/2) {
+								// position stays same	
+							}
+							else {
+								route_positions[0][j] -= (base/2);
+							}
+							if (route_positions[1][j] % base < base/2) {
+								packets[j] -> addr[i-1] = 0;
+							}
+							else {
+								packets[j] -> addr[i-1] = 1;
+								route_positions[1][j] -= (base/2);
+							}
 						}
-						else {
-							route_positions[0][j] = packets[j] -> source;
-						}
-						if (packets[j] -> destination % 2 == 0) {
-							route_positions[1][j] = packets[j] -> destination+1;
-							packets[j] -> addr[0] = 0;
-						}
-						else {
-							route_positions[1][j] = packets[j] -> destination;
-							packets[j] -> addr[0] = 1;
-						}
-					}
-				}
 
-				// main network traversal
-				else {
-					// switch is unused, take link 0
-					if (switch_state[(i-2)*NUM_CORES+route_positions[0][j]] == 0) {
-						// change switch state
-						switch_state[(i-2)*NUM_CORES+route_positions[0][j]] = 1;
-						// route left
-						packets[j] -> rout[i-1] = 0;
-						// update route position and set back route
-						if (route_positions[0][j] % base < base/2) {
-							// position stays same	
-						}
+						// if switch has already been used, take link 1
 						else {
-							route_positions[0][j] -= (base/2);
-						}
-						if (route_positions[1][j] % base < base/2) {
-							packets[j] -> addr[i-1] = 0;
-						}
-						else {
-							packets[j] -> addr[i-1] = 1;
-							route_positions[1][j] -= (base/2);
+							// route right
+							packets[j] -> rout[i-1] = 1;
+							// update route position and set back route
+							if (route_positions[0][j] % base < base/2) {
+								route_positions[0][j] += (base/2);	
+							}
+							if (route_positions[1][j] % base < base/2) {
+								packets[j] -> addr[i-1] = 0;
+								route_positions[1][j] += (base/2);
+							}
+							else {
+								packets[j] -> addr[i-1] = 1;
+							}
 						}
 					}
 
-					// if switch has already been used, take link 1
-					else {
-						// route right
-						packets[j] -> rout[i-1] = 1;
-						// update route position and set back route
-						if (route_positions[0][j] % base < base/2) {
-							route_positions[0][j] += (base/2);	
-						}
-						if (route_positions[1][j] % base < base/2) {
-							packets[j] -> addr[i-1] = 0;
-							route_positions[1][j] += (base/2);
-						}
-						else {
-							packets[j] -> addr[i-1] = 1;
-						}
+					// check for completed path
+					if (route_positions[0][j] == route_positions[1][j]) {
+						packets[j] -> count = i;
 					}
-				}
-
-				// check for completed path
-				if (route_positions[0][j] == route_positions[1][j]) {
-					packets[j] -> count = i;
 				}
 			}
 		}
@@ -852,64 +925,76 @@ Packet **offline_route_planner() {
 	return packets;
 }
 
-Packet **tprr_route_planner() {
+Packet **tprr_route_planner(char *active_cores, int **active_core_data) {
 
 	int i, j, base;
 	Packet **packets = (Packet **) malloc (NUM_CORES*sizeof(Packet *));
 	int packet_pos;
 
 	// example permutations
-	packets[0] = create_packet(0, 2, 0, 2);
+	/*packets[0] = create_packet(0, 2, 0, 2);
 	packets[1] = create_packet(1, 4, 1, 14);
 	packets[2] = create_packet(2, 6, 2, 26);
 	packets[3] = create_packet(3, 1, 3, 31);
 	packets[4] = create_packet(4, 7, 0, 47);
 	packets[5] = create_packet(5, 0, 1, 50);
 	packets[6] = create_packet(6, 5, 2, 65);
-	packets[7] = create_packet(7, 3, 3, 73);
+	packets[7] = create_packet(7, 3, 3, 73);*/
+
+	// create packets
+	for (i=0; i<NUM_CORES; i++) {
+		if (active_cores[i] == 1) {
+			packets[i] = create_packet(active_core_data[i][0], active_core_data[i][1],
+				active_core_data[i][2], active_core_data[i][3]);
+		}
+		else packets[i] = NULL;
+	}
 
 
 	for (i=0; i<NUM_CORES; i++) {
 
-		packet_pos = packets[i] -> source;
-		packets[i] -> count = NUM_LAYERS;
+		if (packets[i] != NULL) {
 
-		// out route
-		for (j=1; j<=NUM_LAYERS; j++) {
-			base = (int) pow(2,j);
+			packet_pos = packets[i] -> source;
+			packets[i] -> count = NUM_LAYERS;
 
-			// pick random route
-			packets[i] -> rout[j-1] = rand() % 2;
+			// out route
+			for (j=1; j<=NUM_LAYERS; j++) {
+				base = (int) pow(2,j);
 
-			// if route is 0
-			if (packets[i] -> rout[j-1] == 0) {
-				if (packet_pos % base < base/2) {
-					// packet position stays same
+				// pick random route
+				packets[i] -> rout[j-1] = rand() % 2;
+
+				// if route is 0
+				if (packets[i] -> rout[j-1] == 0) {
+					if (packet_pos % base < base/2) {
+						// packet position stays same
+					}
+					else {
+						packet_pos -= (base/2);
+					}
+				}
+				// if route is 1
+				else {
+					if (packet_pos % base < base/2) {
+						packet_pos += (base/2);
+					}
+					else {
+						// packet position stays same
+					}
+				}
+			}
+
+			// in route
+			for (j=NUM_LAYERS; j>0; j--) {
+				base = (int) pow(2,j);
+
+				if (packets[i] -> destination % base < base/2) {
+					packets[i] -> addr[j-1] = 0;
 				}
 				else {
-					packet_pos -= (base/2);
+					packets[i] -> addr[j-1] = 1;
 				}
-			}
-			// if route is 1
-			else {
-				if (packet_pos % base < base/2) {
-					packet_pos += (base/2);
-				}
-				else {
-					// packet position stays same
-				}
-			}
-		}
-
-		// in route
-		for (j=NUM_LAYERS; j>0; j--) {
-			base = (int) pow(2,j);
-
-			if (packets[i] -> destination % base < base/2) {
-				packets[i] -> addr[j-1] = 0;
-			}
-			else {
-				packets[i] -> addr[j-1] = 1;
 			}
 		}
 

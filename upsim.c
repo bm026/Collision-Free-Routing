@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NUM_PROCESSORS 8
+#define NUM_PROCESSORS 1
 
 #define true     -1
 #define false    0
@@ -174,7 +174,7 @@ load() {
     
     for (i=0; i<NUM_PROCESSORS; i++) {
         low = inbin();	
-        length = ((inbin() << 16) | low);// << 2;
+        length = ((inbin() << 16) | low) << 2;
         printf("length[%d]: %d\n", i, length);
         low = inbin();	
         pc[i] = ((inbin() << 16) | low) << 2;
