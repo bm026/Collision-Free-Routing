@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  24 APR 2015 14:26
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  27 APR 2015 16:43
 entering extended mode
  %&-line parsing enabled.
 **thesis.tex
@@ -226,16 +226,16 @@ Package caption Info: End \AtBeginDocument code.
 \everyMPtoPDFconversion=\toks24
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./thesis.toc)
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./thesis.toc [1])
 \tf@toc=\write3
 \openout3 = `thesis.toc'.
 
 
-[1] (./thesis.lof)
+[2] (./thesis.lof)
 \tf@lof=\write4
 \openout4 = `thesis.lof'.
 
- [2]
+ [3]
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 51.
  (/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
@@ -243,106 +243,70 @@ File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 51.
 
-[3] [4] <images/trend_graph.png, id=23, 419.6478pt x 418.2024pt>
+[4] [5] [6] <images/trend_graph.png, id=31, 419.6478pt x 418.2024pt>
 File: images/trend_graph.png Graphic file (type png)
 
-<use images/trend_graph.png> [5] [6 <./images/trend_graph.png (PNG copy)>]
-[7] [8] <images/mesh_network.png, id=38, 511.9125pt x 490.83376pt>
+<use images/trend_graph.png> [7] [8 <./images/trend_graph.png (PNG copy)>]
+[9] [10] <images/mesh_network.png, id=44, 511.9125pt x 490.83376pt>
 File: images/mesh_network.png Graphic file (type png)
 
 <use images/mesh_network.png>
-<images/toroidal_network.png, id=39, 581.17125pt x 559.08875pt>
+<images/toroidal_network.png, id=45, 581.17125pt x 559.08875pt>
 File: images/toroidal_network.png Graphic file (type png)
 
 <use images/toroidal_network.png>
-<images/hypercubic_network.png, id=40, 533.995pt x 332.24126pt>
+<images/hypercubic_network.png, id=46, 533.995pt x 332.24126pt>
 File: images/hypercubic_network.png Graphic file (type png)
 
 <use images/hypercubic_network.png>
-<images/fat_tree_network.png, id=41, 371.3875pt x 224.84pt>
+<images/fat_tree_network.png, id=47, 371.3875pt x 224.84pt>
 File: images/fat_tree_network.png Graphic file (type png)
 
 <use images/fat_tree_network.png>
-<images/clos_network.png, id=42, 445.665pt x 415.5525pt>
+<images/clos_network.png, id=48, 445.665pt x 415.5525pt>
 File: images/clos_network.png Graphic file (type png)
 
 <use images/clos_network.png>
-<images/benes_network.png, id=43, 691.58376pt x 397.485pt>
+<images/benes_network.png, id=49, 691.58376pt x 397.485pt>
 File: images/benes_network.png Graphic file (type png)
 
-<use images/benes_network.png> [9] [10 <./images/mesh_network.png (PNG copy)> <
-./images/toroidal_network.png (PNG copy)> <./images/hypercubic_network.png (PNG
- copy)> <./images/fat_tree_network.png (PNG copy)> <./images/clos_network.png (
-PNG copy)> <./images/benes_network.png (PNG copy)>] [11] [12] [13] [14]
-[15] [16] [17] [18] [19]
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ú in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ù in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ú in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ù in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ú in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ù in font cmr12!
-
-Underfull \hbox (badness 10000) in paragraph at lines 260--261
-[]\OT1/cmr/m/n/12 Hennessy, J. L., Pat-ter-son, D. A. (2011). Com-puter Ar-chi-
-tec-
+<use images/benes_network.png> [11] [12 <./images/mesh_network.png (PNG copy)> 
+<./images/toroidal_network.png (PNG copy)> <./images/hypercubic_network.png (PN
+G copy)> <./images/fat_tree_network.png (PNG copy)> <./images/clos_network.png 
+(PNG copy)> <./images/benes_network.png (PNG copy)>] [13] [14] [15] [16]
+[17] [18] [19] [20] [21]
+Underfull \hbox (badness 10000) in paragraph at lines 286--287
+[]\OT1/cmr/m/n/12 Hennessy, J. L., Pat-ter-son, D. A. (2011). \OT1/cmr/m/it/12 
+Com-puter Ar-chi-tec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 260--261
-\OT1/cmr/m/n/12 ture: A Quan-ti-ta-tive Ap-proach. On-line ap-pendix F, re-trie
-ved from
+Underfull \hbox (badness 10000) in paragraph at lines 286--287
+\OT1/cmr/m/it/12 ture: A Quan-ti-ta-tive Ap-proach\OT1/cmr/m/n/12 . On-line ap-
+pendix F, re-trieved from
  []
 
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ú in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ù in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ú in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ù in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ú in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ù in font cmr12!
-[20] (./thesis.aux) ) 
+[22] [23] (./thesis.aux) ) 
 Here is how much of TeX's memory you used:
- 3661 strings out of 495061
- 51363 string characters out of 1182621
- 115259 words of memory out of 3000000
- 6811 multiletter control sequences out of 15000+50000
- 10541 words of font info for 38 fonts, out of 3000000 for 9000
+ 3665 strings out of 495061
+ 51398 string characters out of 1182621
+ 116259 words of memory out of 3000000
+ 6814 multiletter control sequences out of 15000+50000
+ 10888 words of font info for 39 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  44i,9n,45p,1591b,359s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/c
-mbx10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
-/usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/
-texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-texliv
-e/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type
-1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-texlive/fonts/type1/public/ams
-fonts/cm/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy
-10.pfb>
-Output written on thesis.pdf (21 pages, 407828 bytes).
+</usr/share/texmf-texlive/fonts/type1/public/amsfonts
+/cm/cmbx10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.
+pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/s
+hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-t
+exlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts
+/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-texlive/fonts/type1/publi
+c/amsfonts/cm/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm
+/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb
+>
+Output written on thesis.pdf (24 pages, 433169 bytes).
 PDF statistics:
- 109 PDF objects out of 1000 (max. 8388607)
+ 122 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  36 words of extra memory for PDF output out of 10000 (max. 10000000)
 

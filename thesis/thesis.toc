@@ -1,29 +1,33 @@
-\contentsline {section}{\numberline {1}Introduction}{3}
-\contentsline {subsection}{\numberline {1.1}Definitions}{3}
-\contentsline {subsection}{\numberline {1.2}Outline of the problem}{3}
-\contentsline {section}{\numberline {2}Background}{5}
-\contentsline {subsection}{\numberline {2.1}General-purpose processors: a need for parallelism}{5}
-\contentsline {subsection}{\numberline {2.2}An introduction to parallel systems}{7}
-\contentsline {subsection}{\numberline {2.3}An introduction to interconnects}{8}
-\contentsline {subsection}{\numberline {2.4}Interconnection networks}{9}
-\contentsline {subsection}{\numberline {2.5}Network topologies}{9}
-\contentsline {subsection}{\numberline {2.6}Routing}{11}
-\contentsline {subsubsection}{\numberline {2.6.1}Oblivious routing}{11}
-\contentsline {subsubsection}{\numberline {2.6.2}Adaptive routing}{12}
-\contentsline {subsubsection}{\numberline {2.6.3}Two-phase randomised routing}{12}
-\contentsline {subsection}{\numberline {2.7}Switching}{12}
-\contentsline {subsubsection}{\numberline {2.7.1}Packet switching}{12}
-\contentsline {subsubsection}{\numberline {2.7.2}Circuit switching}{13}
-\contentsline {subsubsection}{\numberline {2.7.3}Wormhole switching}{13}
-\contentsline {subsection}{\numberline {2.8}Flow control}{13}
-\contentsline {subsubsection}{\numberline {2.8.1}Credit-based control flow}{13}
-\contentsline {subsubsection}{\numberline {2.8.2}Virtual channel control flow}{13}
-\contentsline {subsection}{\numberline {2.9}Modern interconnection networks}{14}
-\contentsline {subsubsection}{\numberline {2.9.1}InfiniBand}{14}
-\contentsline {subsubsection}{\numberline {2.9.2}IBM Blue Gene/L 3D Torus Network}{14}
-\contentsline {section}{\numberline {3}System Specification}{15}
-\contentsline {section}{\numberline {4}System Design}{16}
-\contentsline {section}{\numberline {5}Implementation}{17}
-\contentsline {section}{\numberline {6}System Testing}{18}
-\contentsline {section}{\numberline {7}Conclusion}{19}
-\contentsline {section}{\numberline {8}References}{20}
+\contentsline {section}{\numberline {1}Introduction}{4}
+\contentsline {subsection}{\numberline {1.1}Definitions}{4}
+\contentsline {subsection}{\numberline {1.2}Outline of the problem}{4}
+\contentsline {subsection}{\numberline {1.3}Possible optimisations to current solutions}{5}
+\contentsline {subsection}{\numberline {1.4}Motivation}{6}
+\contentsline {subsection}{\numberline {1.5}Purpose}{6}
+\contentsline {subsection}{\numberline {1.6}Aims}{6}
+\contentsline {section}{\numberline {2}Background}{7}
+\contentsline {subsection}{\numberline {2.1}General-purpose processors: a need for parallelism}{7}
+\contentsline {subsection}{\numberline {2.2}An introduction to parallel systems}{9}
+\contentsline {subsection}{\numberline {2.3}An introduction to interconnects}{10}
+\contentsline {subsection}{\numberline {2.4}Interconnection networks}{11}
+\contentsline {subsection}{\numberline {2.5}Network topologies}{11}
+\contentsline {subsection}{\numberline {2.6}Routing}{13}
+\contentsline {subsubsection}{\numberline {2.6.1}Oblivious routing}{13}
+\contentsline {subsubsection}{\numberline {2.6.2}Adaptive routing}{14}
+\contentsline {subsubsection}{\numberline {2.6.3}Two-phase randomised routing}{14}
+\contentsline {subsection}{\numberline {2.7}Switching}{14}
+\contentsline {subsubsection}{\numberline {2.7.1}Packet switching}{14}
+\contentsline {subsubsection}{\numberline {2.7.2}Circuit switching}{15}
+\contentsline {subsubsection}{\numberline {2.7.3}Wormhole switching}{15}
+\contentsline {subsection}{\numberline {2.8}Flow control}{15}
+\contentsline {subsubsection}{\numberline {2.8.1}Credit-based control flow}{15}
+\contentsline {subsubsection}{\numberline {2.8.2}Virtual channel control flow}{15}
+\contentsline {subsection}{\numberline {2.9}Modern interconnection networks}{16}
+\contentsline {subsubsection}{\numberline {2.9.1}InfiniBand}{16}
+\contentsline {subsubsection}{\numberline {2.9.2}IBM Blue Gene/L 3D Torus Network}{16}
+\contentsline {section}{\numberline {3}System Specification}{17}
+\contentsline {section}{\numberline {4}System Design}{18}
+\contentsline {section}{\numberline {5}Implementation}{19}
+\contentsline {section}{\numberline {6}System Testing}{20}
+\contentsline {section}{\numberline {7}Conclusion}{21}
+\contentsline {section}{\numberline {8}References}{22}
