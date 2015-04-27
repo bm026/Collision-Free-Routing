@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  27 APR 2015 16:43
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  27 APR 2015 21:16
 entering extended mode
  %&-line parsing enabled.
 **thesis.tex
@@ -243,55 +243,55 @@ File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 51.
 
-[4] [5] [6] <images/trend_graph.png, id=31, 419.6478pt x 418.2024pt>
+[4] [5] [6] [7] <images/trend_graph.png, id=34, 419.6478pt x 418.2024pt>
 File: images/trend_graph.png Graphic file (type png)
 
-<use images/trend_graph.png> [7] [8 <./images/trend_graph.png (PNG copy)>]
-[9] [10] <images/mesh_network.png, id=44, 511.9125pt x 490.83376pt>
+<use images/trend_graph.png> [8] [9 <./images/trend_graph.png (PNG copy)>]
+[10] [11] <images/mesh_network.png, id=47, 511.9125pt x 490.83376pt>
 File: images/mesh_network.png Graphic file (type png)
 
 <use images/mesh_network.png>
-<images/toroidal_network.png, id=45, 581.17125pt x 559.08875pt>
+<images/toroidal_network.png, id=48, 581.17125pt x 559.08875pt>
 File: images/toroidal_network.png Graphic file (type png)
 
 <use images/toroidal_network.png>
-<images/hypercubic_network.png, id=46, 533.995pt x 332.24126pt>
+<images/hypercubic_network.png, id=49, 533.995pt x 332.24126pt>
 File: images/hypercubic_network.png Graphic file (type png)
 
 <use images/hypercubic_network.png>
-<images/fat_tree_network.png, id=47, 371.3875pt x 224.84pt>
+<images/fat_tree_network.png, id=50, 371.3875pt x 224.84pt>
 File: images/fat_tree_network.png Graphic file (type png)
 
 <use images/fat_tree_network.png>
-<images/clos_network.png, id=48, 445.665pt x 415.5525pt>
+<images/clos_network.png, id=51, 445.665pt x 415.5525pt>
 File: images/clos_network.png Graphic file (type png)
 
 <use images/clos_network.png>
-<images/benes_network.png, id=49, 691.58376pt x 397.485pt>
+<images/benes_network.png, id=52, 691.58376pt x 397.485pt>
 File: images/benes_network.png Graphic file (type png)
 
-<use images/benes_network.png> [11] [12 <./images/mesh_network.png (PNG copy)> 
+<use images/benes_network.png> [12] [13 <./images/mesh_network.png (PNG copy)> 
 <./images/toroidal_network.png (PNG copy)> <./images/hypercubic_network.png (PN
 G copy)> <./images/fat_tree_network.png (PNG copy)> <./images/clos_network.png 
-(PNG copy)> <./images/benes_network.png (PNG copy)>] [13] [14] [15] [16]
-[17] [18] [19] [20] [21]
-Underfull \hbox (badness 10000) in paragraph at lines 286--287
+(PNG copy)> <./images/benes_network.png (PNG copy)>] [14] [15] [16] [17]
+[18] [19] [20] [21] [22] [23]
+Underfull \hbox (badness 10000) in paragraph at lines 306--307
 []\OT1/cmr/m/n/12 Hennessy, J. L., Pat-ter-son, D. A. (2011). \OT1/cmr/m/it/12 
 Com-puter Ar-chi-tec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 286--287
+Underfull \hbox (badness 10000) in paragraph at lines 306--307
 \OT1/cmr/m/it/12 ture: A Quan-ti-ta-tive Ap-proach\OT1/cmr/m/n/12 . On-line ap-
 pendix F, re-trieved from
  []
 
-[22] [23] (./thesis.aux) ) 
+[24] [25] (./thesis.aux) ) 
 Here is how much of TeX's memory you used:
- 3665 strings out of 495061
- 51398 string characters out of 1182621
+ 3668 strings out of 495061
+ 51457 string characters out of 1182621
  116259 words of memory out of 3000000
- 6814 multiletter control sequences out of 15000+50000
+ 6817 multiletter control sequences out of 15000+50000
  10888 words of font info for 39 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  44i,9n,45p,1591b,359s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -304,9 +304,9 @@ exlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts
 c/amsfonts/cm/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm
 /cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb
 >
-Output written on thesis.pdf (24 pages, 433169 bytes).
+Output written on thesis.pdf (26 pages, 436271 bytes).
 PDF statistics:
- 122 PDF objects out of 1000 (max. 8388607)
+ 129 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  36 words of extra memory for PDF output out of 10000 (max. 10000000)
 

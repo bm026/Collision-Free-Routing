@@ -61,6 +61,7 @@ This thesis includes a number of terms that have been clarified below to avoid a
 \end{itemize}
 
 \subsection{Outline of the problem}
+\label{sec:problem_outline}
 
 The world of computer programming is currently undergoing a paradigm shift from sequential programming to parallel programming. Sequential programs execute their set of instructions one after another in order, which means they can be run using a single processor. Parallel programs on the other hand include sections of instructions that can be executed independently from one another, which means they can be run on more than one processor in parallel. Applying parallelism to a sequential program means that the execution time of the program is reduced -- providing the program has independent sections suitable for parallel execution -- because some of the computation is being carried out concurrently.
 
@@ -76,23 +77,35 @@ One optimisation that has become a lot more accessible in the last few years is 
 
 Another possible optimisation involves increasing the efficiency of the way in which data is transmitted across the network. When lots of communication is being carried out concurrently by multiple processors, links in the network will inevitably begin to fill up leading to a situation where more than one piece of data tries to use the same link at the same time to advance towards its destination. This is known as a collision in the network. Sending both pieces of data down the same link not physically possible, meaning that one of the pieces of data is forced to wait for the link to become vacant again before continuing towards its destination, resulting in increased network latency \cite{Lam04}. This suggests that the fewer collisions that happen in the network, the lower the average network latency and the more efficiently communication data can be transmitted, making reducing the number of collisions in the network a possible strategy for optimising the execution time of parallel programs.
 
-A third possible optimisation of current networks involves changing the way data is stored for each processor in the network. There is some variation between models and manufacturers, but a typical modern processor has access to four blocks of memory known as the memory hierarchy: CPU registers, cache memory (SRAM), main memory (DRAM) and the hard disk \cite{Toy86}. The memory stores towards the top of the hierarchy allow the processor the quickest access to their data with limited storage capacity, whereas the memory stores towards the bottom of the hierarchy offer the largest stores of data but with slower access rates. This suggests that in terms of program efficiency, it is profitable to store as much data as high up the memory hierarchy as possible, meaning that the time taken by the processor to access data is reduced. It could also suggest that increasing the memory capacity of the stores towards the top of the hierarchy, the cache for example, might increase the efficiency of the processor. However, increasing the cache size would result in an increased number of memory locations, which would subsequently mean that the processor would take longer to find and access a given location which reduces the effect of having cache memory in the first place. This means that a compromise between size and speed must be found, and further research into that area could result in more efficient processors and an increase in the efficiency of parallel programs which use these processors. 
+A third possible optimisation of current networks involves changing the way data is stored for each processor in the network. There is some variation between models and manufacturers, but a typical modern processor has access to four blocks of memory known as the memory hierarchy: CPU registers, cache memory (SRAM), main memory (DRAM) and the hard disk \cite{Toy86}. The memory stores towards the top of the hierarchy allow the processor the quickest access to their data with limited storage capacity, whereas the memory stores towards the bottom of the hierarchy offer the largest stores of data but with slower access rates. This suggests that in terms of program efficiency, it is profitable to store as much data as high up the memory hierarchy as possible, meaning that the time taken by the processor to access data is reduced. It could also suggest that increasing the memory capacity of the stores towards the top of the hierarchy, the cache for example, might increase the efficiency of the processor. However, increasing the cache size would result in an increased number of memory addresses, which would subsequently mean that the processor would take longer to find and access a given address which reduces the effect of having cache memory in the first place. This means that a compromise between size and speed must be found, and further research into that area could result in more efficient processors and an increase in the efficiency of parallel programs which use these processors. 
 
 \subsection{Motivation}
 
-faster execution
-
-moore's law
+Moore's law states that processing power should approximately double every two years \cite{Moo65}. In terms of parallel processors, this performance increase can be acquired by either increasing the number of transistors in each processor, or by increasing the number of processors used for parallel computation. However both of these solutions are flawed; in recent years the performance of serial processors has plateaued (for reasons described in section \ref{sec:need_parallelism}), and while adding more processors to the network may increase the overall processing power, it also increases the overhead costs making the processing less efficient as well as bearing a significant financial cost. If a solution can be found that increases the efficiency of parallel computation without the need of large numbers of added processors, this could potentially save hardware manufacturers a lot of money while still allowing them to emulate the advancement of Moore's law.
 
 \subsection{Purpose}
 
-shows that faster execution possible
+The main aims of the thesis are outlined below:
+\begin{itemize}
+	\item Devise a solution to the problem of efficiency in general-purpose parallel architectures documented in section \ref{sec:problem_outline}.
+	\item Create an emulation of a network, including multiple processors which are able to carry out message passing instructions to each other. Parallelism in this network should be at least emulated.
+	\item Deploy the solution on this emulated network. The improvement that the solution provides should be documented by the program as a quantitative, measurable output.
+	\item Ensure that the network remains universal so that the solution can be applied to any network topology (explained in section \ref{sec:topologies}).
+	\item Ensure that the network remains scalable so that the solution can be applied to a network with any number of parallel processors in collaboration.
+\end{itemize}
 
-shows scalability
+\subsection{Outline of the following chapters}
 
-\subsection{Aims}
-
-
+The remainder of the thesis is structured as follows:
+\begin{itemize}
+	\item \textbf{Chapter 2}: A background chapter to introduce to some of the fundamental concepts discussed in the thesis.
+	\item \textbf{Chapter 3}: An outline of the proposed solution and a detailed specification of requirements for this solution.
+	\item \textbf{Chapter 4}: The design of the network and the solution, and a description of how the solution will be deployed on the network to produce meaningful results.
+	\item \textbf{Chapter 5}: The implementation of the network and the solution.
+	\item \textbf{Chapter 6}: Testing of the network to ensure that it works correctly.
+	\item \textbf{Chapter 7}: Experimentation to show whether the solution produces the desired increase in network efficiency.
+	\item \textbf{Chapter 8}: A conclusion of the work done in the thesis and suggestions of further work that could be carried out in this field.
+\end{itemize}
 
 \newpage
 \section{Background}
@@ -100,6 +113,7 @@ shows scalability
 This chapter describes some of the fundamental concepts needed to understand what is trying to be achieved with this project. It starts off with an introduction to the concept of parallelism. It then goes on to study parallel architecture in more depth, particularly the role that the interconnection network has in the system. Finally, it looks at some examples of modern general-purpose parallel architectures, and how the interconnection network provides communication between processors.
 
 \subsection{General-purpose processors: a need for parallelism}
+\label{sec:need_parallelism}
 
 In the beginning processors were designed and built in a serial manner, using a single core, a single block of memory and a single set of instructions executed one after another. This setup is referred to as a SISD (single instruction, single data) architecture, a term defined in Flynn's Taxonomy as one of four classifications of processor architecture \cite{Fly72}. This architecture suited early processors because it was easy to implement, and expectations of processing performance were not as demanding as they have become today because very few general-purpose machines existed. However, as more research was conducted and use of general-purpose machines became more common, it was clear that optimisation of this architecture was required to boost the performance of processors that were executing increasingly more complex programs and calculations. 
 
@@ -116,7 +130,7 @@ However, techniques such as pipelining were not the main source of increased per
 
 The number of transistors, shown by the green line, shows that processor performance is consistently growing at an exponential rate, which matches Moore's law. The growth of power input and clock speed are shown by the light and dark blue lines respectively. It can be seen that these values also rose exponentially, until about 2002 when they both seem to level out. This point indicates the beginning of the use of parallelism in general-purpose processors.
 
-The problem with increasing the voltage input to the processor is that a by-product of power is heat. This was not a problem when the technique was originally applied, as cooling systems such as fans were sufficient to manage the heat output. However, as more and more power was required to increase clock speed further for each new build, the processor was giving off more and more heat until a level of heat was reached that could not be increased any further without being a danger to the computer and its environment \cite{Adv08}. This meant that processor performance matching Moore's law could not longer be attained by increasing clock speed; a new technique was required to continue growth of processing performance.
+The problem with increasing the voltage input to the processor is that a by-product of power is heat. This was not a problem when the technique was originally applied, as cooling systems such as fans were sufficient to manage the heat output. However, as more and more power was required to increase clock speed further for each new build, the processor was giving off more and more heat until a level of heat was reached that could not be sufficiently cooled and became a danger to the computer and its environment \cite{Adv08}. This meant that processor performance matching Moore's law could not longer be attained by increasing clock speed; a new technique was required to continue growth of processing performance.
 
 \subsection{An introduction to parallel systems}
 
@@ -141,6 +155,7 @@ An interconnection network is built up when a number of interconnects are used i
 Instead, a sparsely-connected network must be used where each core is connected to a small number of other cores. As long as every core is reachable by every other core, which the network model requires, communication can then take place either directly between connected cores, or indirectly using more than one interconnect via intermediate cores. Switches can also be used in an interconnection network as intermediate nodes, which direct data down different paths in the network. These will be described in more detail later.
 
 \subsection{Network topologies}
+\label{sec:topologies}
 
 A topology represents an abstracted layout of a network, in terms of cores/switches (nodes) and interconnects (edges). There are many different topologies that can be used, with even modern supercomputer manufacturers disagreeing about which one gives best performance \cite{Han14}. There are five main topologies: mesh, toroidal, hypercubic, tree and Clos.
 
@@ -236,12 +251,12 @@ In 2005, the IBM Blue Gene/L was the largest, most powerful supercomputer in the
 
 
 \newpage
-\section{System Specification}
+\section{Specification}
 
 
 
 \newpage
-\section{System Design}
+\section{Design}
 
 
 
@@ -251,7 +266,12 @@ In 2005, the IBM Blue Gene/L was the largest, most powerful supercomputer in the
 
 
 \newpage
-\section{System Testing}
+\section{Testing}
+
+
+
+\newpage
+\section{Results}
 
 
 
