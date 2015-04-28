@@ -304,9 +304,17 @@ The interface of a software application is dependent on the users of the softwar
 
 \subsection{Performance requirements}
 
-
+The emulated parallelism present in the solution means that execution of the input program will be significantly slower than if it was executed on a real parallel architecture. This is not a serious problem as the solution is not performance critical, however there must be some sensible limits put in place which govern the speed at which the emulation executes the input program. These performance requirements are listed below:
+\begin{enumerate}[leftmargin=*,labelindent=15pt,label=\bfseries 3.\arabic*] 
+	\item The emulation must be able to execute basic input programs (less than one hundred lines of code) within one second.
+	\item The emulation must be able to execute medium-length input programs (less than one thousand lines of code) within ten seconds.
+	\item The emulation must be able to execute large input programs (more than one thousand lines of code) within one minute.
+	\item Allowances can be made for very large input programs (more than ten thousand lines of code), but they still must be fully executed by the emulation given sufficient time.
+\end{enumerate}
 
 \subsection{Software system requirements}
+
+
 
 \subsubsection{Reliability}
 
@@ -330,7 +338,10 @@ The interface of a software application is dependent on the users of the softwar
 
 \subsection{Constraints, assumptions and dependencies}
 
-
+memory constraints
+design constraints
+hardware assumptions
+dependent on availability of program compiler
 
 \newpage
 \section{Design}
