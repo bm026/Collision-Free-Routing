@@ -75,6 +75,7 @@ The main source of overhead during execution of a parallel program is communicat
 Ideally, a fully parallelised version of a sequential program would result in a linear speedup based on the number of parallel processors involved in the computation. However, due to the added overheads of parallelism, this is currently not the case. This thesis focuses on trying to reduce the significance of this overhead so that linear speedup due to added parallelism is more realistically achievable.
 
 \subsection{Possible optimisations to current solutions}
+\label{sec:possible_optimisations}
 
 One optimisation that has become a lot more accessible in the last few years is the replacement of traditional copper wires in the network with optic cables, making the network photonic. This means that instead of data being transmitted over the network in the form of differing voltages of electric current, it is transmitted as pulses of light, which makes the network latency a function of the speed of light (approximately $3.0 \times 10^8 $ m/s), and eliminates inefficiencies such as friction between the electric current and the copper wire. However, while network latency of the speed of light sounds sufficient, in some cases it can still act as the computational bottleneck. An average modern CPU is manufactured with a clock speed of around 2.0 GHz, which equates to $2.0 \times 10^9$ clock cycles per second. This means that in 0.5 nanoseconds -- the time taken for one clock cycle to be carried out on this CPU -- light only travels around 15cm. This may be sufficient to carry out communication in one clock cycle in smaller networks, but for larger networks such as supercomputers which may have links spanning several metres, communication can take a lot longer. However, current research suggests that no advancement of the speed of light is possible at present, meaning that, for the time being at least, optimisations in the network must be sourced from elsewhere. 
 
@@ -255,6 +256,52 @@ In 2005, the IBM Blue Gene/L was the largest, most powerful supercomputer in the
 
 \newpage
 \section{Specification}
+
+\subsection{Outline of the solution}
+
+The chosen solutions builds on the premise outlined in the second paragraph of section \ref{sec:possible_optimisations}, and focuses on the problem of collisions in the network during communication between parallel processors. The solution looks to reduce the number of collisions between pieces of communication data travelling through the network compared to the number of collisions that existing solutions such as two-phase randomised routing encounter during computation. As its primary use will be as a research and demonstration tool, only an emulation of each hardware components in the network is required meaning that the solution will be produced as a software product. The emulated hardware components can be split into three sections: the processors, the network, and the routing algorithm.
+
+The emulated processors will be able to read in a parallel program, distribute the relevant sections of the program to their intended processors, and then execute the program until the intended computation described in the program has been carried out. There are two main aspects that the emulated processors must include. The first aspect is that the processors must be able to handle input and output instructions with regard to sending and receiving communication data over the network. The second aspect is that the processors must execute their instructions as if they are running concurrently. The fact that the solution is a software product means that this parallel execution can be emulated, but each processor must execute their instructions as if it was running in parallel with the others. In terms of the instruction set for the processors, only basic functionality is required for this solution. The network should remain universal, which means that any processor design should be able to be connected to it and still work correctly, so as long as network input and output can be handled correctly, the instruction set is not critical and can be kept relatively basic.   
+
+The emulated network will facilitate communication between the emulated processors. It will provide links between all processors in the network so that any processor and communicate with any other processor. However, due to the poor scalability of a completely connected network, the emulated network will contain a number of intermediate switch nodes which will direct communication data towards its intended destination in stages rather than using a direct link. There are two main qualities that the network must maintain. The first quality is that the network should be universal, which means it has the ability to emulate the behaviour of any other network topology using its own topology. The second quality is that the network must be scalable, which means that it should be able to include any number of processors and still carry out communication between them correctly.
+
+The routing algorithm will decide which paths through the network the communication data will take in order to reach its intended destination. This is the part of the solution that aims to reduce the number of collisions within the network, and increase the efficiency of parallel architectures. When a processor executes an output instruction indicating that communication across the network is required, the routing algorithm will be triggered. It will start off by planning a route through the network for the communication data aiming to avoid as many collisions with other data in the network as possible. Once a route has been decided, the algorithm will pass this route to the emulated network where the communication data will be sent on its calculated path towards its destination. The algorithm will carry out this process for all output instructions read by each processor until the parallel computation is complete.
+
+\subsection{Functional requirements}
+
+
+
+\subsection{Interface requirements}
+
+
+
+\subsection{Performance requirements}
+
+
+
+\subsection{Software system requirements}
+
+\subsubsection{Reliability}
+
+
+
+\subsubsection{Availability}
+
+
+
+\subsubsection{Security}
+
+
+
+\subsubsection{Maintainability}
+
+
+
+\subsubsection{Portability}
+
+
+
+\subsection{Constraints, assumptions and dependencies}
 
 
 
