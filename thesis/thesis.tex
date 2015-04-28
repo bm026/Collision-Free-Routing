@@ -309,39 +309,31 @@ The emulated parallelism present in the solution means that execution of the inp
 	\item The emulation must be able to execute basic input programs (less than one hundred lines of code) within one second.
 	\item The emulation must be able to execute medium-length input programs (less than one thousand lines of code) within ten seconds.
 	\item The emulation must be able to execute large input programs (more than one thousand lines of code) within one minute.
-	\item Allowances can be made for very large input programs (more than ten thousand lines of code), but they still must be fully executed by the emulation given sufficient time.
+	\item Allowances can be made for very large input programs (more than ten thousand lines of code), but they must still be fully executed by the emulation given sufficient time.
 \end{enumerate}
 
 \subsection{Software system requirements}
 
-
-
-\subsubsection{Reliability}
-
-
-
-\subsubsection{Availability}
-
-
-
-\subsubsection{Security}
-
-
-
-\subsubsection{Maintainability}
-
-
-
-\subsubsection{Portability}
-
-
+All pieces of software require some general guidelines regarding reliability, availability, security, maintainability and portability to ensure that they can be used correctly on any suitable machine. Requirements for these five areas are listed below:
+\begin{enumerate}[leftmargin=*,labelindent=15pt,label=\bfseries 4.\arabic*]
+	\item The emulation must compile cleanly without any errors or warnings, provided that a syntactically correct input program is entered as a valid parameter.
+	\item Regardless of any other output, the emulation must conclude the standard output with a clear indication of the number of collisions in the network during execution of the input program and the time taken for the network to execute the input program.
+	\item The source code of emulator must be open source, allowing universal access to its research and demonstration capabilities.
+	\item The instruction set of the emulated processors used in the network must not contain any instructions that make permanent changes (other than relevant file output) to the machine that the emulation is being run on, as these instructions could potentially be used in a malicious manner.
+	\item Any files output by the emulation must not be potentially harmful to the machine they are situated on, even if opened accidentally by the user with an incorrect program.
+	\item The process of changing the output of the emulation, to document all of the routes calculated by the routing algorithm for example, must be quick and easy taking less than 10 seconds.
+	\item The number of emulated processors that are included in the network must be quick and easy to change, taking less than 10 seconds.
+	\item Due to the academic nature of the solution, the source code of the emulator must be well structured and well commented so that it can be inspected and understood by any users curious about how the emulation has been created.
+	\item The emulator must compile and run using only software included in a base Linux operating system setup (eg. gcc, make). This ensures that no specialist or proprietary software is required to use the emulator, increasing portability between machines.
+\end{enumerate}
 
 \subsection{Constraints, assumptions and dependencies}
 
-memory constraints
-design constraints
-hardware assumptions
-dependent on availability of program compiler
+In the requirements above, some assumptions have been made about the machine that the user will be using the solution on. These assumptions have been based on an average low-end laptop available in 2015, which includes an Intel Core i3 processor, 4GB RAM and at least 10GB available hard disk space. Assuming that the solution will be used on a low-end machine means that it can be used on both low-end and high-end machines, increasing portability. The machine is also assumed to be running a Linux operating system, Ubuntu 14.04 for example, which is a reasonable assumption as Linux operating systems are open source and freely available.
+
+A possible constraint that the solution must negotiate is the amount of memory that it uses. Each of the emulated processors needs its own block of memory in order to carry out the instructions described by the input program. This may become a problem when a large number of processors are included in the network -- each with their own block of memory -- and there is not enough memory available for allocation. In this situation a compromise must be made: either the amount of memory allocated to each processor can be reduced, potentially limiting the size of the input program that the processor can execute, or the number of processors included in the network can be reduced. However, this scenario only has to be considered in extreme circumstances and will not affect the demonstration purposes of the emulation.
+
+One area that has not been explained so far is how the input program code is compiled so that it can be read by the emulated processors. Creating a bespoke compiler is beyond the scope of the thesis, so the emulation is dependent on an open source compiler being available for use. In order to be compatible with the solution, the compiler must allow for basic serial instructions as well as indicating the distribution of the input program between the emulated processors in the network.
 
 \newpage
 \section{Design}
