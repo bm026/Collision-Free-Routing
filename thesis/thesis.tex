@@ -14,12 +14,15 @@
 \usepackage{fancyhdr}
 \usepackage{float}
 \usepackage{subfig}
+\usepackage{enumitem}
 
 \usepackage{graphicx}
 \graphicspath{ {images/} }
 
 \usepackage{etoolbox}
 \patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+\setitemize{labelsep=0.5cm}
+\setenumerate{labelsep=0.5cm}
 
 
 \setlength{\parskip}{12pt}
@@ -49,17 +52,17 @@
 \subsection{Definitions}
 
 This thesis includes a number of terms that have been clarified below to avoid any potential ambiguity.
-\begin{itemize}
+\begin{itemize}[leftmargin=0cm]
 
-\item \textbf{Processor}: An integrated circuit which contains at least an arithmetic logic unit (ALU), registers, and a block of memory. Used to execute instructions outlined by programming code.
+\item[] \textbf{Processor}: An integrated circuit which contains at least an arithmetic logic unit (ALU), registers, and a block of memory. Used to execute instructions outlined by programming code.
 
-\item \textbf{Network}: A number of processors connected together by physical wires and intermediate nodes, allowing each processor to communicate with others in the network.
+\item[] \textbf{Network}: A number of processors connected together by physical wires and intermediate nodes, allowing each processor to communicate with others in the network.
 
-\item \textbf{Link}: A single wire in the network connecting either two processors, a processor and an intermediate node, or two intermediate nodes.
+\item[] \textbf{Link}: A single wire in the network connecting either two processors, a processor and an intermediate node, or two intermediate nodes.
 
-\item \textbf{Routing algorithm}: The algorithm that decides which links in the network are to be used when a communication is required between two processors on the network.
+\item[] \textbf{Routing algorithm}: The algorithm that decides which links in the network are to be used when a communication is required between two processors on the network.
 
-\item \textbf{Collision}: When two packets of communication data in the network try to use the same link at the same time, resulting in one of the packets having to wait until the link becomes free again before continuing its transmission.
+\item[] \textbf{Collision}: When two packets of communication data in the network try to use the same link at the same time, resulting in one of the packets having to wait until the link becomes free again before continuing its transmission.
 
 \end{itemize}
 
@@ -101,14 +104,14 @@ The main aims of the thesis are outlined below:
 \subsection{Outline of the following chapters}
 
 The remainder of the thesis is structured as follows:
-\begin{itemize}
-	\item \textbf{Chapter 2}: A background chapter to introduce to some of the fundamental concepts discussed in the thesis.
-	\item \textbf{Chapter 3}: An outline of the proposed solution and a detailed specification of requirements for this solution.
-	\item \textbf{Chapter 4}: The design of the network and the solution, and a description of how the solution will be deployed on the network to produce meaningful results.
-	\item \textbf{Chapter 5}: The implementation of the network and the solution.
-	\item \textbf{Chapter 6}: Testing of the network to ensure that it works correctly.
-	\item \textbf{Chapter 7}: Experimentation to show whether the solution produces the desired increase in network efficiency.
-	\item \textbf{Chapter 8}: A conclusion of the work done in the thesis and suggestions of further work that could be carried out in this field.
+\begin{itemize}[leftmargin=0cm]
+	\item[] \textbf{Chapter 2}: A background chapter to introduce to some of the fundamental concepts discussed in the thesis.
+	\item[] \textbf{Chapter 3}: An outline of the proposed solution and a detailed specification of requirements for this solution.
+	\item[] \textbf{Chapter 4}: The design of the network and the solution, and a description of how the solution will be deployed on the network to produce meaningful results.
+	\item[] \textbf{Chapter 5}: The implementation of the network and the solution.
+	\item[] \textbf{Chapter 6}: Testing of the network to ensure that it works correctly.
+	\item[] \textbf{Chapter 7}: Experimentation to show whether the solution produces the desired increase in network efficiency.
+	\item[] \textbf{Chapter 8}: A conclusion of the work done in the thesis and suggestions of further work that could be carried out in this field.
 \end{itemize}
 
 \newpage
@@ -269,11 +272,35 @@ The routing algorithm will decide which paths through the network the communicat
 
 \subsection{Functional requirements}
 
-
+The solution must observe the following functional requirements:
+\begin{enumerate}[leftmargin=*,labelindent=15pt,label=\bfseries 1.\arabic*] 
+	\item A single parallel program must be taken as input. 
+	\item The computation outlined in the input program must be spread across all of the processors in the network as intended by the input program.
+	\item Each serial processor must be able to execute basic instructions outlined in the input program including arithmetic and storing and editing variables. This basic functionality is required to allow for the possibility of communication in the network.
+	\item Parallel running of the processors must be emulated. This means, for example, that the first instruction that each of the processors is set to carry out must be executed before any of the processors can move onto their second instruction.
+	\item The processors must be able to recognise network output instructions included in the input program.
+	\item When a network output instruction is read by a processor, details of the communication -- including the source address, the destination address and the data to be sent -- must be passed to the routing algorithm.
+	\item The routing algorithm must find a path through the network for the provided communication data, ensuring that the path ends at the destination address.
+	\item Once a route has been found, the routing algorithm must pass the route path and the data to be transmitted to the network.
+	\item The network must pass communication data towards its destination according to the route path that was provided by the routing algorithm.
+	\item Parallel running of the network must be emulated. This means, for example, that each of the pieces of communication data in the network must complete one stage of their transmission before any of them can progress to another stage of their transmission. The exception to this rule is when a collision is detected, as described in requirement 1.11.
+	\item When a collision is detected between two pieces of communication data on the network, one of the pieces of data must wait for the other to vacate the link before it can continue its transmission through the network.
+	\item The network must keep a count of the number of collisions that take place on the network during execution of the input program.
+	\item The network must measure the emulated time that was taken by the network to execute the input program.
+	\item The emulation must be terminated gracefully once execution of the input program is complete.  
+\end{enumerate}
 
 \subsection{Interface requirements}
 
-
+The interface of a software application is dependent on the users of the software. In this case, the software will primarily be used as a research and demonstration tool which means that the users are assumed to have at least a very basic understanding of the Linux command line. The nature of the solution suggests that users will be comfortable without a graphical user interface (GUI) -- as long as a precise user manual is provided -- in order to execute the software from the Linux command line and read the results it produces. With these user characteristics in mind, the solution must observe the following interface requirements:
+\begin{enumerate}[leftmargin=*,labelindent=15pt,label=\bfseries 2.\arabic*] 
+	\item The solution must be initialised and executed using exactly one command in the Linux command line, with the input program file being passed as a parameter. 
+	\item The number of collisions in the network during the emulation must be printed to standard output once the input program has been fully executed.
+	\item The time taken for the emulation to fully execute the input program must be printed to standard output.
+	\item There must be an option that allows all of the routes calculated by the routing algorithm to be printed to standard output as the emulation is being carried out for testing and demonstration purposes.
+	\item There must be an option that allows a description of the full state of the network, including the locations of all of the communication data currently passing through the network, to be printed to standard output at a given time for vigorous testing and demonstration purposes.
+	\item Any intermediate files required by the emulation during execution of the input program must be deleted automatically in order to keep the user's file system tidy.
+\end{enumerate}
 
 \subsection{Performance requirements}
 
