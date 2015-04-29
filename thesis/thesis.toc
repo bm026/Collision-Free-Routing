@@ -33,8 +33,12 @@
 \contentsline {subsection}{\numberline {3.5}Software system requirements}{21}
 \contentsline {subsection}{\numberline {3.6}Constraints, assumptions and dependencies}{22}
 \contentsline {section}{\numberline {4}Design}{23}
-\contentsline {section}{\numberline {5}Implementation}{24}
-\contentsline {section}{\numberline {6}Testing}{25}
-\contentsline {section}{\numberline {7}Results}{26}
-\contentsline {section}{\numberline {8}Conclusion}{27}
-\contentsline {section}{\numberline {9}References}{28}
+\contentsline {subsection}{\numberline {4.1}Network design}{23}
+\contentsline {subsection}{\numberline {4.2}Routing algorithm design}{24}
+\contentsline {subsection}{\numberline {4.3}Sourcing a suitable compiler}{24}
+\contentsline {subsection}{\numberline {4.4}Processor design}{24}
+\contentsline {section}{\numberline {5}Implementation}{25}
+\contentsline {section}{\numberline {6}Testing}{26}
+\contentsline {section}{\numberline {7}Results}{27}
+\contentsline {section}{\numberline {8}Conclusion}{28}
+\contentsline {section}{\numberline {9}References}{29}

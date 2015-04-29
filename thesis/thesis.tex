@@ -26,7 +26,8 @@
 
 
 \setlength{\parskip}{12pt}
-\title{Creating a Predictable Interconnection Network for General-Purpose Parallel Architectures}
+%\title{Creating a Predictable Interconnection Network for General-Purpose Parallel Architectures}
+\title{Reducing the Number of Collisions Between Communication Data in General-Purpose Parallel Architectures}
 \author{Benjamin Tovar Matthews}
 
 \begin{document}
@@ -338,6 +339,30 @@ One area that has not been explained so far is how the input program code is com
 \newpage
 \section{Design}
 
+\subsection{Network design}
+
+The two main requirements of the interconnection network to be used in the emulation are that it should be universal and it should be scalable. Taking into account the characteristics of the different network topologies explored in section \ref{sec:topologies}, it was decided that a variation of the Bene\v{s} network was the most suitable choice of topology to build the network with.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=10cm]{benes_network.png}
+\caption[A folded Bene\v{s} network connecting eight processors]{A folded Bene\v{s} network connecting eight processors. \cite{Han14}}
+\label{fig:benes}
+\end{figure}
+
+Figure \ref{fig:benes} shows an example of the layout of nodes and edges in a folded Bene\v{s} network. The eight circular nodes at the bottom of the network represent eight processors which use the network for communication. Coming out from each of the processors are two interconnects which link the processors to the first layer of intermediate nodes in the network. These links -- and all of the others in the network -- are bidirectional which means that communication data can travel either towards the processors or away from them. Each of the intermediate square nodes in figure \ref{fig:benes} represents a $2 \times 2$ switch with two core-facing links and two edge-facing links, meaning that each switch can handle four packets of data concurrently (either sending four packets, receiving four packets, or a mixture of the two). Each switch also includes buffer space for all its connected links so that if there is contention for a link, the competing data packets can wait inside the switch for the link to become available again before proceeding with transmission instead of having to be re-sent in its entirety by the source processor. Where $p$ is the number of processors connected to the network, there are $\mathrm{log}\ p$ layers of switches culminating in a partially connected network, which means that -- using packet switching and credit-based control flow -- any processor in the network can communicate with any other processor in the network.
+
+Bene\v{s} networks are rearrangeable and provide non-blocking communication between processors. In terms of universality, the number of intermediate switch nodes in the network means that the network could take the physical form of the other topologies discusses in section \ref{sec:topologies}, and emulate the behaviour of them. In terms of scalability, the number of switch layers included in the network is dependent on the number of connected processors. This means that, provided the number of switch layers is correctly updated, that an arbitrary number of processors can be connected to the network and it will still function correctly. In the situation where the number of processors is not a power of two, non-functioning placeholders can be used to bring the number of source nodes up to the next power of two without affecting the behaviour of the network. This means that Bene\v{s} networks are both universal and scalable, making them ideal for use in the emulation.
+
+\subsection{Routing algorithm design}
+
+
+
+\subsection{Sourcing a suitable compiler}
+
+
+
+\subsection{Processor design}
 
 
 \newpage
