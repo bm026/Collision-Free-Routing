@@ -27,7 +27,7 @@
 
 \setlength{\parskip}{12pt}
 %\title{Creating a Predictable Interconnection Network for General-Purpose Parallel Architectures}
-\title{Reducing the Number of Collisions Between Communication Data in General-Purpose Parallel Architectures}
+\title{Reducing the Number of Collisions Between Communication Data Packets in General-Purpose Parallel Architectures}
 \author{Benjamin Tovar Matthews}
 
 \begin{document}
@@ -340,6 +340,7 @@ One area that has not been explained so far is how the input program code is com
 \section{Design}
 
 \subsection{Network topology design}
+\label{sec:network_design}
 
 The two main requirements of the interconnection network to be used in the emulation are that it should be universal and it should be scalable. Taking into account the characteristics of the different network topologies explored in section \ref{sec:topologies}, it was decided that a variation of the Bene\v{s} network was the most suitable choice of topology to build the network with.
 
@@ -368,7 +369,7 @@ In a folded Bene\v{s} network, each switch is connected to two core-facing links
 
 Figure \ref{fig:switch_direcitons} shows the four possible scenarios of how concurrent communication data can be handled by crossbar switches which use unidirectional input and output links. However, in the case of folded Bene\v{s} networks, bidirectional links are used which means that each switch has four input/output opportunities at a given time. This could equate to four packets being sent from the switch, four packets being received by the switch, or a mixture of the two.
 
-In the case to of two rightmost permutations in figure \ref{fig:switch_direcitons}, the two input packets are shown to require the same output link to continue their transmission. This results in a collision in the network, as both packets cannot use the link at the same time. For this scenario, buffer space can be allocated to each output link of the switch so that communication data involved in the collision can be stored inside the switch until the link becomes free again and transmission of the stored communication data can continue. This means that data packets that collide do not have to be re-sent completely by their source processor, saving time and therefore increasing the efficiency of the network.
+In the case of the two rightmost permutations in figure \ref{fig:switch_direcitons}, the two input packets are shown to require the same output link to continue their transmission. This results in a collision in the network, as both packets cannot use the link at the same time. For this scenario, buffer space can be allocated to each output link of the switch so that communication data involved in the collision can be stored inside the switch until the link becomes free again and transmission of the stored communication data can continue. This means that data packets that collide do not have to be re-sent completely by their source processor, saving time and therefore increasing the efficiency of the network.
 
 \begin{figure}[H]
 \centering
@@ -381,7 +382,27 @@ Figure \ref{fig:switch_buffer} shows how buffer space can be used in a one-way c
 
 \subsection{Routing algorithm design}
 
+The choice of routing algorithm used to determine which paths the communication data takes through the network is essential for reducing the number of collisions that occur. After considering many possibilities, an algorithm was chosen that allows parallel routing of both full and partial permutations through the network where, for a single permutation at least, it is \textit{guaranteed} that no collisions will occur while the data is being transmitted. 
 
+To describe how this algorithm carries out collision-free permutation routing, its application on a slightly modified Bene\v{s} network, shown in figure \ref{fig:benes_sectioned}, is discussed. The same principles of the algorithm can then be applied to the folded Bene\v{s} network described in section \ref{sec:network_design}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{benes_sectioned.png}
+\caption[A slightly modified Bene\v{s} network with two sections highlighted]{A slightly modified Bene\v{s} network with two sections highlighted.}
+\label{fig:benes_sectioned}
+\end{figure}
+
+A description of the routing algorithm is provided below:
+\begin{enumerate}[leftmargin=*,labelindent=15pt,label=\bfseries \arabic*.]
+	\item sdfsdf
+	\item sdfsdfsd
+\end{enumerate}
+
+\subsection{Optimising the routing algorithm}
+
+folded benes network means that packets do not have to travel all the way to the top layer of switches
+routing not affected by shortcuts because path is already reserved
 
 \subsection{Sourcing a suitable compiler}
 

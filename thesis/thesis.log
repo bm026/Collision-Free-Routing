@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  30 APR 2015 15:48
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  30 APR 2015 17:51
 entering extended mode
  %&-line parsing enabled.
 **thesis.tex
@@ -293,24 +293,29 @@ File: images/switch_directions.png Graphic file (type png)
 File: images/switch_buffer.png Graphic file (type png)
 
 <use images/switch_buffer.png> [24 <./images/switch_directions.png> <./images/s
-witch_buffer.png>] [25] [26] [27] [28] [29]
-Underfull \hbox (badness 10000) in paragraph at lines 436--437
+witch_buffer.png>]
+<images/benes_sectioned.png, id=101, 480.1137pt x 278.7213pt>
+File: images/benes_sectioned.png Graphic file (type png)
+
+<use images/benes_sectioned.png> [25 <./images/benes_sectioned.png>] [26]
+[27] [28] [29] [30]
+Underfull \hbox (badness 10000) in paragraph at lines 457--458
 []\OT1/cmr/m/n/12 Hennessy, J. L., Pat-ter-son, D. A. (2011). \OT1/cmr/m/it/12 
 Com-puter Ar-chi-tec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 436--437
+Underfull \hbox (badness 10000) in paragraph at lines 457--458
 \OT1/cmr/m/it/12 ture: A Quan-ti-ta-tive Ap-proach\OT1/cmr/m/n/12 . On-line ap-
 pendix F, re-trieved from
  []
 
-[30] [31] (./thesis.aux) ) 
+[31] [32] (./thesis.aux) ) 
 Here is how much of TeX's memory you used:
- 3837 strings out of 495061
- 54323 string characters out of 1182621
+ 3844 strings out of 495061
+ 54506 string characters out of 1182621
  119261 words of memory out of 3000000
- 6980 multiletter control sequences out of 15000+50000
+ 6986 multiletter control sequences out of 15000+50000
  10888 words of font info for 39 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  44i,9n,45p,1591b,359s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -323,9 +328,9 @@ exlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts
 c/amsfonts/cm/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm
 /cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb
 >
-Output written on thesis.pdf (32 pages, 512640 bytes).
+Output written on thesis.pdf (33 pages, 625000 bytes).
 PDF statistics:
- 153 PDF objects out of 1000 (max. 8388607)
+ 158 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 46 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 
