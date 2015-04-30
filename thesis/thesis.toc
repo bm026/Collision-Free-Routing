@@ -33,12 +33,13 @@
 \contentsline {subsection}{\numberline {3.5}Software system requirements}{21}
 \contentsline {subsection}{\numberline {3.6}Constraints, assumptions and dependencies}{22}
 \contentsline {section}{\numberline {4}Design}{23}
-\contentsline {subsection}{\numberline {4.1}Network design}{23}
-\contentsline {subsection}{\numberline {4.2}Routing algorithm design}{24}
-\contentsline {subsection}{\numberline {4.3}Sourcing a suitable compiler}{24}
-\contentsline {subsection}{\numberline {4.4}Processor design}{24}
-\contentsline {section}{\numberline {5}Implementation}{25}
-\contentsline {section}{\numberline {6}Testing}{26}
-\contentsline {section}{\numberline {7}Results}{27}
-\contentsline {section}{\numberline {8}Conclusion}{28}
-\contentsline {section}{\numberline {9}References}{29}
+\contentsline {subsection}{\numberline {4.1}Network topology design}{23}
+\contentsline {subsection}{\numberline {4.2}Network switch design}{24}
+\contentsline {subsection}{\numberline {4.3}Routing algorithm design}{25}
+\contentsline {subsection}{\numberline {4.4}Sourcing a suitable compiler}{25}
+\contentsline {subsection}{\numberline {4.5}Processor design}{25}
+\contentsline {section}{\numberline {5}Implementation}{26}
+\contentsline {section}{\numberline {6}Testing}{27}
+\contentsline {section}{\numberline {7}Results}{28}
+\contentsline {section}{\numberline {8}Conclusion}{29}
+\contentsline {section}{\numberline {9}References}{30}

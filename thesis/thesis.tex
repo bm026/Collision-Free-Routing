@@ -339,7 +339,7 @@ One area that has not been explained so far is how the input program code is com
 \newpage
 \section{Design}
 
-\subsection{Network design}
+\subsection{Network topology design}
 
 The two main requirements of the interconnection network to be used in the emulation are that it should be universal and it should be scalable. Taking into account the characteristics of the different network topologies explored in section \ref{sec:topologies}, it was decided that a variation of the Bene\v{s} network was the most suitable choice of topology to build the network with.
 
@@ -350,9 +350,34 @@ The two main requirements of the interconnection network to be used in the emula
 \label{fig:benes}
 \end{figure}
 
-Figure \ref{fig:benes} shows an example of the layout of nodes and edges in a folded Bene\v{s} network. The eight circular nodes at the bottom of the network represent eight processors which use the network for communication. Coming out from each of the processors are two interconnects which link the processors to the first layer of intermediate nodes in the network. These links -- and all of the others in the network -- are bidirectional which means that communication data can travel either towards the processors or away from them. Each of the intermediate square nodes in figure \ref{fig:benes} represents a $2 \times 2$ switch with two core-facing links and two edge-facing links, meaning that each switch can handle four packets of data concurrently (either sending four packets, receiving four packets, or a mixture of the two). Each switch also includes buffer space for all its connected links so that if there is contention for a link, the competing data packets can wait inside the switch for the link to become available again before proceeding with transmission instead of having to be re-sent in its entirety by the source processor. Where $p$ is the number of processors connected to the network, there are $\mathrm{log}\ p$ layers of switches culminating in a partially connected network, which means that -- using packet switching and credit-based control flow -- any processor in the network can communicate with any other processor in the network.
+Figure \ref{fig:benes} shows an example of the layout of nodes and edges in a folded Bene\v{s} network. The eight circular nodes at the bottom of the network represent eight processors which use the network for communication. Coming out from each of the processors are two interconnects which link the processors to the first layer of intermediate nodes in the network. These links -- and all of the others in the network -- are bidirectional which means that communication data can travel either towards the processors or away from them. Each of the intermediate square nodes in figure \ref{fig:benes} represents a $2 \times 2$ switch, the design of which is described in more detail in section \ref{sec:switch_design}. Where $p$ is the number of processors connected to the network, there are $\mathrm{log}\ p$ layers of $p$ switches culminating in a partially connected network, which means that -- using packet switching and credit-based control flow -- any processor in the network can communicate with any other processor in the network.
 
 Bene\v{s} networks are rearrangeable and provide non-blocking communication between processors. In terms of universality, the number of intermediate switch nodes in the network means that the network could take the physical form of the other topologies discusses in section \ref{sec:topologies}, and emulate the behaviour of them. In terms of scalability, the number of switch layers included in the network is dependent on the number of connected processors. This means that, provided the number of switch layers is correctly updated, that an arbitrary number of processors can be connected to the network and it will still function correctly. In the situation where the number of processors is not a power of two, non-functioning placeholders can be used to bring the number of source nodes up to the next power of two without affecting the behaviour of the network. This means that Bene\v{s} networks are both universal and scalable, making them ideal for use in the emulation.
+
+\subsection{Network switch design}
+\label{sec:switch_design}
+
+In a folded Bene\v{s} network, each switch is connected to two core-facing links (which are located closer to the processors), and two edge-facing links (which are located further away from the processors). This means that the switches are referred to as $2 \times 2$ switches, or crossbar switches. A diagram of how communication data can pass through these switches when being transmitted through the network is displayed below.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{switch_directions.png}
+\caption[The possible permutations of data flow through a one-way crossbar switch]{The possible permutations of data flow through a one-way crossbar switch.}
+\label{fig:switch_direcitons}
+\end{figure}
+
+Figure \ref{fig:switch_direcitons} shows the four possible scenarios of how concurrent communication data can be handled by crossbar switches which use unidirectional input and output links. However, in the case of folded Bene\v{s} networks, bidirectional links are used which means that each switch has four input/output opportunities at a given time. This could equate to four packets being sent from the switch, four packets being received by the switch, or a mixture of the two.
+
+In the case to of two rightmost permutations in figure \ref{fig:switch_direcitons}, the two input packets are shown to require the same output link to continue their transmission. This results in a collision in the network, as both packets cannot use the link at the same time. For this scenario, buffer space can be allocated to each output link of the switch so that communication data involved in the collision can be stored inside the switch until the link becomes free again and transmission of the stored communication data can continue. This means that data packets that collide do not have to be re-sent completely by their source processor, saving time and therefore increasing the efficiency of the network.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{switch_buffer.png}
+\caption[A one-way crossbar switch with a 5-space buffer for each output link]{A one-way crossbar switch with a 5-space buffer for each output link.}
+\label{fig:switch_buffer}
+\end{figure}
+
+Figure \ref{fig:switch_buffer} shows how buffer space can be used in a one-way crossbar switch. In the case of folded Bene\v{s} networks, there are four output links meaning there are four buffers included inside the switch.
 
 \subsection{Routing algorithm design}
 

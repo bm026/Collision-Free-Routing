@@ -7,3 +7,5 @@
 \contentsline {subfigure}{\numberline {(e)}{\ignorespaces {Clos}}}{13}
 \contentsline {subfigure}{\numberline {(f)}{\ignorespaces {Bene\v {s}}}}{13}
 \contentsline {figure}{\numberline {3}{\ignorespaces A folded Bene\v {s} network connecting eight processors}}{23}
+\contentsline {figure}{\numberline {4}{\ignorespaces The possible permutations of data flow through a one-way crossbar switch}}{24}
+\contentsline {figure}{\numberline {5}{\ignorespaces A one-way crossbar switch with a 5-space buffer for each output link}}{24}
