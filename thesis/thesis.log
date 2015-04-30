@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  30 APR 2015 20:00
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  30 APR 2015 21:36
 entering extended mode
  %&-line parsing enabled.
 **thesis.tex
@@ -297,24 +297,24 @@ witch_buffer.png>]
 <images/benes_sectioned.png, id=101, 480.1137pt x 278.7213pt>
 File: images/benes_sectioned.png Graphic file (type png)
 
-<use images/benes_sectioned.png>
-<images/benes_full_perm.png, id=102, 480.1137pt x 239.2137pt>
+<use images/benes_sectioned.png> [25 <./images/benes_sectioned.png>]
+<images/benes_full_perm.png, id=107, 480.1137pt x 239.2137pt>
 File: images/benes_full_perm.png Graphic file (type png)
 
-<use images/benes_full_perm.png> [25 <./images/benes_sectioned.png>] [26 <./ima
-ges/benes_full_perm.png>] [27] [28] [29] [30]
-Underfull \hbox (badness 10000) in paragraph at lines 464--465
+<use images/benes_full_perm.png> [26 <./images/benes_full_perm.png>] [27]
+[28] [29] [30] [31]
+Underfull \hbox (badness 10000) in paragraph at lines 470--471
 []\OT1/cmr/m/n/12 Hennessy, J. L., Pat-ter-son, D. A. (2011). \OT1/cmr/m/it/12 
 Com-puter Ar-chi-tec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 464--465
+Underfull \hbox (badness 10000) in paragraph at lines 470--471
 \OT1/cmr/m/it/12 ture: A Quan-ti-ta-tive Ap-proach\OT1/cmr/m/n/12 . On-line ap-
 pendix F, re-trieved from
  []
 
-[31] [32] (./thesis.aux) ) 
+[32] [33] (./thesis.aux) ) 
 Here is how much of TeX's memory you used:
  3850 strings out of 495061
  54669 string characters out of 1182621
@@ -332,9 +332,9 @@ exlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts
 c/amsfonts/cm/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm
 /cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb
 >
-Output written on thesis.pdf (33 pages, 768832 bytes).
+Output written on thesis.pdf (34 pages, 770244 bytes).
 PDF statistics:
- 160 PDF objects out of 1000 (max. 8388607)
+ 163 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  56 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -393,11 +393,15 @@ To describe how this algorithm carries out collision-free permutation routing, i
 \label{fig:benes_sectioned}
 \end{figure}
 
-A description of the routing algorithm is provided below:
+The Bene\v{s} network shown in figure \ref{fig:benes_sectioned} can be thought of as the unidirectional equivalent of the folded Bene\v{s} network described in section \ref{sec:network_design} but with a slightly different link ordering. The numbers on the left of the diagram represent the source processors that send communication data packets, and the numbers on the right of the diagram represent the destination processors that the communication data is being sent to. An important feature of Bene\v{s} networks is specifically highlighted by the pink and blue sections in figure \ref{fig:benes_sectioned}. It can be seen that once a packet of communication data has entered one of these sections, it remains in that section until the end of the section is reached. This feature is important for the routing algorithm described below. It is also noteworthy that each of the pink and blue sub-networks is in fact its own Bene\v{s} network -- a fact that can be extended to every layer of switches in the network -- meaning that the network is simply a recursion of itself.
+
+The routing algorithm that can be used to carry out collision-free permutation routing on the network shown in figure \ref{fig:benes_sectioned} is described by the following:
 \begin{enumerate}[leftmargin=*,labelindent=15pt,label=\bfseries \arabic*.]
 	\item sdfsdf
 	\item sdfsdfsd
 \end{enumerate}
+
+describe algorithm in english
 
 \begin{figure}[H]
 \centering
@@ -406,10 +410,13 @@ A description of the routing algorithm is provided below:
 \label{fig:benes_full_perm}
 \end{figure}
 
+explain that same routing can be used in all benes networks
+
 \subsection{Optimising the routing algorithm}
 
 folded benes network means that packets do not have to travel all the way to the top layer of switches
 routing not affected by shortcuts because path is already reserved
+also, distribute packets equally across sub-networks
 
 \subsection{Sourcing a suitable compiler}
 
