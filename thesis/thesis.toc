@@ -38,9 +38,12 @@
 \contentsline {subsection}{\numberline {4.3}Routing algorithm design}{25}
 \contentsline {subsection}{\numberline {4.4}Optimising the routing algorithm}{27}
 \contentsline {subsection}{\numberline {4.5}Sourcing a suitable compiler}{28}
-\contentsline {subsection}{\numberline {4.6}Processor design}{28}
-\contentsline {section}{\numberline {5}Implementation}{29}
-\contentsline {section}{\numberline {6}Testing}{30}
-\contentsline {section}{\numberline {7}Results}{31}
-\contentsline {section}{\numberline {8}Conclusion}{32}
-\contentsline {section}{\numberline {9}References}{33}
+\contentsline {subsection}{\numberline {4.6}Output of the compiler}{28}
+\contentsline {subsection}{\numberline {4.7}Processor modifications}{29}
+\contentsline {section}{\numberline {5}Implementation}{30}
+\contentsline {section}{\numberline {6}Testing}{31}
+\contentsline {section}{\numberline {7}Results}{32}
+\contentsline {section}{\numberline {8}Conclusion}{33}
+\contentsline {section}{\numberline {9}References}{34}
+\contentsline {section}{Appendix A: User Manual}{36}
+\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{37}

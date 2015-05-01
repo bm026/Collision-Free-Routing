@@ -15,6 +15,7 @@
 \usepackage{float}
 \usepackage{subfig}
 \usepackage{enumitem}
+\usepackage{appendix}
 
 \usepackage{graphicx}
 \graphicspath{ {images/} }
@@ -329,6 +330,7 @@ All pieces of software require some general guidelines regarding reliability, av
 \end{enumerate}
 
 \subsection{Constraints, assumptions and dependencies}
+\label{sec:dependencies}
 
 In the requirements above, some assumptions have been made about the machine that the user will be using the solution on. These assumptions have been based on an average low-end laptop available in 2015, which includes an Intel Core i3 processor, 4GB RAM and at least 10GB available hard disk space. Assuming that the solution will be used on a low-end machine means that it can be used on both low-end and high-end machines, increasing portability. The machine is also assumed to be running a Linux operating system, Ubuntu 14.04 for example, which is a reasonable assumption as Linux operating systems are open source and freely available.
 
@@ -381,6 +383,7 @@ In the case of the two rightmost permutations in figure \ref{fig:switch_direcito
 Figure \ref{fig:switch_buffer} shows how buffer space can be used in a one-way crossbar switch. In the case of folded Bene\v{s} networks, there are four output links meaning there are four buffers included inside the switch.
 
 \subsection{Routing algorithm design}
+\label{sec:routing_design}
 
 The choice of routing algorithm used to determine which paths the communication data takes through the network is essential for reducing the number of collisions that occur. After considering many possibilities, an algorithm was chosen that allows parallel routing of both full and partial permutations through the network where, for a single permutation at least, it is \textit{guaranteed} that no collisions will occur while the data is being transmitted. 
 
@@ -414,27 +417,49 @@ By following this iterative algorithm, routes through the network can be built u
 \label{fig:benes_full_perm}
 \end{figure}
 
-Until now, the workings of the algorithm have be described using a slightly modified Bene\v{s} network as a reference. This has been done for clarity. It is easier to demonstrate routing on unidirectional links in an unfolded Bene\v{s} network, but the same principles apply on a folded Bene\v{s} network with bidirectional links. In a single permutation, all of the packets of communication data are at the same switch layer at a time, meaning that no additional collisions can occur when the packets reach the outermost switch layer and the direction of transmission to changed to point towards the destination processors. Additionally, it is easier to demonstrate that the Bene\v{s} network is split into distinct sections after each layer of switches (as shown by the pink and blue highlighting in figure \ref{fig:benes_sectioned}) using a slightly modified link layout between switch layers in the network. This modified layout is essentially a mirror image of the layout to be used in the emulation, which means that these distinct sections after each layer of switches still exist, but they are not as easy to distinguish between in a diagram such as figure \ref{fig:benes_sectioned}. 
+Until now, the workings of the algorithm have be described using a slightly modified Bene\v{s} network as a reference. This has been done for clarity. It is easier to demonstrate routing on unidirectional links in an unfolded Bene\v{s} network, but the same principles apply on a folded Bene\v{s} network with bidirectional links. In a single permutation, all of the packets of communication data are at the same switch layer at a time, meaning that no additional collisions can occur when the packets reach the outermost switch layer and the direction of transmission to changed to point towards the destination processors. Additionally, it is easier to demonstrate that the Bene\v{s} network is split into distinct sections after each layer of switches (as shown by the pink and blue highlighting in figure \ref{fig:benes_sectioned}) using a slightly modified link layout between switch layers in the network. This modified layout is essentially a mirror image of the layout to be used in the emulation, which means that these distinct sections after each layer of switches still exist, but they are not as easy to split into clear physical groupings as those shown in figure \ref{fig:benes_sectioned}. This difference in groupings has no affect on the algorithm.
 
-This all shows that the algorithm described above is able to calculate collision-free routes through a folded Bene\v{s} network, making it ideal for use in the emulation.
+All of this shows that the algorithm described above is able to calculate collision-free routes through a folded Bene\v{s} network, making it ideal for use in the emulation.
 
 \subsection{Optimising the routing algorithm}
 
-folded benes network means that packets do not have to travel all the way to the top layer of switches
-routing not affected by shortcuts because path is already reserved
-also, distribute packets equally across sub-networks
+The algorithm described in section \ref{sec:routing_design} is an optimal collision-free routing algorithm for the Bene\v{s} network described in figure \ref{fig:benes_sectioned}. However, the fact that a folded Bene\v{s} network will be used in the emulation means that some optimisation techniques can applied to the routing algorithm that take advantage of this difference in network structure to make communication more efficient without affecting the lack of collisions in the network.
+
+The first optimisation that can be applied to the routing algorithm involves the spread of data packets across the two sub-networks that follow the first layer of switches. As the folded Bene\v{s} network contains two output links for each processor, each sent packet has an initial choice of which of the sub-networks to travel across. This means that if the packets are sent to alternating sub-networks, spread of traffic over the network is more likely to be uniform and the possibility of collisions between packets from different permutations is reduced.
+
+A second optimisation that can be applied to the routing algorithm takes into account the bidirectional links in the folded Bene\v{s} network. The routing shown in figure \ref{fig:benes_full_perm} implies that every pair of front and back paths must reach the centre layer of switches before the route is complete. However, in a folded Bene\v{s} network, the front and back paths may encounter the same switch before reaching the final layer of switches. In this situation, there is no need for the pair of paths to be continued to the final layer of switches, so a shorter completed route can be allocated. This shorter path means that the communication data travels quicker through the network, making communication more efficient.
 
 \subsection{Sourcing a suitable compiler}
 
+It was mentioned in section \ref{sec:dependencies} that the functionality of the emulation is dependent on a compiler being sourced which can compile a parallel input program into instructions that are then distributed between the processors connected to the network and executed in parallel. During the network design phase, a solution to this problem was presented by David May, a Professor of Computer Science at the University of Bristol. David provided the source code of a compiler that is able to handle parallel code sections, and the source code of a serial processor that, with some modifications applied to it, could read and execute the instructions produced by the compiler. I am very grateful for David's contribution towards this thesis.
+
+\subsection{Output of the compiler}
+
+The compiler takes the source code of a parallel input program as input and produces binary file represented in hexadecimal as output, which is then available for the processors in the network to read and execute. In order to do this, the binary output file produced by the compiler must be understood so that the binary instructions it carries can be executed correctly by the processors in the network. An example of this binary output is given in figure \ref{fig:compiler_binary} below.
 
 
-\subsection{Processor design}
+\begin{figure}[H]
+\centering
+\includegraphics[width=15cm]{compiler_binary.png}
+\caption[An example of binary output from the compiler]{An example of binary output from the compiler, with added sectioning and colouring.}
+\label{fig:compiler_binary}
+\end{figure}
 
+It can be seen that the binary for each processor is split into three sections. The first section, represented by the blue font colour in figure \ref{fig:compiler_binary}, indicates the length of the binary string relevant to each processor, measured in bytes. This gives an indication of the positions in the binary that instructions for one processor stop and instructions for another processor start, meaning it is vital for the distribution of the different parts of the parallel program to their correct processors ready for parallel execution. The second section in the binary for each processor, represented by the red font colour, indicates the initial value of the program counter that the processor uses during execution of the program. The third section, represented by the green font colour, indicates the instructions that the processor carries out in order to execute the program correctly. Each instruction is made up of 8-bits: a 4-bit operation code and 4-bits of immediate data. Larger data can be handled using inter-register operations. 
+
+This sequence of three binary sections is then repeated for every processor involved in the parallel input program, resulting in a full binary file ready to be executed by the emulation.
+
+\subsection{Processor modifications}
+
+The processor that was provided with the compiler source code is designed to execute most of the instructions described in the binary output file that the compiler produces. However, the processor was designed as a serial processor which means that it has no communication capabilities, and that instructions for the sending of communication data to the network and the receiving of communication data from the network needed to be added. Additionally, the provided source code for the processor only accounted for a single instance of the processor, whereas the network requires multiple processors to function correctly. Provided that these features are added, the processor source code is suitable for integration with the network and can be included in the emulation. 
 
 \newpage
 \section{Implementation}
 
-
+network building blocks
+connecting the processors
+integrating the routing algorithm
+emulating parallelism
 
 \newpage
 \section{Testing}
@@ -491,6 +516,260 @@ also, distribute packets equally across sub-networks
 \bibitem[Val90]{Val90} Valiant, L. G. (1990). \textit{General purpose parallel architectures}. In Handbook of theoretical computer science (vol. A): algorithms and complexity, p. 943-973. MIT Press.
 
 \end{thebibliography}
+
+\newpage
+\section*{Appendix A: User Manual}
+\addcontentsline{toc}{section}{Appendix A: User Manual}
+
+
+\newpage
+\section*{Appendix B: Summary of Processor Instruction Set}
+\addcontentsline{toc}{section}{Appendix B: Summary of Processor Instruction Set}
+
+This appendix describes a summary of the instruction set associated with the unmodified serial processor. The modifications carried out to to the processor to add parallelism to its capabilities are described in sections 4 and 5. This document was written by David May.
+
+\subsection*{Background}
+\setlength{\parindent}{0in}
+
+The architecture described here is specifically designed as a very
+simple component processor for multiprocessors. In area, it 
+would occupy less area on silicon than $16kbytes$ of memory,
+allowing a manufacturable chip to contain thousands 
+of  processors.
+Further, its instruction set requires a very small compiler to
+generate near-optimal code, so it is practical to compile 
+on-the-fly as programs are input. This may be important 
+as it makes it practical to broadcast programs to 
+thousands of processors, each of which compiles the
+incoming program in the context of its local state. The main
+features of the instruction set are: 
+
+\begin{itemize}
+
+\item Short instructions are provided to allow efficient
+access to the stack and other data regions allocated
+by compilers; these also provide efficient branching and 
+subroutine calling. The short instructions have been chosen on 
+the basis of extensive evaluation to meet the needs of 
+modern compilers. 
+
+\item The memory is word addressed; however the 
+instructions are all single byte so instruction 
+addresses refer to a specific byte position within a 
+word. 
+
+\item The same instruction set can be used for processors 
+with different wordlengths; the only requirement is that 
+the wordlength is a number of bytes. 
+
+\item The processor has a small number of registers. 
+Some registers are used for specific purposes such as 
+accessing the stack or building large constants. 
+
+\item Instructions are easy to decode. 
+
+\end{itemize}
+
+All instructions are 8-bit; each instruction contains 4 bits representing
+an operation and 4 bits of immediate data. A special instruction, OPR
+causes its operand to be interpreted as an inter-register operation. 
+Instruction prefixes are used to extend the range of immediate operands 
+and to provide more inter-register operations. 
+
+The prefixes are:
+
+\begin{itemize}
+\item PFIX which concatenates its 4-bit immediate with the 4-bit immediate
+of the next 8-bit instruction.
+\item NFIX which complements its its 4-bit immediate and then concatenates 
+the result with the 4-bit immediate of the next 8-bit instruction. 
+\end{itemize}
+
+The prefixes are inserted automatically by compilers
+and assemblers. 
+
+The normal state of a processor is represented by 5 registers.
+Two of the registers are operated as a stack and used to hold the
+sources and destination of inter-register operations. 
+
+\begin{tabular}{ll}
+{\bf register} & {\bf use}\\
+&\\
+$pc$ & the program counter\\
+&\\
+$sp$ & the stack pointer\\
+$oreg$ & the operand register\\
+&\\
+$areg$ & the first register in the operand stack \\
+$breg$ & the second register in the operand stack
+\end{tabular}
+
+\subsection*{Instruction Issue and Execution}
+
+The processor core is intended to be implementable without
+a pipeline to maximise responsiveness; this potentially allows
+a very simple design. 
+
+Note that the instructions are all 8-bit, so that on a 
+32-bit implementation four instructions are fetched every cycle.
+As typically less than 40\% of instructions require a memory
+access, it is therefore practical to support the processor
+using a simple unified memory system.
+
+Each processor has a short instruction buffer which is one 
+word long. The rules for performing an instruction 
+fetch are as follows:
+
+\begin{itemize}
+\item Any instruction which requires data-access performs
+it during the memory access stage.
+\item Branch instructions fetch their branch target instructions
+during the memory access stage. 
+\item Any other instruction (such as ALU operations) 
+performs an instruction fetch if it is the
+last instruction in the instruction buffer. 
+ \item If the instruction buffer is empty when an instruction 
+should be issued, a special {\it no-op} is issued; this 
+will load the instruction buffer. 
+\end{itemize}
+
+\subsection*{Instruction set Notation and Definitions}
+
+In the following description
+
+\begin{tabular}{ll}
+$Bpw$ &is the number of bytes in a word \\
+$bpw$ & is the number of bits in a word \\
+&\\
+$mem$ & represents the memory \\
+&\\
+$pc$ & represents the program counter\\
+$sp$ & represents the stack pointer\\
+$oreg$ & represents the operand register\\
+$areg$ & represents the first stack register\\
+$breg$ & represents the second stack register\\
+&\\
+$u4$ & is a 4-bit unsigned source operand in the range $[0:15]$\\
+\end{tabular}
+
+\subsection*{Data access}
+
+The data access instructions fall into several groups. One of these
+provides access via the stack pointer.
+
+\begin{tabular}{lll}
+LDWSP & $areg, breg \leftarrow mem[sp + oreg], areg$& load word from stack \\ 
+STWSP & $mem[sp + oreg], areg \leftarrow areg, breg $& store word to stack  \\
+LDAWSP & $areg, breg \leftarrow sp + oreg, areg $& load address of word in stack  
+\end{tabular}
+
+Access to constants and program addresses is provided by instructions which 
+either load values directly or enable them to be loaded from a location in 
+the program: 
+
+\begin{tabular}{lll}
+LDC  & $areg, breg \leftarrow oreg, areg $& load constant  \\
+LDAP & $areg, breg \leftarrow pc + oreg, areg $& load address in program  
+\end{tabular}
+
+Access to data structures is provided by instructions which combine an
+address with an offset:
+
+\begin{tabular}{lll}
+LDWI  & $areg \leftarrow mem[areg + oreg]$& load word  \\
+STWI  & $mem[areg + oreg] \leftarrow breg$& store word   
+\end{tabular}
+
+
+\subsection*{Expression evaluation}
+
+\begin{tabular}{lll}
+ADDC & $ areg \leftarrow areg + oreg $ & add constant\\  
+ADD & $ areg \leftarrow breg + areg $ & add \\  
+SUB & $ areg  \leftarrow breg - areg $ & subtract \\  
+&&\\
+EQC & $ areg \leftarrow areg = oreg $ & equal constant \\  
+EQ & $ areg \leftarrow breg = areg  $ & equal \\  
+LSS & $ areg  \leftarrow breg  <_{sgn} areg $ & less than signed \\  
+&&\\
+AND & $ areg \leftarrow breg \wedge areg $ & and \\  
+OR  & $ areg \leftarrow breg  \vee areg $ & or \\  
+XOR & $ areg \leftarrow breg \oplus areg $& exclusive or \\
+NOT & $ areg  \leftarrow -1 \oplus areg $& not\\
+&&\\
+SHL & $ areg \leftarrow breg \ll areg $ & logical shift left \\  
+SHR & $ areg \leftarrow breg \gg areg $ & logical shift right  \\  
+\end{tabular}
+
+
+\subsection*{Branching, jumping and calling}
+
+The branch instructions include conditional and unconditional relative 
+branches. A branch using an offset in the stack is provided to 
+support jump tables.
+
+\begin{tabular}{lll}
+BR   & $ pc \leftarrow pc + oreg $& branch relative unconditional \\
+BRT & $\mathrm{if}\; areg \;\mathrm{then}\; pc \leftarrow pc + oreg $ &branch relative true\\
+&&\\
+BRX & $pc, areg \leftarrow areg, breg$ &branch absolute\\
+\end{tabular}
+
+The procedure calling instruction uses a program address in the stack
+to determine a subroutine entry point, leaving the return address on the 
+stack. The RET instruction can also be used simply to branch to 
+a program address on the stack.
+
+\begin{tabular}{lll}
+CALL & $mem[sp], pc, areg \leftarrow pc, areg, breg $ &call subroutine\\
+RET   & $pc \leftarrow mem[sp] $ & return from subroutine
+\end{tabular}
+
+Typically, the stack is initialised to a high address in memory and is
+extended on subroutine entry and contracted on exit. 
+The instructions to support this are shown below.
+
+\begin{tabular}{lll}
+SETSP & $sp, areg  \leftarrow areg, breg $& set stack pointer \\
+ADJ & $sp \leftarrow sp + oreg $& adjust stack
+\end{tabular}
+
+
+\newpage
+\subsection*{Instruction summary}
+
+\begin{tabular}{lll}
+LDWSP & $areg, breg \leftarrow mem[sp + oreg], areg$& load word from stack \\ 
+STWSP & $mem[sp + oreg], areg \leftarrow areg, breg $& store word to stack  \\
+LDAWSP & $areg, breg \leftarrow sp + oreg, areg $& load address of word in stack  \\
+LDC  & $areg, breg \leftarrow oreg, areg $& load constant  \\
+LDAP & $areg, breg \leftarrow pc + oreg, areg $& load address in program  \\
+LDWI  & $areg \leftarrow mem[areg + oreg]$& load word  \\
+STWI  & $mem[areg + oreg] \leftarrow breg$& store word   \\
+ADDC & $ areg \leftarrow areg + oreg $ & add constant\\  
+EQC & $ areg \leftarrow areg = oreg $ & equal constant \\  
+BR   & $ pc \leftarrow pc + oreg $ & branch relative unconditional \\
+BRT& $\mathrm{if}\; areg \;\mathrm{then}\; pc \leftarrow pc + oreg $ &branch relative true\\
+ADJ & $sp \leftarrow sp - oreg $& adjust stack\\
+&&\\
+ADD & $ areg \leftarrow breg + areg $ & add \\  
+SUB & $ areg  \leftarrow breg - areg $ & subtract \\  
+EQ & $ areg \leftarrow breg = areg  $ & equal \\  
+LSS & $ areg  \leftarrow breg  <_{sgn} areg $ & less than signed \\  
+AND & $ areg \leftarrow breg \wedge areg $ & and \\  
+OR  & $ areg \leftarrow breg  \vee areg $ & or \\  
+XOR & $ areg \leftarrow breg \oplus areg $& exclusive or \\
+NOT & $ areg  \leftarrow -1 \oplus areg $& not\\
+SHL & $ areg \leftarrow breg \ll areg $ & logical shift left \\  
+SHR & $ areg \leftarrow breg \gg areg $ & logical shift right  \\  
+BRX & $pc, areg \leftarrow areg, breg$ &branch absolute\\
+CALL & $mem[sp], pc, areg \leftarrow pc, areg, breg $ &call subroutine\\
+RET   &  $pc \leftarrow mem[sp] $ & return from subroutine\\
+SETSP & $sp, areg  \leftarrow areg, breg $& set stack pointer \\
+&&\\             
+BOOT  &$ load()$& boot processor \\
+                &$ pc, sp \leftarrow mem[0], memhigh$ \\
+\end{tabular}
 
 
 \end{document}
