@@ -397,11 +397,15 @@ The Bene\v{s} network shown in figure \ref{fig:benes_sectioned} can be thought o
 
 The routing algorithm that can be used to carry out collision-free permutation routing on the network shown in figure \ref{fig:benes_sectioned} is described by the following:
 \begin{enumerate}[leftmargin=*,labelindent=15pt,label=\bfseries \arabic*.]
-	\item sdfsdf
-	\item sdfsdfsd
+	\item Take an empty, partial, or full permutation as input.
+	\item Take the $i^{th}$ communication from the permutation and trace a front path from the source processor to the first switch it encounters in the network. If the switch has not previously handled any communication data for this permutation, set the packet route towards the first output link in the switch. If the switch has already handled a packet of communication data, set the packet route towards the second output link in the switch.
+	\item For the same communication, trace a back path from the destination processor to the first switch it encounters on the network (in reality, the last switch that the packet will pass through during communication). Once inside the switch, set the route of the back path to mirror the direction that the front path was sent towards. This will result in both paths being directed into the same closed sub-network as shown by the highlighted sections in figure \ref{fig:benes_sectioned}.
+	\item Repeat steps 2-3 for every communication in the permutation to calculate the first pairs of front and back path routes. Because each switch takes a maximum of two input packets, no collisions can occur as each packet is routed a towards a different output link by definition.
+	\item Repeat steps 2-4, but this time continuing the front and back paths for each communication towards the centre of the network one layer of switches at a time.
+	\item Once the front and back paths reach the same switch in the centre layer of the network, the route is complete.
 \end{enumerate}
 
-describe algorithm in english
+By following this iterative algorithm, routes through the network can be built up step by step until complete routes for the whole permutation are calculated. Not only does this ensure that each packet of communication data can be routed from the correct source processor to the correct destination processor, it also ensures that there are no collisions of communication data within the network. An example of the routes calculated from an arbitrary full permutation using this algorithm is shown below in figure \ref{fig:benes_full_perm}.
 
 \begin{figure}[H]
 \centering

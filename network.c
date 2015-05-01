@@ -818,7 +818,7 @@ Packet **offline_route_planner(char *active_cores, int **active_core_data) {
 
 			if (packets[j] != NULL) {
 				if (packets[j] -> count == 0) {
-					// for first link, pick random
+					// for first link
 					if (i == 1) {
 
 						// evenly distribute packets across halves of network
