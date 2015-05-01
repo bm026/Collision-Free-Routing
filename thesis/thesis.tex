@@ -414,7 +414,9 @@ By following this iterative algorithm, routes through the network can be built u
 \label{fig:benes_full_perm}
 \end{figure}
 
-explain that same routing can be used in all benes networks
+Until now, the workings of the algorithm have be described using a slightly modified Bene\v{s} network as a reference. This has been done for clarity. It is easier to demonstrate routing on unidirectional links in an unfolded Bene\v{s} network, but the same principles apply on a folded Bene\v{s} network with bidirectional links. In a single permutation, all of the packets of communication data are at the same switch layer at a time, meaning that no additional collisions can occur when the packets reach the outermost switch layer and the direction of transmission to changed to point towards the destination processors. Additionally, it is easier to demonstrate that the Bene\v{s} network is split into distinct sections after each layer of switches (as shown by the pink and blue highlighting in figure \ref{fig:benes_sectioned}) using a slightly modified link layout between switch layers in the network. This modified layout is essentially a mirror image of the layout to be used in the emulation, which means that these distinct sections after each layer of switches still exist, but they are not as easy to distinguish between in a diagram such as figure \ref{fig:benes_sectioned}. 
+
+This all shows that the algorithm described above is able to calculate collision-free routes through a folded Bene\v{s} network, making it ideal for use in the emulation.
 
 \subsection{Optimising the routing algorithm}
 

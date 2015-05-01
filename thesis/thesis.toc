@@ -37,10 +37,10 @@
 \contentsline {subsection}{\numberline {4.2}Network switch design}{24}
 \contentsline {subsection}{\numberline {4.3}Routing algorithm design}{25}
 \contentsline {subsection}{\numberline {4.4}Optimising the routing algorithm}{27}
-\contentsline {subsection}{\numberline {4.5}Sourcing a suitable compiler}{27}
-\contentsline {subsection}{\numberline {4.6}Processor design}{27}
-\contentsline {section}{\numberline {5}Implementation}{28}
-\contentsline {section}{\numberline {6}Testing}{29}
-\contentsline {section}{\numberline {7}Results}{30}
-\contentsline {section}{\numberline {8}Conclusion}{31}
-\contentsline {section}{\numberline {9}References}{32}
+\contentsline {subsection}{\numberline {4.5}Sourcing a suitable compiler}{28}
+\contentsline {subsection}{\numberline {4.6}Processor design}{28}
+\contentsline {section}{\numberline {5}Implementation}{29}
+\contentsline {section}{\numberline {6}Testing}{30}
+\contentsline {section}{\numberline {7}Results}{31}
+\contentsline {section}{\numberline {8}Conclusion}{32}
+\contentsline {section}{\numberline {9}References}{33}

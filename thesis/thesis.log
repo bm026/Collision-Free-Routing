@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  1 MAY 2015 11:24
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  1 MAY 2015 12:46
 entering extended mode
  %&-line parsing enabled.
 **thesis.tex
@@ -302,19 +302,19 @@ File: images/benes_sectioned.png Graphic file (type png)
 File: images/benes_full_perm.png Graphic file (type png)
 
 <use images/benes_full_perm.png> [26] [27 <./images/benes_full_perm.png>]
-[28] [29] [30] [31]
-Underfull \hbox (badness 10000) in paragraph at lines 475--476
+[28] [29] [30] [31] [32]
+Underfull \hbox (badness 10000) in paragraph at lines 477--478
 []\OT1/cmr/m/n/12 Hennessy, J. L., Pat-ter-son, D. A. (2011). \OT1/cmr/m/it/12 
 Com-puter Ar-chi-tec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 475--476
+Underfull \hbox (badness 10000) in paragraph at lines 477--478
 \OT1/cmr/m/it/12 ture: A Quan-ti-ta-tive Ap-proach\OT1/cmr/m/n/12 . On-line ap-
 pendix F, re-trieved from
  []
 
-[32] [33] (./thesis.aux) ) 
+[33] [34] (./thesis.aux) ) 
 Here is how much of TeX's memory you used:
  3850 strings out of 495061
  54669 string characters out of 1182621
@@ -332,9 +332,9 @@ exlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-texlive/fonts
 c/amsfonts/cm/cmr17.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/c
 m/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
 </usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on thesis.pdf (34 pages, 779950 bytes).
+Output written on thesis.pdf (35 pages, 781420 bytes).
 PDF statistics:
- 167 PDF objects out of 1000 (max. 8388607)
+ 170 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  56 words of extra memory for PDF output out of 10000 (max. 10000000)
 
