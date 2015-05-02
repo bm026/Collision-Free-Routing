@@ -70,9 +70,12 @@ char connected[] = {0, 0, 0, 0, 0, 0, 0, 0};
 int timestep_count = 0;
 int collision_count = 0;
 int packet_count = 0;
-unsigned int verbose = true;
 
-unsigned int routing_code = 0;
+// user changeable variables
+unsigned int verbose = true;
+unsigned int routing_code = 0; // see reference below
+
+// Routing codes and their corresponding algorithms:
 // 0: developed algorithm
 // 1: two-phase randomised routing
 

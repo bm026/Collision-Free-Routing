@@ -28,7 +28,7 @@
 
 \setlength{\parskip}{12pt}
 %\title{Creating a Predictable Interconnection Network for General-Purpose Parallel Architectures}
-\title{Reducing the Number of Collisions Between Communication Data Packets in General-Purpose Parallel Architectures}
+\title{Reducing the Number of Collisions Between Communication Data Packets in a General-Purpose Parallel Architecture}
 \author{Benjamin Tovar Matthews}
 
 \begin{document}
@@ -451,15 +451,57 @@ This sequence of three binary sections is then repeated for every processor invo
 
 \subsection{Processor modifications}
 
-The processor that was provided with the compiler source code is designed to execute most of the instructions described in the binary output file that the compiler produces. However, the processor was designed as a serial processor which means that it has no communication capabilities, and that instructions for the sending of communication data to the network and the receiving of communication data from the network needed to be added. Additionally, the provided source code for the processor only accounted for a single instance of the processor, whereas the network requires multiple processors to function correctly. Provided that these features are added, the processor source code is suitable for integration with the network and can be included in the emulation. 
+The processor that was provided with the compiler source code is designed to execute most of the instructions described in the binary output file that the compiler produces. A summary of the instruction set of this processor is included as \textbf{Appendix B}. However, the processor was designed as a serial processor which means that it has no communication capabilities, and that instructions for the sending of communication data to the network and the receiving of communication data from the network needed to be added. Additionally, the provided source code for the processor only accounted for a single instance of the processor, whereas the network requires multiple processors to function correctly. Provided that these features are added, the processor source code is suitable for integration with the network and can be included in the emulation. 
 
 \newpage
 \section{Implementation}
 
-network building blocks
-connecting the processors
-integrating the routing algorithm
-emulating parallelism
+The following chapter describes how the emulation was created. The programming language chosen to code the emulation was C due to its speed, efficiency and the ease at which memory address manipulation can be carried out. The code also uses only the standard C libraries, making it portable across virtually all machines running Linux.
+
+\subsection{Building the network}
+
+The network is made up of two main building blocks: $2 \times 2$ crossbar switches and interconnects which link these switches together. These entities were created as individual data structures that interact with each other to facilitate traversal through the network.\\
+
+\noindent\textbf{5.1.1 \ \ Link data structure}
+
+\noindent The links are used to carry packets of communication data across the network. Each link can contain a maximum of one packet of data at a time, which is the reason that collisions of data packets in the network occur. This means that the Link data structure consists of a pointer to the data packet that it is currently transmitting, and if the link is vacant the pointer is set to null. For reasons regarding the emulated parallelism in the network, a second pointer to a temporary data packet is also included in the Link data structure. The function of this additional pointer is described in section \ref{sec:imp_parallelism}.\\
+
+\noindent\textbf{5.1.2 \ \ Switch data structure}
+
+\noindent The switches are used to direct the packets of communication data across the network towards their destination, following the route calculated for each packet by the routing algorithm. In a folded Bene\v{s} network, each switch connects four interconnects which can be used for both input and output of data packets to and from the switch. This means that the Switch data structure contains four instances of the Link data structure, which allow packets of communication data to move across the network. 
+
+In the situation where two packets of communication data try to use the same link at the same time during transmission across the network, a collision occurs. This means that one of the data packets must wait for the link to become free again before it can continue its transmission. To facilitate the queuing of data packets for each output link in the switch, four buffer spaces are needed, which means that four instances of the Buffer data structure are also included as part of the Switch data structure.\\
+
+\newpage\noindent\textbf{5.1.3 \ \ Buffer data structure}
+
+\noindent The buffer for each of the output links in a switch is implemented as a cyclic buffer. This means that the Buffer data structure includes an array of data packets currently being stored in the buffer, a value indicating the index of the array that holds the next packet to be sent across the output link, a value indicating the index of the array where the next data packet to be input into the buffer should be placed, and a value that indicates the number of data packets currently being held in the buffer. The size of each buffer is variable, and is defined at the top of the code. The index values are variable, and change every time an input or output occurs. The count value can be used to indicate whether the buffer is empty or full; if the buffer is empty then it can simply be ignored, and if the buffer is full then it cannot accept any more data packets meaning that any additional data packets that require use of the output link that the buffer supplies must wait in the input link to the switch until space becomes available in the buffer. This functionality is referred to as credit-based flow control.\\
+
+\noindent\textbf{5.1.4 \ \ Forming the network}
+
+\noindent The main frame for the network is built up using these three data structures. The construction of the network can be described in layers, where $n$ is the number of processors that the network will be connected to. Firstly, a bottom layer consisting of $2n$ links is initialised. These links will be used to connect the processors to the first layer of switches. Next, a layer consisting of $n$ switches is initialised and placed above the bottom layer of links. Each of the switches in this layer is then connected to two of the links in the layer below. Another layer consisting of a further $2n$ links is then initialised and placed above the first layer of switches, where each of the switches is connected to a further two links in the layer above. This layering process is continued until there are log($n$) layers of switches connected to log($n$) layers of links and a folded Bene\v{s} network as described in section \ref{sec:network_design} is formed.
+
+\subsection{Creating the processors}
+
+briefly how the processor reads the binary file
+adding input output instructions
+multiple processors with multiple registers
+
+\subsection{Connecting the processors to the network}
+
+'network adapter' data structure
+sending a packet
+receiving a packet
+
+\subsection{Integrating the routing algorithm}
+
+what happens when an output instruction is read
+
+\subsection{Emulating the parallelism}
+\label{sec:imp_parallelism}
+
+description of network timestep
+description of processor timestep
+timing of timesteps
 
 \newpage
 \section{Testing}

@@ -41,9 +41,14 @@
 \contentsline {subsection}{\numberline {4.6}Output of the compiler}{28}
 \contentsline {subsection}{\numberline {4.7}Processor modifications}{29}
 \contentsline {section}{\numberline {5}Implementation}{30}
-\contentsline {section}{\numberline {6}Testing}{31}
-\contentsline {section}{\numberline {7}Results}{32}
-\contentsline {section}{\numberline {8}Conclusion}{33}
-\contentsline {section}{\numberline {9}References}{34}
-\contentsline {section}{Appendix A: User Manual}{36}
-\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{37}
+\contentsline {subsection}{\numberline {5.1}Building the network}{30}
+\contentsline {subsection}{\numberline {5.2}Creating the processors}{31}
+\contentsline {subsection}{\numberline {5.3}Connecting the processors to the network}{31}
+\contentsline {subsection}{\numberline {5.4}Integrating the routing algorithm}{31}
+\contentsline {subsection}{\numberline {5.5}Emulating the parallelism}{31}
+\contentsline {section}{\numberline {6}Testing}{32}
+\contentsline {section}{\numberline {7}Results}{33}
+\contentsline {section}{\numberline {8}Conclusion}{34}
+\contentsline {section}{\numberline {9}References}{35}
+\contentsline {section}{Appendix A: User Manual}{37}
+\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{38}
