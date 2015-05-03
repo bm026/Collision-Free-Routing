@@ -28,7 +28,7 @@
 
 \setlength{\parskip}{12pt}
 %\title{Creating a Predictable Interconnection Network for General-Purpose Parallel Architectures}
-\title{Reducing the Number of Collisions Between Communication Data Packets in a General-Purpose Parallel Architecture}
+\title{Reducing the Number of Collisions Between Communication Data Packets in General-Purpose Parallel Architectures}
 \author{Benjamin Tovar Matthews}
 
 \begin{document}
@@ -520,17 +520,19 @@ Each calculated route is represented as three values: a count value, which indic
 
 \noindent\textbf{5.4.1 \ \ Packet data structure}
 
-\noindent Reference to the calculated route is required throughout each packet's traversal across the network, which means a Packet data structure is required.
+\noindent Reference to the calculated route is required throughout each packet's traversal across the network, which means a Packet data structure is required. The Packet data structure consists of the count value and routing and addressing bit-strings created by the routing algorithm, as well as the source processor address, the destination processor address, the destination port number, the data being transmitted, and an indication of which direction the packet is currently travelling in. 
 
-what happens when an output instruction is read
-packet data structure
+For every output instruction read by the processors, a new packet is created. Once all of the values in the Packet data structure have been set by the routing algorithm, the packet is passed to the network adapter where it is added to the network ready for transmission.
 
 \subsection{Emulating the parallelism}
 \label{sec:imp_parallelism}
 
-description of network timestep
+The emulated hardware building blocks of the network are now fully connected, and can interact with each other. The final stage of the network implementation concerns the functionality of these hardware components when they are working together in parallel. The standard C libraries do not support parallel computation, so the parallelism is emulated using a timestep implementation where a single unit of time's worth of functionality is carried out by each component in the network in serial, before the next timestep is started and the process is repeated. This continues until all of the processors have executed their section of instructions given by the parallel input program. The total number of timesteps that are required to fully execute an input program gives an indication of the run time of the program.
+
+
 description of processor timestep
-timing of timesteps
+routing algorithm in constant time
+description of network timestep
 
 \newpage
 \section{Testing}
