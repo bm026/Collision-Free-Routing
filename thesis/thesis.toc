@@ -43,12 +43,12 @@
 \contentsline {section}{\numberline {5}Implementation}{30}
 \contentsline {subsection}{\numberline {5.1}Building the network}{30}
 \contentsline {subsection}{\numberline {5.2}Creating the processors}{31}
-\contentsline {subsection}{\numberline {5.3}Connecting the processors to the network}{31}
-\contentsline {subsection}{\numberline {5.4}Integrating the routing algorithm}{31}
-\contentsline {subsection}{\numberline {5.5}Emulating the parallelism}{31}
-\contentsline {section}{\numberline {6}Testing}{32}
-\contentsline {section}{\numberline {7}Results}{33}
-\contentsline {section}{\numberline {8}Conclusion}{34}
-\contentsline {section}{\numberline {9}References}{35}
-\contentsline {section}{Appendix A: User Manual}{37}
-\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{38}
+\contentsline {subsection}{\numberline {5.3}Connecting the processors to the network}{32}
+\contentsline {subsection}{\numberline {5.4}Integrating the routing algorithm}{33}
+\contentsline {subsection}{\numberline {5.5}Emulating the parallelism}{33}
+\contentsline {section}{\numberline {6}Testing}{34}
+\contentsline {section}{\numberline {7}Results}{35}
+\contentsline {section}{\numberline {8}Conclusion}{36}
+\contentsline {section}{\numberline {9}References}{37}
+\contentsline {section}{Appendix A: User Manual}{39}
+\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{40}
