@@ -422,6 +422,7 @@ Until now, the workings of the algorithm have be described using a slightly modi
 All of this shows that the algorithm described above is able to calculate collision-free routes through a folded Bene\v{s} network, making it ideal for use in the emulation.
 
 \subsection{Optimising the routing algorithm}
+\label{sec:routing_optimisation}
 
 The algorithm described in section \ref{sec:routing_design} is an optimal collision-free routing algorithm for the Bene\v{s} network described in figure \ref{fig:benes_sectioned}. However, the fact that a folded Bene\v{s} network will be used in the emulation means that some optimisation techniques can applied to the routing algorithm that take advantage of this difference in network structure to make communication more efficient without affecting the lack of collisions in the network.
 
@@ -460,6 +461,7 @@ The processor that was provided with the compiler source code is designed to exe
 The following chapter describes how the emulation was created. The programming language chosen to code the emulation was C due to its speed, efficiency and the ease at which memory address manipulation can be carried out. The code also uses only the standard C libraries, making it portable across virtually all machines running Linux.
 
 \subsection{Building the network}
+\label{sec:imp_build_network}
 
 The network is made up of two main building blocks: $2 \times 2$ crossbar switches and interconnects which link these switches together. These entities were created as individual data structures that interact with each other to facilitate traversal through the network.\\
 
@@ -500,13 +502,28 @@ It was described in section \ref{sec:processor_mods} that an emulated processor 
 \subsection{Connecting the processors to the network}
 \label{sec:imp_network_adapter}
 
-'network adapter' data structure
-sending a packet
-receiving a packet
+Now that multiple emulated processors are available, they can be connected to the bottom layer of links described in section \ref{sec:imp_build_network} which joins them to the network. To do this, a data structure is needed that acts as a network adapter. This allows packets to be added to the network when a processor needs to send communication data, and packets to be removed from the network once the packet has been received by its destination processor.\\
+
+\noindent\textbf{5.3.1 \ \ Network Adapter data structure}
+
+\noindent The Network Adapter data structure consists of two Link data structures which connect the network adapter to the first layer of switches in the network, a port for next output packet to be added to the network, and an array of numbered ports where input packets can be stored until they are collected by the destination processor when an input instruction is read.
+
+When an output instruction is read by a processor, the network adapter waits to receive a packet of communication data from the routing algorithm. Once this packet is received, it is added to the output port of the network adapter. The packet has now been introduced into the network, where it can travel along the path calculated by the routing algorithm towards its destination.
+
+When a packet reaches its destination processor, it is removed from the network and stored in the specified port number in the network adapter. It remains stored in the port until an input instruction is read by the destination processor that requires the data inside the packet stored in that port. When this occurs, the data is removed from the port and used in the program currently being executed. If an input instruction is read by a processor which refers to an empty input port, the processor must wait until the required data arrives.
 
 \subsection{Integrating the routing algorithm}
 
+The routing algorithm is triggered when one of the processors reads an output instruction, which indicates that a calculated route though the network is required for a packet of communication data. Before calculating the route, the routing algorithm scans all of the other processors in the network for any other parallel output communications that are required. Using the source and destination addresses for all of the gathered communications, a permutation is formed which is then used by an implementation of the algorithm described in sections \ref{sec:routing_design} and \ref{sec:routing_optimisation} to calculate collision-free routes through the network for each communication in the permutation. 
+
+Each calculated route is represented as three values: a count value, which indicates how many layers of switches the route traverses on its outward path before it changes direction and begins its inward path back towards the processors, a routing bit-string which indicates which of the output links connected to each switch encountered on the outward route are taken, and an addressing bit-string which indicates which of the output links connected to each switch encountered on the inward route are taken. For both bit-strings, a 0 represents a route though the leftmost output link, and a 1 represents a route though the rightmost output link. The least significant bit of both bit-strings represents the route taken at the first layer of switches, and the most significant bit represents the route taken at the last layer of switches before the direction of the route is reversed.\\
+
+\noindent\textbf{5.4.1 \ \ Packet data structure}
+
+\noindent Reference to the calculated route is required throughout each packet's traversal across the network, which means a Packet data structure is required.
+
 what happens when an output instruction is read
+packet data structure
 
 \subsection{Emulating the parallelism}
 \label{sec:imp_parallelism}
