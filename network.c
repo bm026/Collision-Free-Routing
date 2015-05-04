@@ -152,13 +152,13 @@ int main (int argc,  char* argv[]) {
 					if (verbose) {
 						// print all routes
 						// out route
-						printf("Packet %d. Out: ", i);
+						printf("%d - Packet added to processor %d with routing path: ", timestep_count, i);
 						for (k=0; k<p[i] -> count; k++) {
 							if (p[i] -> rout[k] == 0) printf("0");
 							else printf("1");
 						}
 						// in route
-						printf(". In: ");
+						printf(", addressing path: ");
 						for (k=p[i] -> count-1; k >= 0; k--) {
 							if (p[i] -> addr[k] == 0) printf("0");
 							else printf("1");
@@ -407,7 +407,7 @@ int buffer_write(Buffer *buffer, Packet *p) {
 		buffer -> count++;
 	}
 	else {
-		printf("ERROR: FULL BUFFER\n");
+		printf("%d - ERROR: FULL BUFFER\n", timestep_count);
 		return 1;
 	}
 
@@ -416,9 +416,9 @@ int buffer_write(Buffer *buffer, Packet *p) {
 
 void add_packet_to_core(Network *n, Packet *p, int core_num) {
 	n -> cores[core_num] -> send = p;
-	if (verbose) {
+	/*if (verbose) {
 		printf("Packet added to core %d\n", core_num);
-	}
+	}*/
 }
 
 void send_packets_from_switches(Network *n) {
@@ -444,13 +444,13 @@ void send_packets_from_switches(Network *n) {
 				base = (int) pow(2, i+1);
 				if (j % base < base/2) {
 					if (verbose) {
-						printf("COLLISION on layer:%d, link:%d\n", i, 2*j);
+						printf("%d - COLLISION on layer:%d, link:%d\n", timestep_count, i, 2*j);
 					}
 					collision_count++;
 				}
 				else {
 					if (verbose) {
-						printf("COLLISION on layer:%d, link:%d\n", i, 2*j+1-base);
+						printf("%d - COLLISION on layer:%d, link:%d\n", timestep_count, i, 2*j+1-base);
 					}
 					collision_count++;
 				}
@@ -465,13 +465,13 @@ void send_packets_from_switches(Network *n) {
 				base = (int) pow(2, i+1);
 				if (j % base < base/2) {
 					if (verbose) {
-						printf("COLLISION on layer:%d, link:%d\n", i, 2*j+base);
+						printf("%d - COLLISION on layer:%d, link:%d\n", timestep_count, i, 2*j+base);
 					}
 					collision_count++;
 				}
 				else {
 					if (verbose) {
-						printf("COLLISION on layer:%d, link:%d\n", i, 2*j+1);
+						printf("%d - COLLISION on layer:%d, link:%d\n", timestep_count, i, 2*j+1);
 					}
 					collision_count++;
 				}
@@ -485,7 +485,7 @@ void send_packets_from_switches(Network *n) {
 				}
 				else if (s -> e0buffer -> count != 0) {
 					if (verbose) {
-						printf("COLLISION on layer:%d, link:%d\n", i+1, 2*j);
+						printf("%d - COLLISION on layer:%d, link:%d\n", timestep_count, i+1, 2*j);
 					}
 					collision_count++;
 				}
@@ -496,7 +496,7 @@ void send_packets_from_switches(Network *n) {
 				}
 				else if (s -> e1buffer -> count != 0) {
 					if (verbose) {
-						printf("COLLISION on layer:%d, link:%d\n", i+1, 2*j+1);
+						printf("%d - COLLISION on layer:%d, link:%d\n", timestep_count, i+1, 2*j+1);
 					}
 					collision_count++;
 				}
@@ -634,14 +634,14 @@ void send_packets_from_cores(Network *n) {
 				if (c -> io0 -> temp == NULL && c -> io0 -> comm == NULL) {
 					c -> io0 -> temp = c -> send;
 					if (verbose) {
-						printf("Packet sent from core %d with data: %d\n", i, c -> send -> data);
+						printf("%d - Packet sent from processor %d with data: %d\n", timestep_count, i, c -> send -> data);
 					}
 					c -> send = NULL;
 				}
 				// if link is not free, collision
 				else {
 					if (verbose) {
-						printf("COLLISION on layer:0, link:%d\n", 2*i);
+						printf("%d - COLLISION on layer:0, link:%d\n", timestep_count, 2*i);
 					}
 					collision_count++;
 				}
@@ -650,13 +650,13 @@ void send_packets_from_cores(Network *n) {
 				if (c -> io1 -> temp == NULL && c -> io1 -> comm == NULL) {
 					c -> io1 -> temp = c -> send;
 					if (verbose) {
-						printf("Packet sent from core %d with data: %d\n", i, c -> send -> data);
+						printf("%d - Packet sent from processor %d with data: %d\n", timestep_count, i, c -> send -> data);
 					}
 					c -> send = NULL;
 				}
 				else {
 					if (verbose) {
-						printf("COLLISION on layer:0, link:%d\n", 2*i+1);
+						printf("%d - COLLISION on layer:0, link:%d\n", timestep_count, 2*i+1);
 					}
 					collision_count++;
 				}
@@ -680,7 +680,7 @@ void check_cores_for_received_packets(Network *n) {
 			if (c -> io0 -> comm -> direction == CORE) {
 				c -> ports[c -> io0 -> comm -> port] = c -> io0 -> comm;
 				if (verbose) {
-					printf("Packet received on core %d (port %d) with data: %d\n", i, 
+					printf("%d - Packet received on processor %d (port %d) with data: %d\n", timestep_count, i, 
 						c -> io0 -> comm -> port, c -> io0 -> comm -> data);
 				}
 				c -> io0 -> comm = NULL;
@@ -693,7 +693,7 @@ void check_cores_for_received_packets(Network *n) {
 			if (c -> io1 -> comm -> direction == CORE) {
 				c -> ports[c -> io1 -> comm -> port] = c -> io1 -> comm;
 				if (verbose) {
-					printf("Packet received on core %d (port %d) with data: %d\n", i, 
+					printf("%d - Packet received on processor %d (port %d) with data: %d\n", timestep_count, i, 
 						c -> io1 -> comm -> port, c -> io1 -> comm -> data);
 				}
 				c -> io1 -> comm = NULL;

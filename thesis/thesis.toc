@@ -1,54 +1,59 @@
-\contentsline {section}{\numberline {1}Introduction}{4}
-\contentsline {subsection}{\numberline {1.1}Definitions}{4}
-\contentsline {subsection}{\numberline {1.2}Outline of the problem}{4}
-\contentsline {subsection}{\numberline {1.3}Possible optimisations to current solutions}{5}
-\contentsline {subsection}{\numberline {1.4}Motivation}{6}
-\contentsline {subsection}{\numberline {1.5}Purpose}{6}
-\contentsline {subsection}{\numberline {1.6}Outline of the following chapters}{7}
-\contentsline {section}{\numberline {2}Background}{8}
-\contentsline {subsection}{\numberline {2.1}General-purpose processors: a need for parallelism}{8}
-\contentsline {subsection}{\numberline {2.2}An introduction to parallel systems}{10}
-\contentsline {subsection}{\numberline {2.3}An introduction to interconnects}{11}
-\contentsline {subsection}{\numberline {2.4}Interconnection networks}{12}
-\contentsline {subsection}{\numberline {2.5}Network topologies}{12}
-\contentsline {subsection}{\numberline {2.6}Routing}{14}
-\contentsline {subsubsection}{\numberline {2.6.1}Oblivious routing}{14}
-\contentsline {subsubsection}{\numberline {2.6.2}Adaptive routing}{15}
-\contentsline {subsubsection}{\numberline {2.6.3}Two-phase randomised routing}{15}
-\contentsline {subsection}{\numberline {2.7}Switching}{15}
-\contentsline {subsubsection}{\numberline {2.7.1}Packet switching}{15}
-\contentsline {subsubsection}{\numberline {2.7.2}Circuit switching}{16}
-\contentsline {subsubsection}{\numberline {2.7.3}Wormhole switching}{16}
-\contentsline {subsection}{\numberline {2.8}Flow control}{16}
-\contentsline {subsubsection}{\numberline {2.8.1}Credit-based control flow}{16}
-\contentsline {subsubsection}{\numberline {2.8.2}Virtual channel control flow}{16}
-\contentsline {subsection}{\numberline {2.9}Modern interconnection networks}{17}
-\contentsline {subsubsection}{\numberline {2.9.1}InfiniBand}{17}
-\contentsline {subsubsection}{\numberline {2.9.2}IBM Blue Gene/L 3D Torus Network}{17}
-\contentsline {section}{\numberline {3}Specification}{18}
-\contentsline {subsection}{\numberline {3.1}Outline of the solution}{18}
-\contentsline {subsection}{\numberline {3.2}Functional requirements}{19}
-\contentsline {subsection}{\numberline {3.3}Interface requirements}{20}
-\contentsline {subsection}{\numberline {3.4}Performance requirements}{21}
-\contentsline {subsection}{\numberline {3.5}Software system requirements}{21}
-\contentsline {subsection}{\numberline {3.6}Constraints, assumptions and dependencies}{22}
-\contentsline {section}{\numberline {4}Design}{23}
-\contentsline {subsection}{\numberline {4.1}Network topology design}{23}
-\contentsline {subsection}{\numberline {4.2}Network switch design}{24}
-\contentsline {subsection}{\numberline {4.3}Routing algorithm design}{25}
-\contentsline {subsection}{\numberline {4.4}Optimising the routing algorithm}{27}
-\contentsline {subsection}{\numberline {4.5}Sourcing a suitable compiler}{28}
-\contentsline {subsection}{\numberline {4.6}Output of the compiler}{28}
-\contentsline {subsection}{\numberline {4.7}Processor modifications}{29}
-\contentsline {section}{\numberline {5}Implementation}{30}
-\contentsline {subsection}{\numberline {5.1}Building the network}{30}
-\contentsline {subsection}{\numberline {5.2}Creating the processors}{31}
-\contentsline {subsection}{\numberline {5.3}Connecting the processors to the network}{32}
-\contentsline {subsection}{\numberline {5.4}Integrating the routing algorithm}{33}
-\contentsline {subsection}{\numberline {5.5}Emulating the parallelism}{34}
-\contentsline {section}{\numberline {6}Testing}{36}
-\contentsline {section}{\numberline {7}Results}{37}
-\contentsline {section}{\numberline {8}Conclusion}{38}
-\contentsline {section}{\numberline {9}References}{39}
-\contentsline {section}{Appendix A: User Manual}{41}
-\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{42}
+\contentsline {section}{\numberline {1}Introduction}{5}
+\contentsline {subsection}{\numberline {1.1}Definitions}{5}
+\contentsline {subsection}{\numberline {1.2}Outline of the problem}{5}
+\contentsline {subsection}{\numberline {1.3}Possible optimisations to current solutions}{6}
+\contentsline {subsection}{\numberline {1.4}Motivation}{7}
+\contentsline {subsection}{\numberline {1.5}Purpose}{7}
+\contentsline {subsection}{\numberline {1.6}Outline of the following chapters}{8}
+\contentsline {section}{\numberline {2}Background}{9}
+\contentsline {subsection}{\numberline {2.1}General-purpose processors: a need for parallelism}{9}
+\contentsline {subsection}{\numberline {2.2}An introduction to parallel systems}{11}
+\contentsline {subsection}{\numberline {2.3}An introduction to interconnects}{12}
+\contentsline {subsection}{\numberline {2.4}Interconnection networks}{13}
+\contentsline {subsection}{\numberline {2.5}Network topologies}{13}
+\contentsline {subsection}{\numberline {2.6}Routing}{15}
+\contentsline {subsubsection}{\numberline {2.6.1}Oblivious routing}{15}
+\contentsline {subsubsection}{\numberline {2.6.2}Adaptive routing}{16}
+\contentsline {subsubsection}{\numberline {2.6.3}Two-phase randomised routing}{16}
+\contentsline {subsection}{\numberline {2.7}Switching}{16}
+\contentsline {subsubsection}{\numberline {2.7.1}Packet switching}{16}
+\contentsline {subsubsection}{\numberline {2.7.2}Circuit switching}{17}
+\contentsline {subsubsection}{\numberline {2.7.3}Wormhole switching}{17}
+\contentsline {subsection}{\numberline {2.8}Flow control}{17}
+\contentsline {subsubsection}{\numberline {2.8.1}Credit-based control flow}{17}
+\contentsline {subsubsection}{\numberline {2.8.2}Virtual channel control flow}{17}
+\contentsline {subsection}{\numberline {2.9}Modern interconnection networks}{18}
+\contentsline {subsubsection}{\numberline {2.9.1}InfiniBand}{18}
+\contentsline {subsubsection}{\numberline {2.9.2}IBM Blue Gene/L 3D Torus Network}{18}
+\contentsline {section}{\numberline {3}Specification}{19}
+\contentsline {subsection}{\numberline {3.1}Outline of the solution}{19}
+\contentsline {subsection}{\numberline {3.2}Functional requirements}{20}
+\contentsline {subsection}{\numberline {3.3}Interface requirements}{21}
+\contentsline {subsection}{\numberline {3.4}Performance requirements}{22}
+\contentsline {subsection}{\numberline {3.5}Software system requirements}{22}
+\contentsline {subsection}{\numberline {3.6}Constraints, assumptions and dependencies}{23}
+\contentsline {section}{\numberline {4}Design}{24}
+\contentsline {subsection}{\numberline {4.1}Network topology design}{24}
+\contentsline {subsection}{\numberline {4.2}Network switch design}{25}
+\contentsline {subsection}{\numberline {4.3}Routing algorithm design}{26}
+\contentsline {subsection}{\numberline {4.4}Optimising the routing algorithm}{28}
+\contentsline {subsection}{\numberline {4.5}Sourcing a suitable compiler}{29}
+\contentsline {subsection}{\numberline {4.6}Output of the compiler}{29}
+\contentsline {subsection}{\numberline {4.7}Processor modifications}{30}
+\contentsline {section}{\numberline {5}Implementation}{31}
+\contentsline {subsection}{\numberline {5.1}Building the network}{31}
+\contentsline {subsection}{\numberline {5.2}Creating the processors}{32}
+\contentsline {subsection}{\numberline {5.3}Connecting the processors to the network}{33}
+\contentsline {subsection}{\numberline {5.4}Integrating the routing algorithm}{34}
+\contentsline {subsection}{\numberline {5.5}Emulating the parallelism}{35}
+\contentsline {section}{\numberline {6}Testing}{37}
+\contentsline {subsection}{\numberline {6.1}Syntax of parallel input programs}{37}
+\contentsline {subsection}{\numberline {6.2}Testing network correctness}{37}
+\contentsline {subsection}{\numberline {6.3}Testing routing algorithm correctness}{37}
+\contentsline {subsection}{\numberline {6.4}Testing against specification}{37}
+\contentsline {section}{\numberline {7}Results}{38}
+\contentsline {section}{\numberline {8}Conclusion}{39}
+\contentsline {section}{\numberline {9}References}{40}
+\contentsline {section}{Appendix A: User Manual}{42}
+\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{43}
+\contentsline {section}{Appendix C: Input Program Code Listings}{48}

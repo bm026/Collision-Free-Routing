@@ -17,6 +17,13 @@
 \usepackage{enumitem}
 \usepackage{appendix}
 
+\usepackage{listings}
+\usepackage{color}
+\definecolor{mygrey}{rgb}{0.975,0.975,0.975}
+\lstset{ backgroundcolor=\color{mygrey},
+		  showlines=true,
+		  frame=single }
+
 \usepackage{graphicx}
 \graphicspath{ {images/} }
 
@@ -60,7 +67,7 @@ This thesis includes a number of terms that have been clarified below to avoid a
 
 \item[] \textbf{Network}: A number of processors connected together by physical wires and intermediate nodes, allowing each processor to communicate with others in the network.
 
-\item[] \textbf{Link}: A single wire in the network connecting either two processors, a processor and an intermediate node, or two intermediate nodes.
+\item[] \textbf{Link}: A single interconnect in the network connecting either two processors, a processor and an intermediate node, or two intermediate nodes.
 
 \item[] \textbf{Routing algorithm}: The algorithm that decides which links in the network are to be used when a communication is required between two processors on the network.
 
@@ -441,7 +448,7 @@ The compiler takes the source code of a parallel input program as input and prod
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=15cm]{compiler_binary.png}
+\includegraphics[width=15cm]{compiler_binary1.png}
 \caption[An example of binary output from the compiler]{An example of binary output from the compiler, with added sectioning and colouring.}
 \label{fig:compiler_binary}
 \end{figure}
@@ -539,6 +546,20 @@ The four stages of each timestep are repeated until all of the processors have f
 
 \newpage
 \section{Testing}
+
+\subsection{Syntax of parallel input programs}
+
+
+
+\subsection{Testing network correctness}
+
+
+
+\subsection{Testing routing algorithm correctness}
+
+
+
+\subsection{Testing against specification}
 
 
 
@@ -846,6 +867,27 @@ SETSP & $sp, areg  \leftarrow areg, breg $& set stack pointer \\
 BOOT  &$ load()$& boot processor \\
                 &$ pc, sp \leftarrow mem[0], memhigh$ \\
 \end{tabular}
+
+\newpage
+\section*{Appendix C: Input Program Code Listings}
+\addcontentsline{toc}{section}{Appendix C: Input Program Code Listings}
+
+\begin{lstlisting}
+
+    proc main() is
+        var in;
+        network { 
+            { 2 ! 22; 0 ? in } &
+            { 4 ! 44; 0 ? in } &
+            { 6 ! 26; 0 ? in } &
+            { 1 ! 31; 0 ? in } &  
+            { 7 ! 47; 0 ? in } &
+            { 0 ! 50; 0 ? in } &
+            { 5 ! 65; 0 ? in } &
+            { 3 ! 73; 0 ? in }
+        };
+
+\end{lstlisting}
 
 
 \end{document}

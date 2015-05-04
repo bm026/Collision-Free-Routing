@@ -1,14 +1,14 @@
-\contentsline {figure}{\numberline {1}{\ignorespaces A subset of Intel CPU introductions between 1970 and 2010}}{9}
-\contentsline {figure}{\numberline {2}{\ignorespaces Different network topologies used in parallel architectures}}{13}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {2D mesh}}}{13}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {2D torus}}}{13}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {4D hypercube}}}{13}
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {Fat tree}}}{13}
-\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {Clos}}}{13}
-\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {Bene\v {s}}}}{13}
-\contentsline {figure}{\numberline {3}{\ignorespaces A folded Bene\v {s} network connecting eight processors}}{23}
-\contentsline {figure}{\numberline {4}{\ignorespaces The possible permutations of data flow through a one-way crossbar switch}}{24}
-\contentsline {figure}{\numberline {5}{\ignorespaces A one-way crossbar switch with a 5-space buffer for each output link}}{24}
-\contentsline {figure}{\numberline {6}{\ignorespaces A slightly modified Bene\v {s} network with two sections highlighted}}{25}
-\contentsline {figure}{\numberline {7}{\ignorespaces Routing a full permutation}}{27}
-\contentsline {figure}{\numberline {8}{\ignorespaces An example of binary output from the compiler}}{29}
+\contentsline {figure}{\numberline {1}{\ignorespaces A subset of Intel CPU introductions between 1970 and 2010}}{10}
+\contentsline {figure}{\numberline {2}{\ignorespaces Different network topologies used in parallel architectures}}{14}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {2D mesh}}}{14}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {2D torus}}}{14}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {4D hypercube}}}{14}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {Fat tree}}}{14}
+\contentsline {subfigure}{\numberline {(e)}{\ignorespaces {Clos}}}{14}
+\contentsline {subfigure}{\numberline {(f)}{\ignorespaces {Bene\v {s}}}}{14}
+\contentsline {figure}{\numberline {3}{\ignorespaces A folded Bene\v {s} network connecting eight processors}}{24}
+\contentsline {figure}{\numberline {4}{\ignorespaces The possible permutations of data flow through a one-way crossbar switch}}{25}
+\contentsline {figure}{\numberline {5}{\ignorespaces A one-way crossbar switch with a 5-space buffer for each output link}}{25}
+\contentsline {figure}{\numberline {6}{\ignorespaces A slightly modified Bene\v {s} network with two sections highlighted}}{26}
+\contentsline {figure}{\numberline {7}{\ignorespaces Routing a full permutation}}{28}
+\contentsline {figure}{\numberline {8}{\ignorespaces An example of binary output from the compiler}}{30}
