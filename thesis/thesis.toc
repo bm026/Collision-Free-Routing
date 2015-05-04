@@ -46,9 +46,9 @@
 \contentsline {subsection}{\numberline {5.3}Connecting the processors to the network}{32}
 \contentsline {subsection}{\numberline {5.4}Integrating the routing algorithm}{33}
 \contentsline {subsection}{\numberline {5.5}Emulating the parallelism}{34}
-\contentsline {section}{\numberline {6}Testing}{35}
-\contentsline {section}{\numberline {7}Results}{36}
-\contentsline {section}{\numberline {8}Conclusion}{37}
-\contentsline {section}{\numberline {9}References}{38}
-\contentsline {section}{Appendix A: User Manual}{40}
-\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{41}
+\contentsline {section}{\numberline {6}Testing}{36}
+\contentsline {section}{\numberline {7}Results}{37}
+\contentsline {section}{\numberline {8}Conclusion}{38}
+\contentsline {section}{\numberline {9}References}{39}
+\contentsline {section}{Appendix A: User Manual}{41}
+\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{42}
