@@ -33,6 +33,7 @@ int main (int argc,  char* argv[]) {
 	for (i=0; i<NUM_CORES; i++) {
         running[i] = true;
         oreg[i] = 0;
+        is_wait[i] = false;
     }	
 		
 	// execute program on parallel processors
@@ -44,7 +45,7 @@ int main (int argc,  char* argv[]) {
 
         	active_cores[i] = 0;
 
-            if (running[i]) {
+            if (running[i] && !is_wait[i]) {
 
         	    inst[i] = pmem[i][pc[i]];
         	    pc[i] = pc[i] + 1;
@@ -100,13 +101,14 @@ int main (int argc,  char* argv[]) {
                             case o_in: 
 
                             	if (n -> cores[i] -> ports[areg[i]] == NULL) {
-                            		pc[i] = pc[i] - 2;
+                            		is_wait[i] = true;
+                            		//pc[i] = pc[i] - 2;
                             		//printf("core %d waiting for input\n", i);
                             	}
                             	else {
                             		breg[i] = areg[i];
                             		areg[i] = n -> cores[i] -> ports[breg[i]] -> data;
-                            		n -> cores[i] -> ports[breg[i]] == NULL;
+                            		n -> cores[i] -> ports[breg[i]] = NULL;
                             	}
                             	break;
                             
@@ -128,6 +130,15 @@ int main (int argc,  char* argv[]) {
 
             			oreg[i] = 0; break;		  
         	    }
+            }
+            else if (running[i] && is_wait[i]) {
+                if (n -> cores[i] -> ports[areg[i]] != NULL) {
+                    breg[i] = areg[i];
+                    areg[i] = n -> cores[i] -> ports[breg[i]] -> data;
+                    n -> cores[i] -> ports[breg[i]] = NULL;
+                    is_wait[i] = false;
+                    oreg[i] = 0;
+                }
             }
         }
 
@@ -164,7 +175,7 @@ int main (int argc,  char* argv[]) {
 							if (p[i] -> addr[k] == 0) printf("0");
 							else printf("1");
 						}
-						printf(".\n");
+						printf("\n");
 					}
 				}
 			}

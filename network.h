@@ -10,8 +10,8 @@
 
 // network definitions
 #define BUFF_SIZE 4
-#define NUM_LAYERS 2
-#define NUM_CORES 4
+#define NUM_LAYERS 3
+#define NUM_CORES 8
 #define NUM_PORTS 4
 
 // processor definitions
@@ -62,6 +62,7 @@ unsigned int breg[NUM_CORES];
 unsigned int oreg[NUM_CORES];
 unsigned int inst[NUM_CORES];
 unsigned int running[NUM_CORES];
+unsigned int is_wait[NUM_CORES];
 FILE *codefile;
 FILE *simio[8];
 char connected[] = {0, 0, 0, 0, 0, 0, 0, 0};
