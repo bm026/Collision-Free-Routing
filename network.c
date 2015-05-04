@@ -152,7 +152,8 @@ int main (int argc,  char* argv[]) {
 					if (verbose) {
 						// print all routes
 						// out route
-						printf("%d - Packet added to processor %d with routing path: ", timestep_count, i);
+						printf("%d - Packet [%d->%d] added to processor %d with routing path: ", timestep_count, 
+							p[i] -> source, p[i] -> destination, i);
 						for (k=0; k<p[i] -> count; k++) {
 							if (p[i] -> rout[k] == 0) printf("0");
 							else printf("1");
@@ -634,7 +635,8 @@ void send_packets_from_cores(Network *n) {
 				if (c -> io0 -> temp == NULL && c -> io0 -> comm == NULL) {
 					c -> io0 -> temp = c -> send;
 					if (verbose) {
-						printf("%d - Packet sent from processor %d with data: %d\n", timestep_count, i, c -> send -> data);
+						printf("%d - Packet [%d->%d] sent from processor %d with data: %d\n", timestep_count, 
+							c -> send -> source, c -> send -> destination, i, c -> send -> data);
 					}
 					c -> send = NULL;
 				}
@@ -650,7 +652,8 @@ void send_packets_from_cores(Network *n) {
 				if (c -> io1 -> temp == NULL && c -> io1 -> comm == NULL) {
 					c -> io1 -> temp = c -> send;
 					if (verbose) {
-						printf("%d - Packet sent from processor %d with data: %d\n", timestep_count, i, c -> send -> data);
+						printf("%d - Packet [%d->%d] sent from processor %d with data: %d\n", timestep_count, 
+							c -> send -> source, c -> send -> destination, i, c -> send -> data);
 					}
 					c -> send = NULL;
 				}
@@ -680,7 +683,8 @@ void check_cores_for_received_packets(Network *n) {
 			if (c -> io0 -> comm -> direction == CORE) {
 				c -> ports[c -> io0 -> comm -> port] = c -> io0 -> comm;
 				if (verbose) {
-					printf("%d - Packet received on processor %d (port %d) with data: %d\n", timestep_count, i, 
+					printf("%d - Packet [%d->%d] received by processor %d (port %d) with data: %d\n", 
+						timestep_count, c -> io0 -> comm -> source, c -> io0 -> comm -> destination, i, 
 						c -> io0 -> comm -> port, c -> io0 -> comm -> data);
 				}
 				c -> io0 -> comm = NULL;
@@ -693,7 +697,8 @@ void check_cores_for_received_packets(Network *n) {
 			if (c -> io1 -> comm -> direction == CORE) {
 				c -> ports[c -> io1 -> comm -> port] = c -> io1 -> comm;
 				if (verbose) {
-					printf("%d - Packet received on processor %d (port %d) with data: %d\n", timestep_count, i, 
+					printf("%d - Packet [%d->%d] received by processor %d (port %d) with data: %d\n", 
+						timestep_count, c -> io1 -> comm -> source, c -> io1 -> comm -> destination, i, 
 						c -> io1 -> comm -> port, c -> io1 -> comm -> data);
 				}
 				c -> io1 -> comm = NULL;
