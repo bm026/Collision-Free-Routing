@@ -48,13 +48,13 @@
 \contentsline {subsection}{\numberline {5.5}Emulating the parallelism}{36}
 \contentsline {section}{\numberline {6}Testing}{38}
 \contentsline {subsection}{\numberline {6.1}Syntax of parallel input programs}{38}
-\contentsline {subsection}{\numberline {6.2}Testing network correctness}{39}
-\contentsline {subsection}{\numberline {6.3}Testing routing algorithm correctness}{39}
-\contentsline {subsection}{\numberline {6.4}Testing against specification}{39}
-\contentsline {section}{\numberline {7}Results}{40}
-\contentsline {section}{\numberline {8}Conclusion}{41}
-\contentsline {section}{\numberline {9}References}{42}
-\contentsline {section}{Appendix A: User Manual}{44}
-\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{45}
-\contentsline {section}{Appendix C: Description of Input Program Syntax}{50}
-\contentsline {section}{Appendix D: Input Program Code Listings}{57}
+\contentsline {subsection}{\numberline {6.2}Testing the correctness of the network}{39}
+\contentsline {subsection}{\numberline {6.3}Testing the correctness of the routing algorithm}{39}
+\contentsline {subsection}{\numberline {6.4}Testing against the specification}{40}
+\contentsline {section}{\numberline {7}Results}{41}
+\contentsline {section}{\numberline {8}Conclusion}{42}
+\contentsline {section}{\numberline {9}References}{43}
+\contentsline {section}{Appendix A: User Manual}{45}
+\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{46}
+\contentsline {section}{Appendix C: Description of Input Program Syntax}{51}
+\contentsline {section}{Appendix D: Input Program Code Listings}{58}

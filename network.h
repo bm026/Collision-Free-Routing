@@ -10,8 +10,8 @@
 
 // network definitions
 #define BUFF_SIZE 4
-#define NUM_LAYERS 2
-#define NUM_CORES 4
+#define NUM_LAYERS 4
+#define NUM_CORES 16
 #define NUM_PORTS 4
 
 // processor definitions

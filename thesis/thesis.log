@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  5 MAY 2015 13:13
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  5 MAY 2015 17:21
 entering extended mode
  %&-line parsing enabled.
 **thesis.tex
@@ -415,24 +415,24 @@ Underfull \hbox (badness 10000) in paragraph at lines 564--565
 
  []
 
-[38] [39] [40] [41]
-Underfull \hbox (badness 10000) in paragraph at lines 633--634
+[38] [39] [40] [41] [42]
+Underfull \hbox (badness 10000) in paragraph at lines 637--638
 []\OT1/cmr/m/n/12 Hennessy, J. L., Pat-ter-son, D. A. (2011). \OT1/cmr/m/it/12 
 Com-puter Ar-chi-tec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 633--634
+Underfull \hbox (badness 10000) in paragraph at lines 637--638
 \OT1/cmr/m/it/12 ture: A Quan-ti-ta-tive Ap-proach\OT1/cmr/m/n/12 . On-line ap-
 pendix F, re-trieved from
  []
 
-[42] [43] [44] [45] [46] [47] [48] [49] [50] [51] [52] [53] [54] [55] [56]
-[57] (./thesis.aux) ) 
+[43] [44] [45] [46] [47] [48] [49] [50] [51] [52] [53] [54] [55] [56] [57]
+[58] (./thesis.aux) ) 
 Here is how much of TeX's memory you used:
  5380 strings out of 495061
  76989 string characters out of 1182621
- 190206 words of memory out of 3000000
+ 370206 words of memory out of 3000000
  8491 multiletter control sequences out of 15000+50000
  11538 words of font info for 42 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
@@ -448,9 +448,9 @@ fonts/cm/cmr17.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr
 /share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texm
 f-texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texmf-texlive/f
 onts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on thesis.pdf (58 pages, 999308 bytes).
+Output written on thesis.pdf (59 pages, 1004329 bytes).
 PDF statistics:
- 255 PDF objects out of 1000 (max. 8388607)
+ 258 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  61 words of extra memory for PDF output out of 10000 (max. 10000000)
 
