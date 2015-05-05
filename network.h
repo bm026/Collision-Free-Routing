@@ -10,9 +10,9 @@
 
 // network definitions
 #define BUFF_SIZE 4
-#define NUM_LAYERS 4
-#define NUM_CORES 16
-#define NUM_PORTS 4
+#define NUM_LAYERS 3
+#define NUM_CORES 8
+#define PORT_DEPTH 20
 
 // processor definitions
 #define true     -1
@@ -99,7 +99,8 @@ typedef struct {
 } Packet;
 
 typedef struct {
-	Packet *queue[BUFF_SIZE];
+	//Packet *queue[BUFF_SIZE];
+	Packet **queue;
 	int nextRead;
 	int nextWrite;
 	int count;
@@ -126,7 +127,8 @@ typedef struct {
 	Link *io1;
 	Packet *send;
 	//Packet *recv;
-	Packet *ports[NUM_PORTS];
+	//Packet *ports[NUM_PORTS];
+	Buffer *ports[NUM_CORES];
 } Core;
 
 typedef struct {
@@ -144,9 +146,10 @@ int simin(int s);
 
 // network functions
 Network *init_network (Network *n);
+Buffer *new_buffer(int size);
 void network_timesteps(Network *n, int iterations);
-Packet *buffer_read(Buffer *buffer);
-int buffer_write(Buffer *buffer, Packet *p);
+Packet *buffer_read(Buffer *buffer, int size);
+int buffer_write(Buffer *buffer, Packet *p, int max);
 void add_packet_to_core(Network *n, Packet *p, int core_num);
 void send_packets_from_switches(Network *n);
 void check_switches_for_received_packets(Network *n);

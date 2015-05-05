@@ -100,15 +100,17 @@ int main (int argc,  char* argv[]) {
 
                             case o_in: 
 
-                            	if (n -> cores[i] -> ports[areg[i]] == NULL) {
+                            	//if (n -> cores[i] -> ports[areg[i]] == NULL) {
+                            	if (n -> cores[i] -> ports[areg[i]] -> count == 0) {
                             		is_wait[i] = true;
                             		//pc[i] = pc[i] - 2;
                             		//printf("core %d waiting for input\n", i);
                             	}
                             	else {
                             		breg[i] = areg[i];
-                            		areg[i] = n -> cores[i] -> ports[breg[i]] -> data;
-                            		n -> cores[i] -> ports[breg[i]] = NULL;
+                            		//areg[i] = n -> cores[i] -> ports[breg[i]] -> data;
+                            		//n -> cores[i] -> ports[breg[i]] = NULL;
+                            		areg[i] = buffer_read(n -> cores[i] -> ports[breg[i]], PORT_DEPTH) -> data;
                             	}
                             	break;
                             
@@ -122,7 +124,7 @@ int main (int argc,  char* argv[]) {
                             	// set packet destination
                             	active_core_data[i][1] = areg[i];
                             	// set destination port
-                            	active_core_data[i][2] = 0;
+                            	active_core_data[i][2] = i;
                             	// set packet data
                             	active_core_data[i][3] = breg[i];
                             	break;
@@ -132,10 +134,12 @@ int main (int argc,  char* argv[]) {
         	    }
             }
             else if (running[i] && is_wait[i]) {
-                if (n -> cores[i] -> ports[areg[i]] != NULL) {
+                //if (n -> cores[i] -> ports[areg[i]] != NULL) {
+            	if (n -> cores[i] -> ports[areg[i]] -> count != 0) {
                     breg[i] = areg[i];
-                    areg[i] = n -> cores[i] -> ports[breg[i]] -> data;
-                    n -> cores[i] -> ports[breg[i]] = NULL;
+                    //areg[i] = n -> cores[i] -> ports[breg[i]] -> data;
+                    //n -> cores[i] -> ports[breg[i]] = NULL;
+                    areg[i] = buffer_read(n -> cores[i] -> ports[breg[i]], PORT_DEPTH) -> data;
                     is_wait[i] = false;
                     oreg[i] = 0;
                 }
@@ -280,7 +284,10 @@ Network *init_network (Network *n) {
 	for (i=0; i<NUM_CORES; i++) {
 		n -> cores[i] = (Core *)malloc(sizeof(Core));
 		n -> cores[i] -> send = NULL;
-		for (j=0; j<NUM_PORTS; j++) n -> cores[i] -> ports[j] = NULL;
+		//for (j=0; j<NUM_PORTS; j++) n -> cores[i] -> ports[j] = NULL;
+		for (j=0; j<NUM_CORES; j++) {
+			n -> cores[i] -> ports[j] = new_buffer(PORT_DEPTH);
+		}
 	}
 
 	// initialise link memory
@@ -296,22 +303,10 @@ Network *init_network (Network *n) {
 	for (i=0; i<NUM_LAYERS; i++) {
 		for (j=0; j<NUM_CORES; j++) {
 			n -> switches[i][j] = (Switch *)malloc(sizeof(Switch));
-			n -> switches[i][j] -> c0buffer = (Buffer *)malloc(sizeof(Buffer));
-			n -> switches[i][j] -> c1buffer = (Buffer *)malloc(sizeof(Buffer));
-			n -> switches[i][j] -> e0buffer = (Buffer *)malloc(sizeof(Buffer));
-			n -> switches[i][j] -> e1buffer = (Buffer *)malloc(sizeof(Buffer));
-			n -> switches[i][j] -> c0buffer -> nextRead = 0;
-			n -> switches[i][j] -> c0buffer -> nextWrite = 0;
-			n -> switches[i][j] -> c0buffer -> count = 0;
-			n -> switches[i][j] -> c1buffer -> nextRead = 0;
-			n -> switches[i][j] -> c1buffer -> nextWrite = 0;
-			n -> switches[i][j] -> c1buffer -> count = 0;
-			n -> switches[i][j] -> e0buffer -> nextRead = 0;
-			n -> switches[i][j] -> e0buffer -> nextWrite = 0;
-			n -> switches[i][j] -> e0buffer -> count = 0;
-			n -> switches[i][j] -> e1buffer -> nextRead = 0;
-			n -> switches[i][j] -> e1buffer -> nextWrite = 0;
-			n -> switches[i][j] -> e1buffer -> count = 0;
+			n -> switches[i][j] -> c0buffer = new_buffer(BUFF_SIZE);
+			n -> switches[i][j] -> c1buffer = new_buffer(BUFF_SIZE);
+			n -> switches[i][j] -> e0buffer = new_buffer(BUFF_SIZE);
+			n -> switches[i][j] -> e1buffer = new_buffer(BUFF_SIZE);
 		}
 	}
 
@@ -369,6 +364,15 @@ Network *init_network (Network *n) {
 	return n;
 }
 
+Buffer *new_buffer(int size) {
+	Buffer *b = (Buffer *) malloc (sizeof(Buffer));
+	b -> queue = (Packet **) malloc (size*sizeof(Packet *));
+	b -> nextRead = 0;
+	b -> nextWrite = 0;
+	b -> count = 0;
+	return b; 
+}
+
 void network_timesteps(Network *n, int iterations) {
 
 	int i;
@@ -398,24 +402,24 @@ void network_timesteps(Network *n, int iterations) {
 	}
 }
 
-Packet *buffer_read(Buffer *buffer) {
+Packet *buffer_read(Buffer *buffer, int size) {
 
 	Packet *p = NULL;
 
 	if (buffer -> count != 0) {
 		p = buffer -> queue[buffer -> nextRead]; 
-		buffer -> nextRead = (buffer -> nextRead + 1) % BUFF_SIZE;
+		buffer -> nextRead = (buffer -> nextRead + 1) % size;
 		buffer -> count--;
 	}
 
 	return p;
 }
 
-int buffer_write(Buffer *buffer, Packet *p) {
+int buffer_write(Buffer *buffer, Packet *p, int max) {
 
-	if (buffer -> count < BUFF_SIZE) {
+	if (buffer -> count < max) {
 		buffer -> queue[buffer -> nextWrite] = p;
-		buffer -> nextWrite = (buffer -> nextWrite + 1) % BUFF_SIZE;
+		buffer -> nextWrite = (buffer -> nextWrite + 1) % max;
 		buffer -> count++;
 	}
 	else {
@@ -447,7 +451,7 @@ void send_packets_from_switches(Network *n) {
 
 			// core0
 			if (s -> core0 -> temp == NULL && s -> core0 -> comm == NULL) {
-				s -> core0 -> temp = buffer_read(s -> c0buffer);
+				s -> core0 -> temp = buffer_read(s -> c0buffer, BUFF_SIZE);
 			}
 			// if the link is full and the buffer wants to send another packet down it, a
 			// collision occurs 
@@ -470,7 +474,7 @@ void send_packets_from_switches(Network *n) {
 
 			// core1
 			if (s -> core1 -> temp == NULL && s -> core1 -> comm == NULL) {
-				s -> core1 -> temp = buffer_read(s -> c1buffer);
+				s -> core1 -> temp = buffer_read(s -> c1buffer, BUFF_SIZE);
 			}
 			else if (s -> c1buffer -> count != 0) {
 				// get link number and report collision
@@ -493,7 +497,7 @@ void send_packets_from_switches(Network *n) {
 			if (i != NUM_LAYERS-1) {
 				// edge0
 				if (s -> edge0 -> temp == NULL && s -> edge0 -> comm == NULL) {
-					s -> edge0 -> temp = buffer_read(s -> e0buffer);
+					s -> edge0 -> temp = buffer_read(s -> e0buffer, BUFF_SIZE);
 				}
 				else if (s -> e0buffer -> count != 0) {
 					if (verbose) {
@@ -504,7 +508,7 @@ void send_packets_from_switches(Network *n) {
 
 				// edge1
 				if (s -> edge1 -> temp == NULL && s -> edge1 -> comm == NULL) {
-					s -> edge1 -> temp = buffer_read(s -> e1buffer);
+					s -> edge1 -> temp = buffer_read(s -> e1buffer, BUFF_SIZE);
 				}
 				else if (s -> e1buffer -> count != 0) {
 					if (verbose) {
@@ -538,10 +542,10 @@ void check_switches_for_received_packets(Network *n) {
 					if (s -> core0 -> comm -> count != 0) {
 						// ... down which link ...
 						if (s -> core0 -> comm -> rout[i+1] == 0) {
-							full = buffer_write(s -> e0buffer, s -> core0 -> comm);
+							full = buffer_write(s -> e0buffer, s -> core0 -> comm, BUFF_SIZE);
 						}
 						else {
-							full = buffer_write(s -> e1buffer, s -> core0 -> comm);
+							full = buffer_write(s -> e1buffer, s -> core0 -> comm, BUFF_SIZE);
 						}
 					}
 					// ... or if the direction is to be changed ...
@@ -549,10 +553,10 @@ void check_switches_for_received_packets(Network *n) {
 						s -> core0 -> comm -> direction = CORE;
 						// ... down which link ...
 						if (s -> core0 -> comm -> addr[i] == 0) {
-							full = buffer_write(s -> c0buffer, s -> core0 -> comm);
+							full = buffer_write(s -> c0buffer, s -> core0 -> comm, BUFF_SIZE);
 						}
 						else {
-							full = buffer_write(s -> c1buffer, s -> core0 -> comm);
+							full = buffer_write(s -> c1buffer, s -> core0 -> comm, BUFF_SIZE);
 						}
 					}
 					// tidy up old packet from link
@@ -568,19 +572,19 @@ void check_switches_for_received_packets(Network *n) {
 					s -> core1 -> comm -> count--;
 					if (s -> core1 -> comm -> count != 0) {
 						if (s -> core1 -> comm -> rout[i+1] == 0) {
-							full = buffer_write(s -> e0buffer, s -> core1 -> comm);
+							full = buffer_write(s -> e0buffer, s -> core1 -> comm, BUFF_SIZE);
 						}
 						else {
-							full = buffer_write(s -> e1buffer, s -> core1 -> comm);
+							full = buffer_write(s -> e1buffer, s -> core1 -> comm, BUFF_SIZE);
 						}
 					}
 					else {
 						s -> core1 -> comm -> direction = CORE;
 						if (s -> core1 -> comm -> addr[i] == 0) {
-							full = buffer_write(s -> c0buffer, s -> core1 -> comm);
+							full = buffer_write(s -> c0buffer, s -> core1 -> comm, BUFF_SIZE);
 						}
 						else {
-							full = buffer_write(s -> c1buffer, s -> core1 -> comm);
+							full = buffer_write(s -> c1buffer, s -> core1 -> comm, BUFF_SIZE);
 						}
 					}
 					// tidy up old packet from link
@@ -596,10 +600,10 @@ void check_switches_for_received_packets(Network *n) {
 				if (s -> edge0 -> comm != NULL) {
 					if (s -> edge0 -> comm -> direction == CORE) {
 						if (s -> edge0 -> comm -> addr[i] == 0) {
-							full = buffer_write(s -> c0buffer, s -> edge0 -> comm);
+							full = buffer_write(s -> c0buffer, s -> edge0 -> comm, BUFF_SIZE);
 						}
 						else {
-							full = buffer_write(s -> c1buffer, s -> edge0 -> comm);
+							full = buffer_write(s -> c1buffer, s -> edge0 -> comm, BUFF_SIZE);
 						}
 						// tidy up old packet from link
 						if (full == 0) {
@@ -612,10 +616,10 @@ void check_switches_for_received_packets(Network *n) {
 				if (s -> edge1 -> comm != NULL) {
 					if (s -> edge1 -> comm -> direction == CORE) {
 						if (s -> edge1 -> comm -> addr[i] == 0) {
-							full = buffer_write(s -> c0buffer, s -> edge1 -> comm);
+							full = buffer_write(s -> c0buffer, s -> edge1 -> comm, BUFF_SIZE);
 						}
 						else {
-							full = buffer_write(s -> c1buffer, s -> edge1 -> comm);
+							full = buffer_write(s -> c1buffer, s -> edge1 -> comm, BUFF_SIZE);
 						}
 						// tidy up old packet from link
 						if (full == 0) {
@@ -692,7 +696,20 @@ void check_cores_for_received_packets(Network *n) {
 		if (c -> io0 -> comm != NULL) {
 			// checks for correct direction
 			if (c -> io0 -> comm -> direction == CORE) {
-				c -> ports[c -> io0 -> comm -> port] = c -> io0 -> comm;
+				/*if(c -> ports[c -> io0 -> comm -> port] == NULL) {
+					c -> ports[c -> io0 -> comm -> port] = c -> io0 -> comm;
+					if (verbose) {
+						printf("%d - Packet [%d->%d] received by processor %d (port %d) with data: %d\n", 
+							timestep_count, c -> io0 -> comm -> source, c -> io0 -> comm -> destination, i, 
+							c -> io0 -> comm -> port, c -> io0 -> comm -> data);
+					}
+					c -> io0 -> comm = NULL;
+				}
+				else {
+					printf("%d - COLLISION in processor %d, port %d\n", timestep_count, i, c -> io0 -> comm -> port);
+				}*/
+
+				buffer_write(c -> ports[c -> io0 -> comm -> port], c -> io0 -> comm, PORT_DEPTH);
 				if (verbose) {
 					printf("%d - Packet [%d->%d] received by processor %d (port %d) with data: %d\n", 
 						timestep_count, c -> io0 -> comm -> source, c -> io0 -> comm -> destination, i, 
@@ -706,7 +723,20 @@ void check_cores_for_received_packets(Network *n) {
 		if (c -> io1 -> comm != NULL) {
 			// checks for correct direction
 			if (c -> io1 -> comm -> direction == CORE) {
-				c -> ports[c -> io1 -> comm -> port] = c -> io1 -> comm;
+				/*if(c -> ports[c -> io1 -> comm -> port] == NULL) {
+					c -> ports[c -> io1 -> comm -> port] = c -> io1 -> comm;
+					if (verbose) {
+						printf("%d - Packet [%d->%d] received by processor %d (port %d) with data: %d\n", 
+							timestep_count, c -> io1 -> comm -> source, c -> io1 -> comm -> destination, i, 
+							c -> io1 -> comm -> port, c -> io1 -> comm -> data);
+					}
+					c -> io1 -> comm = NULL;
+				}
+				else {
+					printf("%d - COLLISION in processor %d, port %d\n", timestep_count, i, c -> io1 -> comm -> port);
+				}*/
+
+				buffer_write(c -> ports[c -> io1 -> comm -> port], c -> io1 -> comm, PORT_DEPTH);
 				if (verbose) {
 					printf("%d - Packet [%d->%d] received by processor %d (port %d) with data: %d\n", 
 						timestep_count, c -> io1 -> comm -> source, c -> io1 -> comm -> destination, i, 
@@ -777,7 +807,7 @@ void print_network_state(Network *n) {
 	printf("\nActive cores:\n\n");
 
 	// print each active core
-	for (j=0; j<NUM_CORES; j++) {
+	/*for (j=0; j<NUM_CORES; j++) {
 		if (n -> cores[j] -> send != NULL) {
 			printf("Core %d data to send: %d\n", j, n -> cores[j] -> send -> data);
 		}
@@ -786,7 +816,7 @@ void print_network_state(Network *n) {
 				printf("Core %d data received on port %d: %d\n", j, i, n -> cores[j] -> ports[i] -> data);
 			}
 		}
-	}
+	}*/
 }
 
 Packet *create_packet(int source, int destination, int port, int data) {

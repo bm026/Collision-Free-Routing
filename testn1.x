@@ -2,18 +2,18 @@
 
 proc main() is
   network
-  { addone(1) &
-    addone(2) &
-    addone(3) &
-    addone(4) &
-    addone(5) &
-    addone(6) &
-    addone(7) &
-    addone(0)
+  { addone(7, 1) &
+    addone(0, 2) &
+    addone(1, 3) &
+    addone(2, 4) &
+    addone(3, 5) &
+    addone(4, 6) &
+    addone(5, 7) &
+    addone(6, 0)
   }
 
-proc addone(val out) is 
+proc addone(val in, val out) is 
   var a;
-  var in;
-  while a<400 do
-  { a:=in+1; out ! a; 0 ? in }
+  var pin;
+  while a<300 do
+  { a:=pin+1; out ! a; in ? pin }
