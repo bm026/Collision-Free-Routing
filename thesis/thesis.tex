@@ -16,14 +16,19 @@
 \usepackage{subfig}
 \usepackage{enumitem}
 \usepackage{appendix}
+\usepackage{verbatim}
 
 \usepackage{listings}
 \usepackage{color}
 \definecolor{mygrey}{rgb}{0.975,0.975,0.975}
+\definecolor{mydarkgrey}{rgb}{0.95,0.95,0.95}
 \lstset{ backgroundcolor=\color{mygrey},
 		  showlines=true,
 		  frame=single }
-\lstset{basicstyle=\ttfamily, breaklines=true}
+\lstset{basicstyle=\ttfamily\footnotesize, breaklines=true}
+
+\usepackage{soul}
+\sethlcolor{mydarkgrey}
 
 \usepackage{graphicx}
 \graphicspath{ {images/} }
@@ -51,6 +56,11 @@
 \thispagestyle{empty}
 \newpage
 \pagenumbering{arabic}
+\section*{Abstract}
+
+
+
+\newpage
 \setcounter{tocdepth}{2}
 \tableofcontents
 \newpage
@@ -87,7 +97,7 @@ The main source of overhead during execution of a parallel program is communicat
 
 Ideally, a fully parallelised version of a sequential program would result in a linear speedup based on the number of parallel processors involved in the computation. However, due to the added overheads of parallelism, this is currently not the case. This thesis focuses on trying to reduce the significance of this overhead so that linear speedup due to added parallelism is more realistically achievable.
 
-\subsection{Possible optimisations to current solutions}
+\subsection{Possible optimisation of current solutions}
 \label{sec:possible_optimisations}
 
 One optimisation that has become a lot more accessible in the last few years is the replacement of traditional copper wires in the network with optic cables, making the network photonic. This means that instead of data being transmitted over the network in the form of differing voltages of electric current, it is transmitted as pulses of light, which makes the network latency a function of the speed of light (approximately $3.0 \times 10^8 $ m/s), and eliminates inefficiencies such as friction between the electric current and the copper wire. However, while network latency of the speed of light sounds sufficient, in some cases it can still act as the computational bottleneck. An average modern CPU is manufactured with a clock speed of around 2.0 GHz, which equates to $2.0 \times 10^9$ clock cycles per second. This means that in 0.5 nanoseconds -- the time taken for one clock cycle to be carried out on this CPU -- light only travels around 15cm. This may be sufficient to carry out communication in one clock cycle in smaller networks, but for larger networks such as supercomputers which may have links spanning several metres, communication can take a lot longer. However, current research suggests that no advancement of the speed of light is possible at present, meaning that, for the time being at least, optimisations in the network must be sourced from elsewhere. 
@@ -549,8 +559,31 @@ The four stages of each timestep are repeated until all of the processors have f
 \section{Testing}
 
 \subsection{Syntax of parallel input programs}
+\label{sec:input_program_mods}
 
+The parallel input programs that are compiled and then executed by the emulation have been referenced throughout the thesis. Now that implementation of the network is complete and specific input programs are required to test the functionality of the emulation, they can be described in more detail. A partial description of the language used in the input programs is provided as \textbf{Appendix C}, however some instructions were added to this language to support parallel sections and communication between parallel processors. An example of a parallel input program, along with a description of the syntax added to the language to support parallelism, is given below.\\
 
+\begin{figure}[H]
+\begin{lstlisting}
+
+    proc main() is
+        var in;
+        var out;
+        network
+        { { out := 23; 1 ! out } &
+          { 0 ? in             }
+        }
+
+\end{lstlisting}
+\caption[An example of input program source code for syntax demonstration]{An example of input program source code for syntax demonstration.}
+\label{fig:input_program}
+\end{figure}
+
+\begin{itemize}
+	\item {\ttfamily{network \string{ \string{ \string} \& \string{ \string} \string} }} -- \ This structure supports parallel sections in the program. The network keyword indicates the start of the parallel section, and it is followed by the sections of code to be executed by each parallel processor enclosed in curly brackets. The ampersand symbol is used to separate each block of parallel code, which means that multiple sections can be defined to incorporate all of the processors in the network. Figure \ref{fig:input_program} shows a parallel section that uses two processors.
+	\item {\ttfamily{dest !\ data }} -- \ This is a communication output instruction, which informs the processor that a packet needs to be sent across the network to another processor. The leftmost value indicates the destination processor of the packet, the exclamation mark indicates that the packet is to be added to the network, and the rightmost value indicates the data to be included in the packet. Figure \ref{fig:input_program} shows an output instruction on the first processor, sending a value of 23 to the second processor.
+	\item {\ttfamily{port ?\ var }} -- \ This is a communication input instruction, which informs the processor that a packet from the network must be received before any further computation can be carried out. The leftmost value indicates the port of the network adapter that the received packet is stored in, the question mark indicates that the packet is to be removed from the network, and the rightmost value indicates the local variable name that the data from the received packet will be stored under.   Figure \ref{fig:input_program} shows an input instruction on the second processor, receiving a value of 23 from the first processor.
+\end{itemize}
 
 \subsection{Testing network correctness}
 
@@ -870,8 +903,357 @@ BOOT  &$ load()$& boot processor \\
 \end{tabular}
 
 \newpage
-\section*{Appendix C: Input Program Code Listings}
-\addcontentsline{toc}{section}{Appendix C: Input Program Code Listings}
+\section*{Appendix C: Description of Input Program Syntax}
+\addcontentsline{toc}{section}{Appendix C: Description of Input Program Syntax}
+
+This appendix partially describes the syntax of the programming language that is used to write input programs for the emulation. Some modifications to the language described here have been carried out to support parallel sections and communication between parallel processors. These modifications are described in section \ref{sec:input_program_mods}. The following document was written by David May.
+
+\subsection*{The X Language}
+
+X is a simple sequential programming language. It is easy to compile
+and an X compiler written in X is available to simplify porting between
+architectures.  It is relatively easy to modify the compiler to target 
+new architectures or to and extend the language. 
+
+\subsection*{Notation}
+
+The following examples illustrate the notation used in the definition of X. 
+
+The meaning of 
+
+\begin{tabular}{llll}
+$assignment$    & $=$ &&$variable$ \verb|:=| $expression$ 
+\end{tabular}   
+
+is ``An $assignment$ is a $variable$ followed by \verb|:=| followed by an $expression$'' 
+
+The meaning of
+
+\begin{tabular}{llll}                   
+$literal$    & $=$ &&$integer$ $|$ $byte$ $|$ $string$
+\end{tabular}                    
+
+is ``An $literal$ is an $integer$ or a $byte$ or a $string$''. This may also be written 
+
+\begin{tabular}{llll}                   
+$literal$    & $=$ &&$integer$\\
+\\
+$literal$    & $=$ &&$byte$\\
+\\
+$literal$    & $=$ &&$string$
+\end{tabular}                    
+
+The notation  $\{$ $process$ $\}$ means ``a list of zero or more $processes$''.
+
+The notation  $\{_0$ \verb|,| $expression \}$ means ``a list of zero or more expressions 
+separated from each other by \verb|,|'', and $\{_1$ \verb|,| $expression \}$ means ``a list of one or 
+more expressions separated from each other by \verb|,|''.
+
+The format of an X program is specified by the syntax. Space, tab and line breaks are ignored
+and can be inserted in text strings using the escape character \verb|*|. 
+
+\subsection*{Comment}
+
+\begin{tabular}{llll}
+$comment$ & $=$ &&\verb%|% $text$ \verb%|% \\
+&&&\\
+$text$ & $=$ && $\{_0$ $character\}$ 
+\end{tabular}                   
+
+A comment is used to describe the operation of the program.
+
+\begin{tabular}{llll}
+$process$ & $=$ &&$comment$ $process$ 
+\end{tabular}        
+
+Let $C$ be a comment and $P$ be a process. Then $C$ $P$ behaves like $P$.            
+
+\subsection*{Statement}
+
+\begin{tabular}{llll}
+$process$ & $=$ &&\verb|skip| \\ 
+                    &&$|$ &\verb|stop|\\
+                    &&$|$&$assignment$\\ 
+                    &&$|$&$sequence$\\
+                    &&$|$&$conditional$\\
+                    &&$|$&$loop$\\
+                    &&$|$&$call$
+\end{tabular}                    
+
+\verb|skip| starts, performs no action, and terminates.
+
+\verb|stop| starts but never proceeds and never terminates.
+
+\begin{tabular}{llll}
+$assignment$    & $=$ &&$variable$ \verb|:=| $expression$ 
+\end{tabular}   
+
+An assignment evaluates the expression, assigns the result to the variable,
+and then terminates. All other variables are unchanged in value. 
+
+\begin{tabular}{llll}
+$sequence$    & $=$ &&\verb|{| $\{_0$ \verb|;| $process \}$ \verb|}| 
+\end{tabular}   
+
+A sequence starts with the start of the first process. Each subsequent process starts if and
+when its predecessor terminates and the sequence terminates when the last process terminates.
+A sequence with no component processes behaves like \verb|skip|.
+
+\subsection*{Conditional}
+
+\begin{tabular}{llll}
+$conditional$    & $=$ &&\verb|if| $expression$ \verb|then| $process$ \verb|else| $process$
+\end{tabular} 
+
+Let $e$ be an expression and let $P$ and $Q$ be processes. Then
+
+\verb|if| $e$ \verb|then| $P$ \verb|else| $Q$ 
+
+behaves like $P$ if the initial value of $e$ is $true$. Otherwise it behaves like $Q$.
+
+\subsection*{Loop}
+
+\begin{tabular}{llll}
+$loop$    & $=$ &&\verb|while| $expression$ \verb|do| $process$ 
+\end{tabular} 
+
+A loop is defined by 
+
+\verb|while| $e$ \verb|do| $P$ $=$ \verb|if| $e$ \verb|then {| $P$\verb|; while| $e$ \verb|do| $P$ \verb|} else skip| 
+        
+\subsection*{Scope}
+
+\begin{tabular}{llll}
+$process$    & $=$ &&$specification$ \verb|;| $process$ \\
+&&&\\
+$specification$ & $=$ && $declaration$\\ 
+                               &&$|$& $abbreviation$\\
+                               &&$|$& $definition$
+ \end{tabular}   
+
+A block $N$ \verb|:| $S$ behaves like its scope $S$; the specification $N$ specifies a name which may be 
+used with this specification only within $S$. 
+
+Let $x$ and $y$ be names and let $S(x)$ and $S(y)$ be scopes which are similar except that $S(x)$ contains 
+$x$ wherever $S(y)$ contains $y$, and vice versa. Let $N(x)$ and $N(y)$ be specifications which are similar
+except that $N(x)$ is a specification of $x$ and $N(y)$ is a specification of $y$. Then 
+
+$N(x)$ \verb|;| $S(x)$ $=$ $N(y)$ \verb|;| $S(y)$ 
+                         
+Using this rule it is possible to express a process in a canonical form in which no name is specified more than
+once. 
+
+\subsection*{Declaration}
+
+\begin{tabular}{llll}
+$declaration$    & $=$ &&\verb|var| $name$ \\
+                              && $|$  &\verb|array| $name$ \verb|[| $expression$ \verb|]|
+\end{tabular}
+
+A declaration declares a name as the name of a variable or of an array. 
+
+\subsection*{Abbreviation}
+
+\begin{tabular}{llll}
+$abbreviation$    & $=$ &&\verb|val|  $name$ \verb|=| $expression$ \\
+                               &&$|$ & \verb|array| $name$ \verb|=| $name$ \\
+                               &&$|$ & \verb|proc| $name$ \verb|=| $name$ \\
+                               &&$|$ & \verb|func| $name$ \verb|=| $name$ \\
+\end{tabular}   
+
+An abbreviation \verb|val| $n$ \verb|=| $e$ specifies $n$ as an abbreviation for expression $e$. 
+Let $e$ be an expression and $P(e)$ be a process. Then
+
+\verb|val| $n$ \verb|=| $e$ \verb|;| $P(n)$ $=$ $P(e)$
+
+Let $T$ be \verb|array|, \verb|proc| or \verb|func|. Then
+
+$T$ $n$ \verb|=| $m$ \verb|;| $P(n)$ $=$ $P(m)$
+
+\subsection*{Procedure}
+
+\begin{tabular}{llll}
+$definition$    & $=$ &&\verb|proc| $name$ \verb|(| $\{_0$ \verb:,: $formal \}$ \verb|)| \verb|is| $body$\\
+\\
+$formal$ & $=$ &&\verb|val| $name$\\
+                      &&$|$&$\verb|array|$ $name$\\
+                      &&$|$&$\verb|proc|$ $name$\\
+                      &&$|$&$\verb|func|$ $name$\\ 
+\\
+$body$ & $=$ && $process$ 
+\end{tabular}   
+
+The definition 
+
+\verb|proc| $n$ \verb|(| $\{_0$ \verb:,: $formal \}$ \verb|)| \verb|is| $B$
+
+defines $n$ as the name of a procedure. 
+
+\begin{tabular}{llll}
+$instance$    & $=$ &&$name$ \verb|(| $\{_0$ \verb:,: $actual \}$ \verb|)| \\
+\\
+$actual$ & $=$ &&$expression$\\
+                      &&$|$& $name$
+\end{tabular}   
+
+Let $X$ be a program expressed in the canonical form in which no name is specified more than once. If $X$
+contains a procedure definition 
+
+$P$\verb|(|$F_0$\verb|,| $F_1$\verb|,| ...\verb|,| $F_n$\verb|)| \verb|is| $B$
+
+then within the scope of $P$
+
+$P$\verb|(|$A_0$\verb|,| $A_1$\verb|,| ...\verb|,| $A_n$\verb|)| $=$ $F_0$ \verb|=| $A_0$ \verb|;| $F_1$ \verb|=| $A_1$ \verb|;| ... $F_n$ \verb|=| $A_n$ \verb|;| $B$
+
+provided that each abbreviation $F_i$ \verb|=| $A_i$ is valid.
+
+A procedure can always be compiled either by substitution of its body as described above or as a closed
+subroutine.
+
+\subsection*{Element}
+
+Elements enable variables or arrays be selected from arrays.
+
+\begin{tabular}{llll}
+$element$ & $=$&& $element$\verb|[| $subscript$ \verb|]| \\
+                    &&$|$ & $name$\\
+\\
+$subscript$ & $=$&& $expression$
+\end{tabular}   
+
+Let $a$ be an array with $n$ components and $e$ an expression of value $s$.
+Then $v$\verb|[|$e$\verb|]| is valid only if $0 \leq s$ and $s<n$; it is the component of $v$ selected by $s$.
+
+
+\subsection*{Variable}
+
+\begin{tabular}{llll}
+$variable$ & $=$&& $element$ 
+\end{tabular}   
+
+Every variable has a value that can be changed by assignment or input. The value of a variable is the
+value most recently assigned to it, or is arbitrary if no value has been assigned to it. 
+
+Let $a$ be an array with $n$ components, $e$ be an expression of value $s$, and $x$ be an expression. 
+If $0 \leq s$ and $s<n$, then $v$\verb|[|$e$\verb|]| \verb|:=| $x$ assigns to $v$ a new value in which the component 
+of $v$ selected by $s$ is replaced by the value of $x$ and all other components are unchanged. Otherwise the 
+assignment is invalid. 
+
+
+\subsection*{Literal}
+
+\begin{tabular}{llll}
+$literal$ & $=$&& $integer$ $|$ $byte$ $|$ $string$ $|$ \verb|true| $|$ \verb|false| \\
+\\
+$integer$ & $=$&& $digits$ $|$ \verb|#|$digits$\\
+\\
+$byte$ & $=$&& \verb|'|$character$\verb|'|
+\end{tabular}   
+
+An integer literal is a decimal number, or \verb|#| followed by a hexadecimal number. A byte literal is an ASCII
+character enclosed in single quotation marks: \verb|'|.
+
+A string literal is represented by a sequence of ASCII characters enclosed by double quotation marks: \verb|"|. Let $s$ be a
+string of $n$ characters, where $n<256$. The value of $s$ is an array containing the value $n$, followed by ASCII values of 
+the characters in the string. The string is packed into the array. 
+
+The literal \verb|true| represents the logical value {\it true}; numerically \verb|true| = 1. The literal \verb|false| represents the
+logical value {\it false}; numerically \verb|false| = 0.  
+ 
+\subsection*{Expression}
+
+An expression has a data type and a value. Expressions are constructed from operands, operators and parentheses.
+
+\begin{tabular}{llll}
+$operand$ & $=$&& $element$ $|$ $literal$ \\
+                     &&$|$&\verb|(| $expression$ \verb|)| 
+\end{tabular}   
+
+The value of an operand is that of an element, literal or expression. 
+
+\begin{tabular}{llll}
+$expression$    & $=$ &&$monadic.operator$ $operand$\\
+                 &&$|$ & $operand$ $diadic.operator$ $operand$ \\
+                 &&$|$ & $operand$ 
+\end{tabular}  
+
+The arithmetic operators \verb|+| and \verb|-| produce the arithmetic sum and difference of their 
+operands respectively. 
+Both operands must be integer values and the result is an integer value. The arithmetic operators treat their
+operands as signed integer values and produce signed integer results. If $n$ is an operand, then \verb|-|$n$ = \verb|(0-|$n$\verb|)|. 
+
+The logical operator \verb|and| produces the logical and of its operands,
+both of which must have value  \verb|true| or \verb|false|. If the value of the first operand 
+is \verb|false|, the result is \verb|false|; otherwise the result is the value of the second operand. 
+
+The logical operator \verb|or| produces the logical or of its operands,
+both of which must have value  \verb|true| or \verb|false|. If the value of the first operand 
+is \verb|true|, the result is \verb|true|; otherwise the result is the value of the second operand. 
+
+The logical operator \verb|not| produces the logical not of its operand which must have value \verb|true| or \verb|false|:
+
+\begin{tabular}{ll}
+\verb|not false| $=$ \verb|true| & \verb|not true| $=$ \verb|false| 
+\end{tabular}
+
+Let {\bf O} be one of the associative operators \verb|+|, \verb|and|, \verb|or|. Then 
+
+$e_1$ {\bf O} $e_2$ {\bf O} ... {\bf O} $e_n$ $=$ \verb|(|$e_1$ {\bf O} \verb|(|$e_2$  {\bf O} \verb|(| ...  {\bf O} $e_n$ \verb|)| ... \verb|))|
+
+The relational operators \verb|=|, \verb|<>|, \verb|<|, \verb|<=|, \verb|>|, \verb|>=| produce a result of \verb|true| or \verb|false|.
+The operands must both be integer values. The result of $x$ \verb|=| $y$ is \verb|true| if the value of $x$ is equal to that of $y$. 
+The result of $x$ \verb|<| $y$ is \verb|true| if the integer value of $x$ is strictly less than that of $y$. The other operators obey 
+the following rules:
+
+\begin{tabular}{ll}
+\verb|(|$x$ \verb|<>| $y$\verb|)| $=$ \verb|not (|$x$ \verb|=| $y$\verb|)| & \verb|(|$x$ \verb|>=| $y$\verb|)| $=$ \verb|not (|$x$ \verb|<| $y$\verb|)| \\
+\verb|(|$x$ \verb|>| $y$\verb|)| $=$ \verb|(|$y$ \verb|<| $x$\verb|)| & \verb|(|$x$ \verb|<=| $y$\verb|)| $=$ \verb|not (|$x$ \verb|>| $y$\verb|)| 
+\end{tabular}
+
+where $x$ and $y$ are any values. 
+
+\begin{tabular}{llll}
+$expression$    & $=$ &&\verb|valof| $process$ \\
+&&&\\
+$process$         & $=$ && \verb|return| $expression$
+\end{tabular} 
+
+A valof expression executes a process to produce a value. The final process executed in a valof must be a return. The return 
+evaluates its expression and the resulting value is the value of the valof. 
+
+\subsection*{Function}
+
+\begin{tabular}{llll}
+$definition$    & $=$ && \verb|func| $name$ \verb|(| $\{_0$ \verb:,: $formal \}$ \verb|)| \verb|is| $body$\\
+\end{tabular}   
+
+The definition 
+
+\verb|func| $n$ \verb|(| $\{_0$ \verb:,: $formal \}$ \verb|)| \verb|is| $B$
+
+defines $n$ as the name of a function with a body $B$ that computes a value.
+
+\begin{tabular}{llll}
+$expression$    & $=$ &&$name$ \verb|(| $\{_0$ \verb:,: $actual \}$ \verb|)| 
+\end{tabular}   
+
+Let $X$ be a program expressed in the canonical form in which no name is specified more than once. If $X$
+contains a function definition 
+
+\verb|func| $F$\verb|(|$F_0$\verb|,| $F_1$\verb|,| ...\verb|,| $F_n$\verb|)| \verb|is| $B$
+
+then within the scope of $F$
+
+$F$\verb|(|$A_0$\verb|,| $A_1$\verb|,| ...\verb|,| $A_n$\verb|)| $=$ \verb|valof| $F_0$ \verb|=| $A_0$ \verb|;| $F_1$ \verb|=| $A_1$ \verb|;| ... $F_n$ \verb|=| $A_n$ \verb|;| $B$
+
+provided that each abbreviation $F_i$ \verb|=| $A_i$ is valid. 
+
+A function can always be compiled either by substitution of its body as described above or as a closed
+subroutine.
+
+\newpage
+\section*{Appendix D: Input Program Code Listings}
+\addcontentsline{toc}{section}{Appendix D: Input Program Code Listings}
 
 \begin{lstlisting}
 
