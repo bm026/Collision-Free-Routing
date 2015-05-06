@@ -291,6 +291,7 @@ The emulated network will facilitate communication between the emulated processo
 The routing algorithm will decide which paths through the network the communication data will take in order to reach its intended destination. This is the part of the solution that aims to reduce the number of collisions within the network, and increase the efficiency of parallel architectures. When a processor executes an output instruction indicating that communication across the network is required, the routing algorithm will be triggered. It will start off by planning a route through the network for the communication data aiming to avoid as many collisions with other data in the network as possible. Once a route has been decided, the algorithm will pass this route to the emulated network where the communication data will be sent on its calculated path towards its destination. The algorithm will carry out this process for all output instructions read by each processor until the parallel computation is complete.
 
 \subsection{Functional requirements}
+\label{sec:req_func}
 
 The solution must observe the following functional requirements:
 \begin{enumerate}[leftmargin=*,labelindent=15pt,label=\bfseries 1.\arabic*] 
@@ -311,6 +312,7 @@ The solution must observe the following functional requirements:
 \end{enumerate}
 
 \subsection{Interface requirements}
+\label{sec:req_int}
 
 The interface of a software application is dependent on the users of the software. In this case, the software will primarily be used as a research and demonstration tool which means that the users are assumed to have at least a very basic understanding of the Linux command line. The nature of the solution suggests that users will be comfortable without a graphical user interface (GUI) -- as long as a precise user manual is provided -- in order to execute the software from the Linux command line and read the results it produces. With these user characteristics in mind, the solution must observe the following interface requirements:
 \begin{enumerate}[leftmargin=*,labelindent=15pt,label=\bfseries 2.\arabic*] 
@@ -323,6 +325,7 @@ The interface of a software application is dependent on the users of the softwar
 \end{enumerate}
 
 \subsection{Performance requirements}
+\label{sec:req_per}
 
 The emulated parallelism present in the solution means that execution of the input program will be significantly slower than if it was executed on a real parallel architecture. This is not a serious problem as the solution is not performance critical, however there must be some sensible limits put in place which govern the speed at which the emulation executes the input program. These performance requirements are listed below:
 \begin{enumerate}[leftmargin=*,labelindent=15pt,label=\bfseries 3.\arabic*] 
@@ -333,6 +336,7 @@ The emulated parallelism present in the solution means that execution of the inp
 \end{enumerate}
 
 \subsection{Software system requirements}
+\label{sec:req_soft}
 
 All pieces of software require some general guidelines regarding reliability, availability, security, maintainability and portability to ensure that they can be used correctly on any suitable machine. Requirements for these five areas are listed below:
 \begin{enumerate}[leftmargin=*,labelindent=15pt,label=\bfseries 4.\arabic*]
@@ -601,7 +605,13 @@ The parallel input programs that are compiled and then executed by the emulation
 
 A measure of how well the emulation was implemented can be gauged by checking the specification of the solution to see whether all of the original requirements were met. The specification was split into four sections: functional requirements, interface requirements, performance requirements, and software system requirements.
 
+The functional requirements described the purpose and functionality of the emulation. The design of the emulation was based firmly around these requirements, which means they are fulfilled completely by the final product. The emulation takes a single parallel program as input, and distributes the parallel sections of this program across the multiple processors. Each of these sections is then executed in emulated parallel by each processor. The network supports message passing between processors, and these messages are passed along collision-free routes in the network calculated by the routing algorithm. Once the emulation is complete, the number of packets sent, the execution time of the program, and the number of collisions detected in the network is displayed to the user, before the emulation is terminated. This brief description of the behaviour of the emulation covers all of the main functional requirements, and shows they have all been satisfied.
 
+The interface requirements described how the user should interact with the solution. The emulation is packaged with a script file that takes an input program as a parameter, compiles the program and executes it on the emulation using a single Linux command. Once the emulation has finished, the performance metrics are printed to standard output and all of the intermediate files (eg. the program binary) are deleted. The user has the option of setting the emulation to verbose mode, where details of all of the communication packets are printed to standard output, however there was no sensible method of printing the whole state of the network to standard output in a readable manner. This means that all of the interface requirements have been satisfied apart from requirement 2.5.
+
+The performance requirements described how quickly the emulation should be able to execute given input programs. The emulation was tested using examples of the input programs described, and the execution time noted. All of the performance requirements were met when the emulation was only required to print the performance metrics at the end, however the execution time of the larger programs suffered when verbose mode was activated due to the large increase in print statements.
+
+The software system requirements provided some general guidelines that the emulation was required to follow. The emulation compiles cleanly and outputs clear performance metrics, which shows it is reliable. The source code of the emulation is well structured and open source, so it is readily available for inspection. No destructive behaviour can be carried out by the emulation, and it cannot be accessed externally, which means it is secure. Assuming the user has studied the user manual, the specified changes to the emulation and be carried out in less than 10 seconds which shows that it is easily maintainable. Finally, the source code of the emulation uses only the standard C libraries, making it extremely portable between Linux machines. These features show that all of the software system requirements have been satisfied.
 
 \newpage
 \section{Results}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  5 MAY 2015 18:49
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  6 MAY 2015 11:23
 entering extended mode
  %&-line parsing enabled.
 **thesis.tex
@@ -366,17 +366,12 @@ File: images/benes_full_perm.png Graphic file (type png)
 File: images/compiler_binary1.png Graphic file (type png)
 
 <use images/compiler_binary1.png> [30] [31 <./images/compiler_binary1.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 484--485
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 488--489
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 494--495
+Underfull \hbox (badness 10000) in paragraph at lines 492--493
 
  []
 
@@ -385,44 +380,49 @@ Underfull \hbox (badness 10000) in paragraph at lines 498--499
 
  []
 
-[32]
-Underfull \hbox (badness 10000) in paragraph at lines 506--507
+
+Underfull \hbox (badness 10000) in paragraph at lines 502--503
 
  []
 
-
+[32]
 Underfull \hbox (badness 10000) in paragraph at lines 510--511
 
  []
 
-[33]
+
 Underfull \hbox (badness 10000) in paragraph at lines 514--515
 
  []
 
+[33]
+Underfull \hbox (badness 10000) in paragraph at lines 518--519
 
-Underfull \hbox (badness 10000) in paragraph at lines 523--524
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 527--528
 
  []
 
 [34]
-Underfull \hbox (badness 10000) in paragraph at lines 537--538
+Underfull \hbox (badness 10000) in paragraph at lines 541--542
 
  []
 
 [35] [36] [37]
-Underfull \hbox (badness 10000) in paragraph at lines 564--565
+Underfull \hbox (badness 10000) in paragraph at lines 568--569
 
  []
 
 [38] [39] [40] [41] [42]
-Underfull \hbox (badness 10000) in paragraph at lines 639--640
+Underfull \hbox (badness 10000) in paragraph at lines 649--650
 []\OT1/cmr/m/n/12 Hennessy, J. L., Pat-ter-son, D. A. (2011). \OT1/cmr/m/it/12 
 Com-puter Ar-chi-tec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 639--640
+Underfull \hbox (badness 10000) in paragraph at lines 649--650
 \OT1/cmr/m/it/12 ture: A Quan-ti-ta-tive Ap-proach\OT1/cmr/m/n/12 . On-line ap-
 pendix F, re-trieved from
  []
@@ -430,10 +430,10 @@ pendix F, re-trieved from
 [43] [44] [45] [46] [47] [48] [49] [50] [51] [52] [53] [54] [55] [56] [57]
 [58] (./thesis.aux) ) 
 Here is how much of TeX's memory you used:
- 5380 strings out of 495061
- 76989 string characters out of 1182621
+ 5384 strings out of 495061
+ 77043 string characters out of 1182621
  370206 words of memory out of 3000000
- 8491 multiletter control sequences out of 15000+50000
+ 8495 multiletter control sequences out of 15000+50000
  11538 words of font info for 42 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  44i,10n,45p,3415b,1019s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -448,7 +448,7 @@ fonts/cm/cmr17.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr
 /share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texm
 f-texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texmf-texlive/f
 onts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on thesis.pdf (59 pages, 1004617 bytes).
+Output written on thesis.pdf (59 pages, 1006911 bytes).
 PDF statistics:
  258 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
