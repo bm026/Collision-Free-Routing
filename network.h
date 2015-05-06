@@ -9,9 +9,9 @@
 #include <time.h>
 
 // network definitions
-#define BUFF_SIZE 4
-#define NUM_LAYERS 3
-#define NUM_CORES 8
+#define BUFF_SIZE 10
+#define NUM_LAYERS 5
+#define NUM_CORES 32
 #define PORT_DEPTH 20
 
 // processor definitions
@@ -73,8 +73,8 @@ int collision_count = 0;
 int packet_count = 0;
 
 // user changeable variables
-unsigned int verbose = true;
-unsigned int routing_code = 0; // see reference below
+unsigned int verbose = false;
+unsigned int routing_code = 1; // see reference below
 
 // Routing codes and their corresponding algorithms:
 // 0: developed algorithm

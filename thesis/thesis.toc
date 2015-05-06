@@ -52,7 +52,11 @@
 \contentsline {subsection}{\numberline {6.3}Testing the correctness of the routing algorithm}{39}
 \contentsline {subsection}{\numberline {6.4}Testing against the specification}{40}
 \contentsline {section}{\numberline {7}Results}{41}
+\contentsline {subsection}{\numberline {7.1}Performance compared to two-phase randomised routing}{41}
+\contentsline {subsection}{\numberline {7.2}Performance compared to serial execution}{41}
 \contentsline {section}{\numberline {8}Conclusion}{42}
+\contentsline {subsection}{\numberline {8.1}Summary of achievements}{42}
+\contentsline {subsection}{\numberline {8.2}Possible future developments}{42}
 \contentsline {section}{\numberline {9}References}{43}
 \contentsline {section}{Appendix A: User Manual}{45}
 \contentsline {section}{Appendix B: Summary of Processor Instruction Set}{46}

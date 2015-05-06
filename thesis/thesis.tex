@@ -17,6 +17,7 @@
 \usepackage{enumitem}
 \usepackage{appendix}
 \usepackage{verbatim}
+\usepackage{array}
 
 \usepackage{listings}
 \usepackage{color}
@@ -65,6 +66,7 @@
 \tableofcontents
 \newpage
 \listoffigures
+\listoftables
 
 \newpage
 \section{Introduction}
@@ -616,10 +618,44 @@ The software system requirements provided some general guidelines that the emula
 \newpage
 \section{Results}
 
+\subsection{Performance compared to two-phase randomised routing}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l|c|c|c|}
+\cline{2-4}
+\begin{tabular}[c]{@{}c@{}}\ \\[8pt] \ \end{tabular}& \textbf{\begin{tabular}[c]{@{}c@{}}\ \ \ Packets\ \ \ \\ sent\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}\ Timesteps\ \\completed\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}\ \ Collisions\ \ \\ detected\end{tabular}} \\ \hline
+\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}} \ \\Routing algorithm\\ \ \end{tabular}}                                                                                 & 32000                                                           & 36037                                                                                 & 0                                                                      \\ \hline
+\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}}Two-phase randomised\ \  \\ routing (avg. 10 runs)\end{tabular}} 
+& \begin{tabular}[c]{@{}c@{}} \ \\32000\\ \ \end{tabular}                                                           
+& 36576                                                                                 & 7691                                                                   \\ \hline
+\end{tabular}
+\end{table}
+
+full:
+routing: packets 32000, timesteps 36037, collisions 0
+tprr: packets 32000, timesteps 36576, collisions 7691
+
+regular:
+routing: packets 32000, timesteps 23789, collisions 30
+tprr: packets 32000, timesteps 36972, collision 9622
+
+irregular:
+routing: packets 32000, timesteps 35391, collisions 7416
+tprr: packets 32000, timesteps 36921, collisions 9472
+
+\subsection{Performance compared to serial execution}
+
 
 
 \newpage
 \section{Conclusion}
+
+\subsection{Summary of achievements}
+
+
+
+\subsection{Possible future developments}
 
 
 
@@ -1321,5 +1357,102 @@ subroutine.
 \end{lstlisting}
 
 \newpage
+\subsection*{D.3 \ Program for comparing the performance between the routing algorithm and two-phase randomised routing for full permutations}
+\ 
+\begin{lstlisting}
+
+    proc main() is
+        network
+        { { addn(16, 16) }  &  { addn(17, 17) } &
+          { addn(18, 18) }  &  { addn(19, 19) } &
+          { addn(20, 20) }  &  { addn(21, 21) } &
+          { addn(22, 22) }  &  { addn(23, 23) } &
+          { addn(24, 24) }  &  { addn(25, 25) } &
+          { addn(26, 26) }  &  { addn(27, 27) } &
+          { addn(28, 28) }  &  { addn(29, 29) } &
+          { addn(30, 30) }  &  { addn(31, 31) } &
+          { addn(0, 0)   }  &  { addn(1, 1)   } &
+          { addn(2, 2)   }  &  { addn(3, 3)   } &
+          { addn(4, 4)   }  &  { addn(5, 5)   } &
+          { addn(6, 6)   }  &  { addn(7, 7)   } &
+          { addn(8, 8)   }  &  { addn(9, 9)   } &
+          { addn(10, 10) }  &  { addn(11, 11) } &
+          { addn(12, 12) }  &  { addn(13, 13) } &
+          { addn(14, 14) }  &  { addn(15, 15) }
+        }
+
+    proc addn(val send, val recv) is 
+        var count;
+        var in;
+        while count<1000 do
+        { count:=in+1; send ! count; recv ? in }
+
+\end{lstlisting}
+
+\newpage
+\subsection*{D.4 \ Program for comparing the performance between the routing algorithm and two-phase randomised routing for regular permutations}
+\ 
+\begin{lstlisting}
+
+    proc main() is
+        network
+        { { addn(1, 31)  }  &  { addn(2, 0)   } &
+          { addn(3, 1)   }  &  { addn(4, 2)   } &
+          { addn(5, 3)   }  &  { addn(6, 4)   } &
+          { addn(7, 5)   }  &  { addn(8, 6)   } &
+          { addn(9, 7)   }  &  { addn(10, 8)  } &
+          { addn(11, 9)  }  &  { addn(12, 10) } &
+          { addn(13, 11) }  &  { addn(14, 12) } &
+          { addn(15, 13) }  &  { addn(16, 14) } &
+          { addn(17, 15) }  &  { addn(18, 16) } &
+          { addn(19, 17) }  &  { addn(20, 18) } &
+          { addn(21, 19) }  &  { addn(22, 20) } &
+          { addn(23, 21) }  &  { addn(24, 22) } &
+          { addn(25, 23) }  &  { addn(26, 24) } &
+          { addn(27, 25) }  &  { addn(28, 26) } &
+          { addn(29, 27) }  &  { addn(30, 28) } &
+          { addn(31, 29) }  &  { addn(0, 30)  }
+        }
+
+    proc addn(val send, val recv) is 
+        var count;
+        var in;
+        while count<1000 do
+        { count:=in+1; send ! count; recv ? in }
+
+\end{lstlisting}
+
+\newpage
+\subsection*{D.5 \ Program for comparing the performance between the routing algorithm and two-phase randomised routing for irregular permutations}
+\ 
+\begin{lstlisting}
+
+    proc main() is
+        network
+        { { addn(25, 25) }  &  { addn(7, 7)   } &
+          { addn(19, 19) }  &  { addn(16, 16) } &
+          { addn(8, 8)   }  &  { addn(28, 28) } &
+          { addn(21, 21) }  &  { addn(1, 1)   } &
+          { addn(4, 4)   }  &  { addn(15, 15) } &
+          { addn(29, 29) }  &  { addn(20, 20) } &
+          { addn(14, 14) }  &  { addn(30, 30) } &
+          { addn(12, 12) }  &  { addn(9, 9)   } &
+          { addn(3, 3)   }  &  { addn(27, 27) } &
+          { addn(26, 26) }  &  { addn(2, 2)   } &
+          { addn(11, 11) }  &  { addn(6, 6)   } &
+          { addn(31, 31) }  &  { addn(24, 24) } &
+          { addn(23, 23) }  &  { addn(0, 0)   } &
+          { addn(18, 18) }  &  { addn(17, 17) } &
+          { addn(5, 5)   }  &  { addn(10, 10) } &
+          { addn(13, 13) }  &  { addn(22, 22) }
+        }
+
+    proc addn(val send, val recv) is 
+        var count;
+        var in;
+        while count<1000 do
+        { count:=in+1; send ! count; recv ? in }
+
+\end{lstlisting}
 
 \end{document}
