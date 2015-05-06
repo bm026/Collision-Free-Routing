@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  6 MAY 2015 18:00
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  6 MAY 2015 22:35
 entering extended mode
  %&-line parsing enabled.
 **thesis.tex
@@ -309,21 +309,30 @@ Package caption Info: End \AtBeginDocument code.
 \tf@lof=\write4
 \openout4 = `thesis.lof'.
 
- (./thesis.lot)
+
+Underfull \hbox (badness 10000) in paragraph at lines 69--71
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 69--71
+
+ []
+
+(./thesis.lot)
 \tf@lot=\write5
 \openout5 = `thesis.lot'.
 
  [5] [6] [7]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 119.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 121.
 
-
-(/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
+ (/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 119.
- [8] [9]
-<images/trend_graph.png, id=40, 419.6478pt x 418.2024pt>
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 121.
+
+[8] [9] <images/trend_graph.png, id=40, 419.6478pt x 418.2024pt>
 File: images/trend_graph.png Graphic file (type png)
 
 <use images/trend_graph.png> [10] [11 <./images/trend_graph.png (PNG copy)>]
@@ -378,74 +387,94 @@ File: images/benes_full_perm.png Graphic file (type png)
 File: images/compiler_binary1.png Graphic file (type png)
 
 <use images/compiler_binary1.png> [30] [31 <./images/compiler_binary1.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 490--491
+Underfull \hbox (badness 10000) in paragraph at lines 492--493
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 494--495
+Underfull \hbox (badness 10000) in paragraph at lines 496--497
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 500--501
+Underfull \hbox (badness 10000) in paragraph at lines 502--503
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 504--505
+Underfull \hbox (badness 10000) in paragraph at lines 506--507
 
  []
 
 [32]
-Underfull \hbox (badness 10000) in paragraph at lines 512--513
+Underfull \hbox (badness 10000) in paragraph at lines 514--515
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 516--517
+Underfull \hbox (badness 10000) in paragraph at lines 518--519
 
  []
 
 [33]
-Underfull \hbox (badness 10000) in paragraph at lines 520--521
+Underfull \hbox (badness 10000) in paragraph at lines 522--523
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 529--530
+Underfull \hbox (badness 10000) in paragraph at lines 531--532
 
  []
 
 [34]
-Underfull \hbox (badness 10000) in paragraph at lines 543--544
+Underfull \hbox (badness 10000) in paragraph at lines 545--546
 
  []
 
 [35] [36] [37]
-Underfull \hbox (badness 10000) in paragraph at lines 570--571
+Underfull \hbox (badness 10000) in paragraph at lines 572--573
 
  []
 
-[38] [39] [40] [41] [42]
-Underfull \hbox (badness 10000) in paragraph at lines 685--686
+[38] [39] [40]
+Underfull \hbox (badness 10000) in paragraph at lines 625--626
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 631--632
+
+ []
+
+[41]
+Underfull \hbox (badness 10000) in paragraph at lines 652--653
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 673--674
+
+ []
+
+[42] [43] [44]
+Underfull \hbox (badness 10000) in paragraph at lines 732--733
 []\OT1/cmr/m/n/12 Hennessy, J. L., Pat-ter-son, D. A. (2011). \OT1/cmr/m/it/12 
 Com-puter Ar-chi-tec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 685--686
+Underfull \hbox (badness 10000) in paragraph at lines 732--733
 \OT1/cmr/m/it/12 ture: A Quan-ti-ta-tive Ap-proach\OT1/cmr/m/n/12 . On-line ap-
 pendix F, re-trieved from
  []
 
-[43] [44] [45] [46] [47] [48] [49] [50] [51] [52] [53] [54] [55] [56] [57]
-[58] [59] [60] [61] (./thesis.aux) ) 
+[45] [46] [47] [48] [49] [50] [51] [52] [53] [54] [55] [56] [57] [58] [59]
+[60] [61] [62] [63] (./thesis.aux) ) 
 Here is how much of TeX's memory you used:
- 5432 strings out of 495061
- 77584 string characters out of 1182621
+ 5433 strings out of 495061
+ 77593 string characters out of 1182621
  370895 words of memory out of 3000000
- 8538 multiletter control sequences out of 15000+50000
+ 8539 multiletter control sequences out of 15000+50000
  11538 words of font info for 42 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  44i,14n,45p,3415b,1019s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -460,9 +489,9 @@ amsfonts/cm/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/c
 msy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb><
 /usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/
 texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on thesis.pdf (62 pages, 1016066 bytes).
+Output written on thesis.pdf (64 pages, 1020083 bytes).
 PDF statistics:
- 268 PDF objects out of 1000 (max. 8388607)
+ 274 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  61 words of extra memory for PDF output out of 10000 (max. 10000000)
 

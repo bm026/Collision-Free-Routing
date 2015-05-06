@@ -53,12 +53,12 @@
 \contentsline {subsection}{\numberline {6.4}Testing against the specification}{40}
 \contentsline {section}{\numberline {7}Results}{41}
 \contentsline {subsection}{\numberline {7.1}Performance compared to two-phase randomised routing}{41}
-\contentsline {subsection}{\numberline {7.2}Performance compared to serial execution}{41}
-\contentsline {section}{\numberline {8}Conclusion}{42}
-\contentsline {subsection}{\numberline {8.1}Summary of achievements}{42}
-\contentsline {subsection}{\numberline {8.2}Possible future developments}{42}
-\contentsline {section}{\numberline {9}References}{43}
-\contentsline {section}{Appendix A: User Manual}{45}
-\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{46}
-\contentsline {section}{Appendix C: Description of Input Program Syntax}{51}
-\contentsline {section}{Appendix D: Input Program Code Listings}{58}
+\contentsline {subsection}{\numberline {7.2}Performance compared to a serial alternative}{43}
+\contentsline {section}{\numberline {8}Conclusion}{44}
+\contentsline {subsection}{\numberline {8.1}Summary of achievements}{44}
+\contentsline {subsection}{\numberline {8.2}Possible future developments}{44}
+\contentsline {section}{\numberline {9}References}{45}
+\contentsline {section}{Appendix A: User Manual}{47}
+\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{48}
+\contentsline {section}{Appendix C: Description of Input Program Syntax}{53}
+\contentsline {section}{Appendix D: Input Program Code Listings}{60}

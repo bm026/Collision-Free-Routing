@@ -66,6 +66,8 @@
 \tableofcontents
 \newpage
 \listoffigures
+\ \\
+\ \\
 \listoftables
 
 \newpage
@@ -620,7 +622,15 @@ The software system requirements provided some general guidelines that the emula
 
 \subsection{Performance compared to two-phase randomised routing}
 
-\begin{table}[h]
+One way to measure the performance of the developed routing algorithm is to compare it to an existing algorithm used to route packets in modern parallel architectures. A commonly used algorithm is two-phase randomised routing, which selects a random switch in the network that the packet must pass through on the way to its destination in an attempt to spread traffic uniformly across the network. In order to compare the performance of these two routing algorithms against each other, an emulation of two-phase randomised routing was created which can be interchanged with the developed routing algorithm in the network. With both algorithms in place, their relative performance can be measured using a number of test programs.\\
+
+\noindent\textbf{7.1.1 \ \ Full permutations}
+
+\noindent\textbf{Test program}: The input program used to compare how efficiently the two algorithms can route multiple full permutations is listed in \textbf{Appendix D.3}. The program uses 32 processors, each of which sends a single packet to the opposite side of the network for each cycle of communication. There are 1000 cycles of communication in total, which will give a good indication of how each algorithm handles the routing of full permutations.  
+
+\noindent\textbf{Result}: The performance metrics provided by the emulation for both routing algorithms are shown below in table 1.\\
+
+\begin{table}[H]
 \centering
 \begin{tabular}{l|c|c|c|}
 \cline{2-4}
@@ -630,21 +640,58 @@ The software system requirements provided some general guidelines that the emula
 & \begin{tabular}[c]{@{}c@{}} \ \\32000\\ \ \end{tabular}                                                           
 & 36576                                                                                 & 7691                                                                   \\ \hline
 \end{tabular}
+\caption[Comparing the performance of the developed routing algorithm and two-phase randomised routing for full permutations]{The performance metrics for both algorithms routing full permutations.}
 \end{table}
 
-full:
-routing: packets 32000, timesteps 36037, collisions 0
-tprr: packets 32000, timesteps 36576, collisions 7691
+%This means that all of the routes in each permutation must pass through the outermost layer of switches, and are all the same length. Provided there are no collisions during network traversal 
 
-regular:
-routing: packets 32000, timesteps 23789, collisions 30
-tprr: packets 32000, timesteps 36972, collision 9622
+\noindent\textbf{7.1.2 \ \ Regular permutations}
 
-irregular:
-routing: packets 32000, timesteps 35391, collisions 7416
-tprr: packets 32000, timesteps 36921, collisions 9472
+\noindent\textbf{Test program}: The input program used to compare how efficiently the two algorithms can route multiple regular permutations is listed in \textbf{Appendix D.4}. The program connects 32 processors, each of which sends a single packet to the processor directly to the right of it for each cycle of communication (apart from the rightmost processor, which sends a packet back around to the leftmost processor). The linearity of the permutation means it is regarded as regular. There are a total of 1000 cycles of communication, which will give a good indication of how each algorithm handles the routing of regular permutations.
 
-\subsection{Performance compared to serial execution}
+\noindent\textbf{Result}: The performance metrics provided by the emulation for both routing algorithms are shown below in table 2.\\
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|c|c|c|}
+\cline{2-4}
+\begin{tabular}[c]{@{}c@{}}\ \\[8pt] \ \end{tabular}& \textbf{\begin{tabular}[c]{@{}c@{}}\ \ \ Packets\ \ \ \\ sent\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}\ Timesteps\ \\completed\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}\ \ Collisions\ \ \\ detected\end{tabular}} \\ \hline
+\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}} \ \\Routing algorithm\\ \ \end{tabular}}                                                                                 & 32000                                                           & 23789                                                                                 & 0                                                                      \\ \hline
+\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}}Two-phase randomised\ \  \\ routing (avg. 10 runs)\end{tabular}} 
+& \begin{tabular}[c]{@{}c@{}} \ \\32000\\ \ \end{tabular}                                                           
+& 36972                                                                                 & 9622                                                                   \\ \hline
+\end{tabular}
+\caption[Comparing the performance of the developed routing algorithm and two-phase randomised routing for regular permutations]{The performance metrics for both algorithms routing regular permutations.}
+\end{table}
+
+
+
+\noindent\textbf{7.1.3 \ \ Irregular permutations}
+
+\noindent\textbf{Test program}: The input program used to compare how efficiently the two algorithms can route multiple irregular permutations is listed in \textbf{Appendix D.5}. The program uses 32 processors, each of which sends a single packet to an arbitrarily chosen processor in the network for each cycle of communication. As the permutation is made up of randomly chosen communications, it can be regarded as an irregular permutation. A total of 1000 communication cycles are carried out by the program, which will give a good indication of how each algorithm handles the routing of irregular permutations.
+
+\noindent\textbf{Result}: The performance metrics provided by the emulation for both routing algorithms are shown below in table 3.\\
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|c|c|c|}
+\cline{2-4}
+\begin{tabular}[c]{@{}c@{}}\ \\[8pt] \ \end{tabular}& \textbf{\begin{tabular}[c]{@{}c@{}}\ \ \ Packets\ \ \ \\ sent\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}\ Timesteps\ \\completed\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}\ \ Collisions\ \ \\ detected\end{tabular}} \\ \hline
+\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}} \ \\Routing algorithm\\ \ \end{tabular}}                                                                                 & 32000                                                           & 35391                                                                                 & 7416                                                                      \\ \hline
+\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}}Two-phase randomised\ \  \\ routing (avg. 10 runs)\end{tabular}} 
+& \begin{tabular}[c]{@{}c@{}} \ \\32000\\ \ \end{tabular}                                                           
+& 36921                                                                                 & 9472                                                                   \\ \hline
+\end{tabular}
+\caption[Comparing the performance of the developed routing algorithm and two-phase randomised routing for irregular permutations]{The performance metrics for both algorithms routing irregular permutations.}
+\end{table}
+
+
+
+\noindent\textbf{7.1.4 \ \ Summary of results}
+
+\noindent blah
+
+\subsection{Performance compared to a serial alternative}
 
 
 
