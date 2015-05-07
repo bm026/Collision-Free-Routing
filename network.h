@@ -9,10 +9,10 @@
 #include <time.h>
 
 // network definitions
-#define BUFF_SIZE 10
-#define NUM_LAYERS 5
-#define NUM_CORES 32
-#define PORT_DEPTH 20
+#define BUFF_SIZE 4
+#define NUM_LAYERS 1
+#define NUM_CORES 2
+#define PORT_DEPTH 128
 
 // processor definitions
 #define true     -1
@@ -73,7 +73,7 @@ int collision_count = 0;
 int packet_count = 0;
 
 // user changeable variables
-unsigned int verbose = false;
+unsigned int verbose = true;
 unsigned int routing_code = 1; // see reference below
 
 // Routing codes and their corresponding algorithms:
@@ -149,7 +149,7 @@ Network *init_network (Network *n);
 Buffer *new_buffer(int size);
 void network_timesteps(Network *n, int iterations);
 Packet *buffer_read(Buffer *buffer, int size);
-int buffer_write(Buffer *buffer, Packet *p, int max);
+int buffer_write(Buffer *buffer, Packet *p, int max_size);
 void add_packet_to_core(Network *n, Packet *p, int core_num);
 void send_packets_from_switches(Network *n);
 void check_switches_for_received_packets(Network *n);

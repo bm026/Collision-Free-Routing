@@ -415,11 +415,11 @@ Packet *buffer_read(Buffer *buffer, int size) {
 	return p;
 }
 
-int buffer_write(Buffer *buffer, Packet *p, int max) {
+int buffer_write(Buffer *buffer, Packet *p, int max_size) {
 
-	if (buffer -> count < max) {
+	if (buffer -> count < max_size) {
 		buffer -> queue[buffer -> nextWrite] = p;
-		buffer -> nextWrite = (buffer -> nextWrite + 1) % max;
+		buffer -> nextWrite = (buffer -> nextWrite + 1) % max_size;
 		buffer -> count++;
 	}
 	else {
