@@ -1,64 +1,64 @@
-\contentsline {section}{\numberline {1}Introduction}{6}
-\contentsline {subsection}{\numberline {1.1}Definitions}{6}
-\contentsline {subsection}{\numberline {1.2}Outline of the problem}{6}
-\contentsline {subsection}{\numberline {1.3}Possible optimisation of current solutions}{7}
-\contentsline {subsection}{\numberline {1.4}Motivation}{8}
-\contentsline {subsection}{\numberline {1.5}Purpose}{8}
-\contentsline {subsection}{\numberline {1.6}Outline of the following chapters}{9}
-\contentsline {section}{\numberline {2}Background}{10}
-\contentsline {subsection}{\numberline {2.1}General-purpose processors: a need for parallelism}{10}
-\contentsline {subsection}{\numberline {2.2}An introduction to parallel systems}{12}
-\contentsline {subsection}{\numberline {2.3}An introduction to interconnects}{13}
-\contentsline {subsection}{\numberline {2.4}Interconnection networks}{14}
-\contentsline {subsection}{\numberline {2.5}Network topologies}{14}
-\contentsline {subsection}{\numberline {2.6}Routing}{16}
-\contentsline {subsubsection}{\numberline {2.6.1}Oblivious routing}{16}
-\contentsline {subsubsection}{\numberline {2.6.2}Adaptive routing}{17}
-\contentsline {subsubsection}{\numberline {2.6.3}Two-phase randomised routing}{17}
-\contentsline {subsection}{\numberline {2.7}Switching}{17}
-\contentsline {subsubsection}{\numberline {2.7.1}Packet switching}{17}
-\contentsline {subsubsection}{\numberline {2.7.2}Circuit switching}{18}
-\contentsline {subsubsection}{\numberline {2.7.3}Wormhole switching}{18}
-\contentsline {subsection}{\numberline {2.8}Flow control}{18}
-\contentsline {subsubsection}{\numberline {2.8.1}Credit-based control flow}{18}
-\contentsline {subsubsection}{\numberline {2.8.2}Virtual channel control flow}{18}
-\contentsline {subsection}{\numberline {2.9}Modern interconnection networks}{19}
-\contentsline {subsubsection}{\numberline {2.9.1}InfiniBand}{19}
-\contentsline {subsubsection}{\numberline {2.9.2}IBM Blue Gene/L 3D Torus Network}{19}
-\contentsline {section}{\numberline {3}Specification}{20}
-\contentsline {subsection}{\numberline {3.1}Outline of the solution}{20}
-\contentsline {subsection}{\numberline {3.2}Functional requirements}{21}
-\contentsline {subsection}{\numberline {3.3}Interface requirements}{22}
-\contentsline {subsection}{\numberline {3.4}Performance requirements}{23}
-\contentsline {subsection}{\numberline {3.5}Software system requirements}{23}
-\contentsline {subsection}{\numberline {3.6}Constraints, assumptions and dependencies}{24}
-\contentsline {section}{\numberline {4}Design}{25}
-\contentsline {subsection}{\numberline {4.1}Network topology design}{25}
-\contentsline {subsection}{\numberline {4.2}Network switch design}{26}
-\contentsline {subsection}{\numberline {4.3}Routing algorithm design}{27}
-\contentsline {subsection}{\numberline {4.4}Optimising the routing algorithm}{29}
-\contentsline {subsection}{\numberline {4.5}Sourcing a suitable compiler}{30}
-\contentsline {subsection}{\numberline {4.6}Output of the compiler}{30}
-\contentsline {subsection}{\numberline {4.7}Processor modifications}{31}
-\contentsline {section}{\numberline {5}Implementation}{32}
-\contentsline {subsection}{\numberline {5.1}Building the network}{32}
-\contentsline {subsection}{\numberline {5.2}Creating the processors}{33}
-\contentsline {subsection}{\numberline {5.3}Connecting the processors to the network}{34}
-\contentsline {subsection}{\numberline {5.4}Integrating the routing algorithm}{35}
-\contentsline {subsection}{\numberline {5.5}Emulating the parallelism}{36}
-\contentsline {section}{\numberline {6}Testing}{38}
-\contentsline {subsection}{\numberline {6.1}Syntax of parallel input programs}{38}
-\contentsline {subsection}{\numberline {6.2}Testing the correctness of the network}{39}
-\contentsline {subsection}{\numberline {6.3}Testing the correctness of the routing algorithm}{39}
-\contentsline {subsection}{\numberline {6.4}Testing against the specification}{40}
-\contentsline {section}{\numberline {7}Results}{41}
-\contentsline {subsection}{\numberline {7.1}Performance compared to two-phase randomised routing}{41}
-\contentsline {subsection}{\numberline {7.2}Performance compared to a serial alternative}{44}
-\contentsline {section}{\numberline {8}Conclusion}{45}
-\contentsline {subsection}{\numberline {8.1}Summary of achievements}{45}
-\contentsline {subsection}{\numberline {8.2}Possible future developments}{45}
-\contentsline {section}{\numberline {9}References}{46}
-\contentsline {section}{Appendix A: User Manual}{48}
-\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{49}
-\contentsline {section}{Appendix C: Description of Input Program Syntax}{54}
-\contentsline {section}{Appendix D: Input Program Code Listings}{61}
+\contentsline {section}{\numberline {1}Introduction}{7}
+\contentsline {subsection}{\numberline {1.1}Definitions}{7}
+\contentsline {subsection}{\numberline {1.2}Outline of the problem}{7}
+\contentsline {subsection}{\numberline {1.3}Possible optimisation of current solutions}{8}
+\contentsline {subsection}{\numberline {1.4}Motivation}{9}
+\contentsline {subsection}{\numberline {1.5}Purpose}{9}
+\contentsline {subsection}{\numberline {1.6}Outline of the following chapters}{10}
+\contentsline {section}{\numberline {2}Background}{11}
+\contentsline {subsection}{\numberline {2.1}General-purpose processors: a need for parallelism}{11}
+\contentsline {subsection}{\numberline {2.2}An introduction to parallel systems}{13}
+\contentsline {subsection}{\numberline {2.3}An introduction to interconnects}{14}
+\contentsline {subsection}{\numberline {2.4}Interconnection networks}{15}
+\contentsline {subsection}{\numberline {2.5}Network topologies}{15}
+\contentsline {subsection}{\numberline {2.6}Routing}{17}
+\contentsline {subsubsection}{\numberline {2.6.1}Oblivious routing}{17}
+\contentsline {subsubsection}{\numberline {2.6.2}Adaptive routing}{18}
+\contentsline {subsubsection}{\numberline {2.6.3}Two-phase randomised routing}{18}
+\contentsline {subsection}{\numberline {2.7}Switching}{18}
+\contentsline {subsubsection}{\numberline {2.7.1}Packet switching}{18}
+\contentsline {subsubsection}{\numberline {2.7.2}Circuit switching}{19}
+\contentsline {subsubsection}{\numberline {2.7.3}Wormhole switching}{19}
+\contentsline {subsection}{\numberline {2.8}Flow control}{19}
+\contentsline {subsubsection}{\numberline {2.8.1}Credit-based control flow}{19}
+\contentsline {subsubsection}{\numberline {2.8.2}Virtual channel control flow}{19}
+\contentsline {subsection}{\numberline {2.9}Modern interconnection networks}{20}
+\contentsline {subsubsection}{\numberline {2.9.1}InfiniBand}{20}
+\contentsline {subsubsection}{\numberline {2.9.2}IBM Blue Gene/L 3D Torus Network}{20}
+\contentsline {section}{\numberline {3}Specification}{21}
+\contentsline {subsection}{\numberline {3.1}Outline of the solution}{21}
+\contentsline {subsection}{\numberline {3.2}Functional requirements}{22}
+\contentsline {subsection}{\numberline {3.3}Interface requirements}{23}
+\contentsline {subsection}{\numberline {3.4}Performance requirements}{24}
+\contentsline {subsection}{\numberline {3.5}Software system requirements}{24}
+\contentsline {subsection}{\numberline {3.6}Constraints, assumptions and dependencies}{25}
+\contentsline {section}{\numberline {4}Design}{26}
+\contentsline {subsection}{\numberline {4.1}Network topology design}{26}
+\contentsline {subsection}{\numberline {4.2}Network switch design}{27}
+\contentsline {subsection}{\numberline {4.3}Routing algorithm design}{28}
+\contentsline {subsection}{\numberline {4.4}Optimising the routing algorithm}{30}
+\contentsline {subsection}{\numberline {4.5}Sourcing a suitable compiler}{31}
+\contentsline {subsection}{\numberline {4.6}Output of the compiler}{31}
+\contentsline {subsection}{\numberline {4.7}Processor modifications}{32}
+\contentsline {section}{\numberline {5}Implementation}{33}
+\contentsline {subsection}{\numberline {5.1}Building the network}{33}
+\contentsline {subsection}{\numberline {5.2}Creating the processors}{34}
+\contentsline {subsection}{\numberline {5.3}Connecting the processors to the network}{35}
+\contentsline {subsection}{\numberline {5.4}Integrating the routing algorithm}{36}
+\contentsline {subsection}{\numberline {5.5}Emulating the parallelism}{37}
+\contentsline {section}{\numberline {6}Testing}{39}
+\contentsline {subsection}{\numberline {6.1}Syntax of parallel input programs}{39}
+\contentsline {subsection}{\numberline {6.2}Testing the correctness of the network}{40}
+\contentsline {subsection}{\numberline {6.3}Testing the correctness of the routing algorithm}{40}
+\contentsline {subsection}{\numberline {6.4}Testing against the specification}{41}
+\contentsline {section}{\numberline {7}Results}{42}
+\contentsline {subsection}{\numberline {7.1}Performance compared to two-phase randomised routing}{42}
+\contentsline {subsection}{\numberline {7.2}Performance compared to a serial equivalent}{45}
+\contentsline {section}{\numberline {8}Conclusion}{46}
+\contentsline {subsection}{\numberline {8.1}Summary of achievements}{46}
+\contentsline {subsection}{\numberline {8.2}Possible future developments}{46}
+\contentsline {section}{\numberline {9}References}{47}
+\contentsline {section}{Appendix A: User Manual}{49}
+\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{50}
+\contentsline {section}{Appendix C: Description of Input Program Syntax}{55}
+\contentsline {section}{Appendix D: Input Program Code Listings}{62}

@@ -64,8 +64,7 @@
 \tableofcontents
 \newpage
 \listoffigures
-\ \\
-\ \\
+\newpage
 \listoftables
 
 \newpage
@@ -662,7 +661,7 @@ The performance metrics show that the developed routing algorithm was able to av
 \caption[Comparing the performance of the developed routing algorithm and two-phase randomised routing for regular permutations]{The performance metrics for both algorithms routing regular permutations.}
 \end{table}
 
-The performance metrics show that the developed algorithm was again able to avoid any collisions in the network, whereas the packets routed by two-phased randomised routing encountered a large number of collisions. The number of timesteps that the emulation using two-phase randomised routing required to execute the input program was approximately 55\% more than the emulation using the developed algorithm. Some of this increase in run time can be attributed to the collisions in the network, however a large portion of it can also be credited to the fact that two-phase randomised routing directs all of the packets to the outermost layer of switches in the network, whereas the developed routing algorithm uses shorter routes when traversal to the outermost layer of switches is not required. An explanation for why the packets routed by the developed routing algorithm encountered no collisions in the network can be found on closer inspection of the input program. All of the processors require communication with processor directly to the right of them, meaning that most of the routes are short and the paths rarely cross each other. This leads to collision-free paths being routed by the algorithm and causes the input program to be executed quickly and efficiently.\\
+The performance metrics show that the developed algorithm was again able to avoid any collisions in the network, whereas the packets routed by two-phased randomised routing encountered a large number of collisions. The number of timesteps that the emulation using two-phase randomised routing required to execute the input program was approximately 55\% more than the emulation using the developed algorithm. Some of this increase in run time can be attributed to the collisions in the network, however a large portion of it can also be credited to the fact that two-phase randomised routing directs all of the packets to the outermost layer of switches in the network, whereas the developed routing algorithm uses shorter routes when traversal to the outermost layer of switches is not required. An explanation for why the packets routed by the developed routing algorithm encountered no collisions in the network can be found on closer inspection of the input program. All of the processors require communication with processor directly to the right of them, meaning that most of the routes are short and the paths rarely cross each other. This leads to collision-free paths being routed by the algorithm and causes the input program to be executed quickly and efficiently.
 
 \noindent\textbf{7.1.3 \ \ Irregular permutations}
 
@@ -685,7 +684,7 @@ The performance metrics show that the developed algorithm was again able to avoi
 
 The performance metrics show that, while both emulations suffered a significant number of collisions in the network, the emulation using the developed routing algorithm suffered fewer collisions than the emulation using two-phase randomised routing. These extra collisions mean that the run time of the emulation using two-phase randomised routing is 1.3\% slower than the emulation using the developed routing algorithm. However, it is immediately noticeable that the developed routing algorithm performed worse when routing irregular permutations than when it was routing full and regular permutations. An explanation for this behaviour can be found on closer inspection of the input program. The fact that random communications are required means that each route calculated by the routing algorithm for the first permutation is of a variable length, depending on the proximity of the processors that require the communication. This means that, although all of the packets are added to the network during the same timestep, the difference in path length means that some of the packets in the permutation arrive at their destination before others. Once an early arriving packet is collected by its processor, the processor can continue executing instructions while some of the processors are still waiting for their packets to arrive. This leads to a loss of synchronisation between the processors, and means that full permutations of communication are replaced with partial permutations that are sent when there may still be data from the previous communication cycle being sent across the network. In these circumstances the routing algorithm cannot avoid collisions in the network between different permutations, so some of the added efficiency that the routing algorithm brings to the emulation is lost.
 
-\subsection{Performance compared to a serial alternative}
+\subsection{Performance compared to a serial equivalent}
 
 Another way to measure the performance of the network is to compare its execution of a parallel program to the execution of a serial equivalent program using only a single processor. The run times of each program can then be used to determine the speedup that the parallel architecture introduces and whether efficient execution is being carried out.
 
@@ -703,7 +702,7 @@ Another way to measure the performance of the network is to compare its executio
 & \begin{tabular}[c]{@{}c@{}} \ \\1024\\ \ \end{tabular}                                                           
 & 4907                                                                                 & 256                                                                   \\ \hline
 \end{tabular}
-\caption[Comparing the performance of the developed routing algorithm and two-phase randomised routing for irregular permutations]{The performance metrics for both algorithms routing irregular permutations.}
+\caption[Comparing the performance of a parallel program using multiple processors to an equivalent serial program using a single processor]{The performance metrics for execution of the serial and parallel programs.}
 \end{table}
 
 The performance metrics show that a speedup of 15.5 was achieved by adding parallelism to the serial program. This value is reasonably close to 16 (linear speedup), which shows that the emulation is able to execute parallel programs in an efficient manner. In this particular program, the number of collisions in the network had no effect on the run time because a technique called latency hiding was implemented where local computation is carried out while the packets are being sent across the network, effectively eliminating the time required for network traversal from the overall run time. The 0.5 reduction from linear speedup can be attributed to the initial introduction of the edge pixel values to the network, which is an unavoidable expense.
@@ -764,6 +763,12 @@ The performance metrics show that a speedup of 15.5 was achieved by adding paral
 \section*{Appendix A: User Manual}
 \addcontentsline{toc}{section}{Appendix A: User Manual}
 
+creating an input program
+changing the number of processors and layers of switches
+running the emulation
+explaining the output
+changing the output
+changing the routing algorithm
 
 \newpage
 \section*{Appendix B: Summary of Processor Instruction Set}
