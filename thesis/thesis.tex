@@ -595,13 +595,13 @@ The parallel input programs that are compiled and then executed by the emulation
 
 \textbf{Test program}: The input program used to test whether the network sends data packets along their intended route to their intended destination is listed in \textbf{Appendix D.1}. The program is a relay-style message passing program using eight processors, where a value is initialised in the first processor and sent to the second processor, incremented, and passed on to the third processor. This process is repeated until the final processor is reached, where the final incrementation is applied and the value is returned to the first processor.
 
-\noindent\textbf{Result}: The performance metrics returned by the emulation indicate that after a total of 137 timesteps, 8 packets were sent and 0 collisions were detected. This is the expected behaviour of the program as each processor sends one packet, and each packet was sent one after another so there was no possibility of any collisions occurring. On closer inspection of the verbose output of the emulation, it can be seen that all of the packets were sent and received in the correct order with the correct data. An initial value of 50 was set by the first processor and then incremented by each of the seven remaining processors. The correct value of 57 was returned to the first processor which suggests that the network functions as intended. 
+\noindent\textbf{Results}: The performance metrics returned by the emulation indicate that after a total of 137 timesteps, 8 packets were sent and 0 collisions were detected. This is the expected behaviour of the program as each processor sends one packet, and each packet was sent one after another so there was no possibility of any collisions occurring. On closer inspection of the verbose output of the emulation, it can be seen that all of the packets were sent and received in the correct order with the correct data. An initial value of 50 was set by the first processor and then incremented by each of the seven remaining processors. The correct value of 57 was returned to the first processor which suggests that the network functions as intended. 
 
 \subsection{Testing the correctness of the routing algorithm}
 
 \textbf{Test program}: The input program used to test whether the routing algorithm calculates collision-free paths through the network for any permutation is listed in \textbf{Appendix D.2}. The program includes sixteen concurrent communications by processors on opposite sides of the network, which means that a full permutation of maximum-length routes must be calculated. Using other routing algorithms, this scenario would be most likely to cause at least one collision during network traversal.
 
-\noindent\textbf{Result}: The performance metrics returned by the emulation indicate that after a total of 53 timesteps, 16 packets were sent and 0 collisions were detected. This is the expected behaviour of the program as each processor sends one packet, and the routes taken by these packets were calculated so that no collisions in the network would occur. The number of timesteps that the program takes to execute is also lower than the program used to test the correctness of the network because, although more packets are sent, they are sent in parallel so each processor does not have to wait to receive data in order to send its own data, resulting in a faster run time. On closer inspection of the verbose output of the emulation, it can be seen that all sixteen routes were of maximal length (four routing bits and four addressing bits), all packets were added to the network on the same timestep, and all packets reached their destination on the same timestep. This suggests that the routing algorithm calculates collision-free paths for full permutations as intended.
+\noindent\textbf{Results}: The performance metrics returned by the emulation indicate that after a total of 53 timesteps, 16 packets were sent and 0 collisions were detected. This is the expected behaviour of the program as each processor sends one packet, and the routes taken by these packets were calculated so that no collisions in the network would occur. The number of timesteps that the program takes to execute is also lower than the program used to test the correctness of the network because, although more packets are sent, they are sent in parallel so each processor does not have to wait to receive data in order to send its own data, resulting in a faster run time. On closer inspection of the verbose output of the emulation, it can be seen that all sixteen routes were of maximal length (four routing bits and four addressing bits), all packets were added to the network on the same timestep, and all packets reached their destination on the same timestep. This suggests that the routing algorithm calculates collision-free paths for full permutations as intended.
 
 \subsection{Testing against the specification}
 
@@ -626,7 +626,7 @@ One way to measure the performance of the developed routing algorithm is to comp
 
 \noindent\textbf{Test program}: The input program used to compare how efficiently the two algorithms can route multiple full permutations is listed in \textbf{Appendix D.3}. The program uses 32 processors, each of which sends a single packet to the opposite side of the network for each cycle of communication. There are 1000 cycles of communication in total, which will give a good indication of how each algorithm handles the routing of full permutations.  
 
-\noindent\textbf{Result}:
+\noindent\textbf{Results}:
 
 \begin{table}[htb]
 \centering
@@ -647,7 +647,7 @@ The performance metrics show that the developed routing algorithm was able to av
 
 \noindent\textbf{Test program}: The input program used to compare how efficiently the two algorithms can route multiple regular permutations is listed in \textbf{Appendix D.4}. The program connects 32 processors, each of which sends a single packet to the processor directly to the right of it for each cycle of communication (apart from the rightmost processor, which sends a packet back around to the leftmost processor). The linearity of the permutation means it is regarded as regular. There are a total of 1000 cycles of communication, which will give a good indication of how each algorithm handles the routing of regular permutations.
 
-\noindent\textbf{Result}:
+\noindent\textbf{Results}:
 
 \begin{table}[htb]
 \centering
@@ -668,7 +668,7 @@ The performance metrics show that the developed algorithm was again able to avoi
 
 \noindent\textbf{Test program}: The input program used to compare how efficiently the two algorithms can route multiple irregular permutations is listed in \textbf{Appendix D.5}. The program uses 32 processors, each of which sends a single packet to an arbitrarily chosen processor in the network for each cycle of communication. As the permutation is made up of randomly chosen communications, it can be regarded as an irregular permutation. A total of 1000 communication cycles are carried out by the program, which will give a good indication of how each algorithm handles the routing of irregular permutations.
 
-\noindent\textbf{Result}:
+\noindent\textbf{Results}:
 
 \begin{table}[htb]
 \centering
@@ -687,11 +687,26 @@ The performance metrics show that, while both emulations suffered a significant 
 
 \subsection{Performance compared to a serial alternative}
 
-routing algorithm:
-packets 1024, timesteps 4907, collisions 256
+Another way to measure the performance of the network is to compare its execution of a parallel program to the execution of a serial equivalent program using only a single processor. The run times of each program can then be used to determine the speedup that the parallel architecture introduces and whether efficient execution is being carried out.
 
-serial:
-packets 0, timesteps 76115, collisions 0
+\noindent\textbf{Test programs}: The parallel program used for this comparison is listed in \textbf{Appendix D.6}, and its serial equivalent is listed in \textbf{Appendix D.7}. Both of these programs aim to imitate the calculations involved in the blurring of a 256x256 image by averaging the colour of each pixel and the eight pixels surrounding it. However, due to the fact that the language used to code the input programs does not support reading files or even division to find the average pixel colour, the real functionality of blurring an image cannot be carried out. Instead, arbitrary pixel colours for the image are used and each 'blur' consists of nine additions. In the serial program these additions are carried out sequentially, however the parallel program uses 16 processors and splits the image into sixteen 16x16 blocks; one for each processor. Firstly, because the pixels at the edges of each block require the colour value of pixels in the neighbouring block, a technique called halo exchange is carried out where each processor sends the appropriate pixel colours to the appropriate neighbouring processors so that all of the edge pixels can be blurred correctly. Then, the blurring of the local pixels stored in each processor can be carried out in parallel, before the processors receive the edge pixel data from the network and apply the final blurs using this data.
+
+\noindent\textbf{Results}:
+
+\begin{table}[htb]
+\centering
+\begin{tabular}{l|c|c|c|}
+\cline{2-4}
+\begin{tabular}[c]{@{}c@{}}\ \\[8pt] \ \end{tabular}& \textbf{\begin{tabular}[c]{@{}c@{}}\ \ \ Packets\ \ \ \\ sent\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}\ Timesteps\ \\completed\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}\ \ Collisions\ \ \\ detected\end{tabular}} \\ \hline
+\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}} \ \\Serial program\\ \ \end{tabular}}                                                                                 & \begin{tabular}[c]{@{}c@{}} \ \\0\\ \ \end{tabular}                                                                                                                      & 76115                                                                                 & 0                                                                      \\ \hline
+\multicolumn{1}{|l|}{Parallel program \ \ \ \ \ \ } 
+& \begin{tabular}[c]{@{}c@{}} \ \\1024\\ \ \end{tabular}                                                           
+& 4907                                                                                 & 256                                                                   \\ \hline
+\end{tabular}
+\caption[Comparing the performance of the developed routing algorithm and two-phase randomised routing for irregular permutations]{The performance metrics for both algorithms routing irregular permutations.}
+\end{table}
+
+The performance metrics show that a speedup of 15.5 was achieved by adding parallelism to the serial program. This value is reasonably close to 16 (linear speedup), which shows that the emulation is able to execute parallel programs in an efficient manner. In this particular program, the number of collisions in the network had no effect on the run time because a technique called latency hiding was implemented where local computation is carried out while the packets are being sent across the network, effectively eliminating the time required for network traversal from the overall run time. The 0.5 reduction from linear speedup can be attributed to the initial introduction of the edge pixel values to the network, which is an unavoidable expense.
 
 \newpage
 \section{Conclusion}
