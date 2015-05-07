@@ -620,7 +620,7 @@ The software system requirements provided some general guidelines that the emula
 
 \subsection{Performance compared to two-phase randomised routing}
 
-One way to measure the performance of the developed routing algorithm is to compare it to an existing algorithm used to route packets in modern parallel architectures. A commonly used algorithm is two-phase randomised routing, which selects a random switch in the network that the packet must pass through on the way to its destination in an attempt to spread traffic uniformly across the network. In order to compare the performance of these two routing algorithms against each other, an emulation of two-phase randomised routing was created which can be interchanged with the developed routing algorithm in the network. With both algorithms in place, their relative performance can be measured using a number of test programs.\\
+One way to measure the performance of the developed routing algorithm is to compare it to an existing algorithm used to route packets in modern parallel architectures. A commonly used algorithm is two-phase randomised routing, which selects a random switch in the network that the packet must pass through on the way to its destination in an attempt to spread traffic uniformly across the network. In order to compare the performance of these two routing algorithms against each other, an emulation of two-phase randomised routing was created which can be interchanged with the developed routing algorithm in the network, making their relative performances measurable using a number of test programs.\\
 
 \noindent\textbf{7.1.1 \ \ Full permutations}
 
@@ -628,7 +628,7 @@ One way to measure the performance of the developed routing algorithm is to comp
 
 \noindent\textbf{Result}:
 
-\begin{table}[H]
+\begin{table}[htb]
 \centering
 \begin{tabular}{l|c|c|c|}
 \cline{2-4}
@@ -649,7 +649,7 @@ The performance metrics show that the developed routing algorithm was able to av
 
 \noindent\textbf{Result}:
 
-\begin{table}[H]
+\begin{table}[htb]
 \centering
 \begin{tabular}{l|c|c|c|}
 \cline{2-4}
@@ -670,7 +670,7 @@ The performance metrics show that the developed algorithm was again able to avoi
 
 \noindent\textbf{Result}:
 
-\begin{table}[H]
+\begin{table}[htb]
 \centering
 \begin{tabular}{l|c|c|c|}
 \cline{2-4}
@@ -1501,17 +1501,16 @@ subroutine.
 \end{lstlisting}
 
 \newpage
-\subsection*{D.6 \ A parallel program that imitates the instructions of a program that blurs the pixels of a 256x256 image in parallel}
+\subsection*{D.6 \ A parallel program that imitates the instructions of a program that blurs the pixels of a 256x256 image in parallel using halo exchange}
 \ 
 \begin{lstlisting}
 
-    
+
     array north_halo[16];
     array south_halo[16];
     array east_halo[16];
     array west_halo[16];
     array pixels[9];
-
 
     proc main() is
         var in;
