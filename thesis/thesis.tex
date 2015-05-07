@@ -626,7 +626,7 @@ One way to measure the performance of the developed routing algorithm is to comp
 
 \noindent\textbf{Test program}: The input program used to compare how efficiently the two algorithms can route multiple full permutations is listed in \textbf{Appendix D.3}. The program uses 32 processors, each of which sends a single packet to the opposite side of the network for each cycle of communication. There are 1000 cycles of communication in total, which will give a good indication of how each algorithm handles the routing of full permutations.  
 
-\noindent\textbf{Result}: The performance metrics provided by the emulation for both routing algorithms are shown below in table 1.\\
+\noindent\textbf{Result}:
 
 \begin{table}[H]
 \centering
@@ -641,13 +641,13 @@ One way to measure the performance of the developed routing algorithm is to comp
 \caption[Comparing the performance of the developed routing algorithm and two-phase randomised routing for full permutations]{The performance metrics for both algorithms routing full permutations.}
 \end{table}
 
-%This means that all of the routes in each permutation must pass through the outermost layer of switches, and are all the same length. Provided there are no collisions during network traversal 
+The performance metrics show that the developed routing algorithm was able to avoid any collisions in the network, whereas the packets directed by two-phase randomised routing encountered a large number of collisions. These collisions caused the emulation using two-phase randomised routing to require more than 500 additional timesteps to execute the input program compared to the emulation using the developed algorithm, which is a 1.5\% increase in run time. This increase suggests that not all of the collisions affected the overall run time of the emulation, and that the latency setbacks due to collisions on some routes were masked by larger latency setbacks on other routes. An explanation for why the packets routed by the developed routing algorithm encountered no collisions in the network can be found on closer inspection of the input program. All of the processors require parallel communication with processors on the opposite side of the network. This means that all of the routes must pass through the outermost layer of switches in the network, which makes them all of equal length. The packets are all sent during the same timestep and, providing that no collisions occur in the network, are all delivered during the same timestep. This leads to guaranteed full permutations for each communication cycle in the program, and the routing algorithm has been proved that it is able to calculate collision-free routes for full permutations resulting in the collision-free execution of this program.\\
 
 \noindent\textbf{7.1.2 \ \ Regular permutations}
 
 \noindent\textbf{Test program}: The input program used to compare how efficiently the two algorithms can route multiple regular permutations is listed in \textbf{Appendix D.4}. The program connects 32 processors, each of which sends a single packet to the processor directly to the right of it for each cycle of communication (apart from the rightmost processor, which sends a packet back around to the leftmost processor). The linearity of the permutation means it is regarded as regular. There are a total of 1000 cycles of communication, which will give a good indication of how each algorithm handles the routing of regular permutations.
 
-\noindent\textbf{Result}: The performance metrics provided by the emulation for both routing algorithms are shown below in table 2.\\
+\noindent\textbf{Result}:
 
 \begin{table}[H]
 \centering
@@ -662,20 +662,20 @@ One way to measure the performance of the developed routing algorithm is to comp
 \caption[Comparing the performance of the developed routing algorithm and two-phase randomised routing for regular permutations]{The performance metrics for both algorithms routing regular permutations.}
 \end{table}
 
-
+The performance metrics show that the developed algorithm was again able to avoid any collisions in the network, whereas the packets routed by two-phased randomised routing encountered a large number of collisions. The number of timesteps that the emulation using two-phase randomised routing required to execute the input program was approximately 55\% more than the emulation using the developed algorithm. Some of this increase in run time can be attributed to the collisions in the network, however a large portion of it can also be credited to the fact that two-phase randomised routing directs all of the packets to the outermost layer of switches in the network, whereas the developed routing algorithm uses shorter routes when traversal to the outermost layer of switches is not required. An explanation for why the packets routed by the developed routing algorithm encountered no collisions in the network can be found on closer inspection of the input program. All of the processors require communication with processor directly to the right of them, meaning that most of the routes are short and the paths rarely cross each other. This leads to collision-free paths being routed by the algorithm and causes the input program to be executed quickly and efficiently.\\
 
 \noindent\textbf{7.1.3 \ \ Irregular permutations}
 
 \noindent\textbf{Test program}: The input program used to compare how efficiently the two algorithms can route multiple irregular permutations is listed in \textbf{Appendix D.5}. The program uses 32 processors, each of which sends a single packet to an arbitrarily chosen processor in the network for each cycle of communication. As the permutation is made up of randomly chosen communications, it can be regarded as an irregular permutation. A total of 1000 communication cycles are carried out by the program, which will give a good indication of how each algorithm handles the routing of irregular permutations.
 
-\noindent\textbf{Result}: The performance metrics provided by the emulation for both routing algorithms are shown below in table 3.\\
+\noindent\textbf{Result}:
 
 \begin{table}[H]
 \centering
 \begin{tabular}{l|c|c|c|}
 \cline{2-4}
 \begin{tabular}[c]{@{}c@{}}\ \\[8pt] \ \end{tabular}& \textbf{\begin{tabular}[c]{@{}c@{}}\ \ \ Packets\ \ \ \\ sent\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}\ Timesteps\ \\completed\end{tabular}} & \textbf{\begin{tabular}[c]{@{}c@{}}\ \ Collisions\ \ \\ detected\end{tabular}} \\ \hline
-\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}} \ \\Routing algorithm\\ \ \end{tabular}}                                                                                 & 32000                                                           & 35391                                                                                 & 7416                                                                      \\ \hline
+\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}} \ \\Routing algorithm\\ \ \end{tabular}}                                                                                 & 32000                                                           & 36458                                                                                 & 7416                                                                      \\ \hline
 \multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}}Two-phase randomised\ \  \\ routing (avg. 10 runs)\end{tabular}} 
 & \begin{tabular}[c]{@{}c@{}} \ \\32000\\ \ \end{tabular}                                                           
 & 36921                                                                                 & 9472                                                                   \\ \hline
@@ -683,11 +683,7 @@ One way to measure the performance of the developed routing algorithm is to comp
 \caption[Comparing the performance of the developed routing algorithm and two-phase randomised routing for irregular permutations]{The performance metrics for both algorithms routing irregular permutations.}
 \end{table}
 
-
-
-\noindent\textbf{7.1.4 \ \ Summary of results}
-
-\noindent blah
+The performance metrics show that, while both emulations suffered a significant number of collisions in the network, the emulation using the developed routing algorithm suffered fewer collisions than the emulation using two-phase randomised routing. These extra collisions mean that the run time of the emulation using two-phase randomised routing is 1.3\% slower than the emulation using the developed routing algorithm. However, it is immediately noticeable that the developed routing algorithm performed worse when routing irregular permutations than when it was routing full and regular permutations. An explanation for this behaviour can be found on closer inspection of the input program. The fact that random communications are required means that each route calculated by the routing algorithm for the first permutation is of a variable length, depending on the proximity of the processors that require the communication. This means that, although all of the packets are added to the network during the same timestep, the difference in path length means that some of the packets in the permutation arrive at their destination before others. Once an early arriving packet is collected by its processor, the processor can continue executing instructions while some of the processors are still waiting for their packets to arrive. This leads to a loss of synchronisation between the processors, and means that full permutations of communication replaced with partial permutations that are sent when there may still be data from the previous communication cycle being sent across the network. In these circumstances the routing algorithm cannot avoid collisions in the network between different permutations, so some of the added efficiency that the routing algorithm brings to the emulation is lost.
 
 \subsection{Performance compared to a serial alternative}
 

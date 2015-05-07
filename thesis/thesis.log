@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  6 MAY 2015 23:41
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  7 MAY 2015 12:40
 entering extended mode
  %&-line parsing enabled.
 **thesis.tex
@@ -501,34 +501,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 623--624
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 629--630
+Underfull \hbox (badness 10000) in paragraph at lines 644--645
 
  []
 
 [41]
-Underfull \hbox (badness 10000) in paragraph at lines 650--651
+Underfull \hbox (badness 10000) in paragraph at lines 665--666
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 671--672
-
- []
-
-[42] [43] [44]
-Underfull \hbox (badness 10000) in paragraph at lines 730--731
+[42] [43] [44] [45]
+Underfull \hbox (badness 10000) in paragraph at lines 726--727
 []\OT1/cmr/m/n/12 Hennessy, J. L., Pat-ter-son, D. A. (2011). \OT1/cmr/m/it/12 
 Com-puter Ar-chi-tec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 730--731
+Underfull \hbox (badness 10000) in paragraph at lines 726--727
 \OT1/cmr/m/it/12 ture: A Quan-ti-ta-tive Ap-proach\OT1/cmr/m/n/12 . On-line ap-
 pendix F, re-trieved from
  []
 
-[45] [46] [47] [48] [49] [50] [51] [52] [53] [54] [55] [56] [57] [58] [59]
-[60] [61] [62] [63] (./thesis.aux) ) 
+[46] [47] [48] [49] [50] [51] [52] [53] [54] [55] [56] [57] [58] [59] [60]
+[61] [62] [63] [64] (./thesis.aux) ) 
 Here is how much of TeX's memory you used:
  6075 strings out of 495061
  87849 string characters out of 1182621
@@ -547,9 +542,9 @@ e1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/a
 msfonts/cm/cmti12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/
 cmtt10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
 
-Output written on thesis.pdf (65 pages, 1279741 bytes).
+Output written on thesis.pdf (66 pages, 1283917 bytes).
 PDF statistics:
- 299 PDF objects out of 1000 (max. 8388607)
+ 302 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  91 words of extra memory for PDF output out of 10000 (max. 10000000)
 
