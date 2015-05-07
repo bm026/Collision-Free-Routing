@@ -12,3 +12,4 @@ proc blur_pixel(val num) is
     while i<9 do
     { pixels[num] := pixels[num] + local_pixels[i];
       i := i+1 }
+      

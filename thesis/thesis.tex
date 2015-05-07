@@ -687,7 +687,11 @@ The performance metrics show that, while both emulations suffered a significant 
 
 \subsection{Performance compared to a serial alternative}
 
+routing algorithm:
+packets 1024, timesteps 4907, collisions 256
 
+serial:
+packets 0, timesteps 76115, collisions 0
 
 \newpage
 \section{Conclusion}
@@ -1348,7 +1352,7 @@ subroutine.
 \section*{Appendix D: Input Program Code Listings}
 \addcontentsline{toc}{section}{Appendix D: Input Program Code Listings}
 
-\subsection*{D.1 \ Program for testing the correctness of the network}
+\subsection*{D.1 \ A program for testing the correctness of the network}
 
 \begin{lstlisting}
 
@@ -1368,7 +1372,7 @@ subroutine.
 
 \end{lstlisting}
 
-\subsection*{D.2 \ Program for testing the correctness of the routing algorithm}
+\subsection*{D.2 \ A program for testing the correctness of the routing algorithm}
 
 \begin{lstlisting}
 
@@ -1398,7 +1402,7 @@ subroutine.
 \end{lstlisting}
 
 \newpage
-\subsection*{D.3 \ Program for comparing the performance between the routing algorithm and two-phase randomised routing for full permutations}
+\subsection*{D.3 \ A program for comparing the performance between the routing algorithm and two-phase randomised routing for full permutations}
 \ 
 \begin{lstlisting}
 
@@ -1431,7 +1435,7 @@ subroutine.
 \end{lstlisting}
 
 \newpage
-\subsection*{D.4 \ Program for comparing the performance between the routing algorithm and two-phase randomised routing for regular permutations}
+\subsection*{D.4 \ A program for comparing the performance between the routing algorithm and two-phase randomised routing for regular permutations}
 \ 
 \begin{lstlisting}
 
@@ -1464,7 +1468,7 @@ subroutine.
 \end{lstlisting}
 
 \newpage
-\subsection*{D.5 \ Program for comparing the performance between the routing algorithm and two-phase randomised routing for irregular permutations}
+\subsection*{D.5 \ A program for comparing the performance between the routing algorithm and two-phase randomised routing for irregular permutations}
 \ 
 \begin{lstlisting}
 
@@ -1493,6 +1497,125 @@ subroutine.
         var in;
         while count<1000 do
         { count:=in+1; send ! count; recv ? in }
+
+\end{lstlisting}
+
+\newpage
+\subsection*{D.6 \ A parallel program that imitates the instructions of a program that blurs the pixels of a 256x256 image in parallel}
+\ 
+\begin{lstlisting}
+
+    
+    array north_halo[16];
+    array south_halo[16];
+    array east_halo[16];
+    array west_halo[16];
+    array pixels[9];
+
+
+    proc main() is
+        var in;
+        var out;
+        network 
+        { { send_halos(12,4,1,3);      blur_local_block(); 
+            receive_halos(12,4,1,3);   blur_halo_blocks()  } &
+          { send_halos(13,5,2,0);      blur_local_block(); 
+            receive_halos(13,5,2,0);   blur_halo_blocks()  } &
+          { send_halos(14,6,3,1);      blur_local_block(); 
+            receive_halos(14,6,3,1);   blur_halo_blocks()  } &
+          { send_halos(15,7,0,2);      blur_local_block(); 
+            receive_halos(15,7,0,2);   blur_halo_blocks()  } &
+          { send_halos(0,8,5,7);       blur_local_block(); 
+            receive_halos(0,8,5,7);    blur_halo_blocks()  } &
+          { send_halos(1,9,6,4);       blur_local_block(); 
+            receive_halos(1,9,6,4);    blur_halo_blocks()  } &
+          { send_halos(2,10,7,5);      blur_local_block(); 
+            receive_halos(2,10,7,5);   blur_halo_blocks()  } &
+          { send_halos(3,11,4,6);      blur_local_block(); 
+            receive_halos(3,11,4,6);   blur_halo_blocks()  } &
+          { send_halos(4,12,9,11);     blur_local_block(); 
+            receive_halos(4,12,9,11);  blur_halo_blocks()  } &
+          { send_halos(5,13,10,8);     blur_local_block(); 
+            receive_halos(5,13,10,8);  blur_halo_blocks()  } &
+          { send_halos(6,14,11,9);     blur_local_block(); 
+            receive_halos(6,14,11,9);  blur_halo_blocks()  } &
+          { send_halos(7,15,8,10);     blur_local_block(); 
+            receive_halos(7,15,8,10);  blur_halo_blocks()  } &
+          { send_halos(8,0,13,15);     blur_local_block(); 
+            receive_halos(8,0,13,15);  blur_halo_blocks()  } &
+          { send_halos(9,1,14,12);     blur_local_block(); 
+            receive_halos(9,1,14,12);  blur_halo_blocks()  } &
+          { send_halos(10,2,15,13);    blur_local_block(); 
+            receive_halos(10,2,15,13); blur_halo_blocks()  } &
+          { send_halos(11,3,12,14);    blur_local_block(); 
+            receive_halos(11,3,12,14); blur_halo_blocks()  } 
+        }
+
+    
+    
+    
+    
+    proc send_halos(val north, val south, val east, val west) is
+        var i;
+        while i<16 do 
+        { north ! north_halo[i]; east ! east_halo[i];
+          south ! south_halo[i]; west ! west_halo[i];
+          i := i+1 }
+
+    proc blur_local_block() is
+        var i;
+        while i<196 do
+        { blur_pixel(); i := i+1 }
+
+    proc blur_pixel() is
+        var i;
+        var pixel;
+        while i<9 do
+        { pixel:= pixel + pixels[i]; i := i+1 }
+
+    proc receive_halos(val north, val south, val east, val west) is
+        var i;
+        while i<16 do
+        { south ? north_halo[i]; west ? east_halo[i];
+          north ? south_halo[i]; east ? west_halo[i];
+          i := i+1 }
+
+    proc blur_halo_blocks() is
+        var i;
+        while i<16 do
+        { blur_halo_pixels(i); i := i+1 }
+
+    proc blur_halo_pixels(val num) is
+        var i;
+        while i<9 do
+        { north_halo[num] := north_halo[num] + pixels[i];
+          east_halo[num] := east_halo[num] + pixels[i];
+          south_halo[num] := south_halo[num] + pixels[i];
+          west_halo[num] := west_halo[num] + pixels[i];
+          i := i+1 }
+          
+
+\end{lstlisting}
+
+\newpage
+\subsection*{D.7 \ A serial program that imitates the instructions of a program that blurs the pixels of a 256x256 image in serial}
+\ 
+\begin{lstlisting}
+
+    array pixels[4096];
+    array local_pixels[9];
+
+    proc main() is
+        var i;
+        while i<4096 do
+        { blur_pixel(i); i := i+1 }
+
+    proc blur_pixel(val num) is
+        var i;
+        while i<9 do
+        { pixels[num] := pixels[num] + local_pixels[i];
+          i := i+1 }
+          
 
 \end{lstlisting}
 

@@ -10,8 +10,8 @@
 
 // network definitions
 #define BUFF_SIZE 4
-#define NUM_LAYERS 1
-#define NUM_CORES 2
+#define NUM_LAYERS 4
+#define NUM_CORES 16
 #define PORT_DEPTH 128
 
 // processor definitions
@@ -74,7 +74,7 @@ int packet_count = 0;
 
 // user changeable variables
 unsigned int verbose = true;
-unsigned int routing_code = 1; // see reference below
+unsigned int routing_code = 0; // see reference below
 
 // Routing codes and their corresponding algorithms:
 // 0: developed algorithm
