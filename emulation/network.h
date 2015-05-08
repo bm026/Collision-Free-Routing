@@ -10,17 +10,9 @@
 
 // network definitions
 #define BUFF_SIZE 4
-#define NUM_LAYERS 4
-#define NUM_CORES 16
+#define NUM_LAYERS 3
+#define NUM_CORES 8
 #define PORT_DEPTH 128
-
-// user changeable variables
-unsigned int verbose = true;
-unsigned int routing_code = 0; // see reference below
-
-// Routing codes and their corresponding algorithms:
-// 0: developed algorithm
-// 1: two-phase randomised routing
 
 // processor definitions
 #define true     -1
@@ -58,6 +50,14 @@ unsigned int routing_code = 0; // see reference below
 #define o_svc    0xE
 #define o_in     0x10
 #define o_out    0x11
+
+// user changeable variables
+unsigned int verbose = true;
+unsigned int routing_code = 0; // see reference below
+
+// Routing codes and their corresponding algorithms:
+// 0: developed algorithm
+// 1: two-phase randomised routing
 
 // processor global variables
 unsigned int global_running;

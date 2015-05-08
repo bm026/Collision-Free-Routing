@@ -59,6 +59,6 @@
 \contentsline {subsection}{8.2 \ \ Possible future developments}{46}
 \contentsline {section}{\numberline {9}References}{47}
 \contentsline {section}{Appendix A: User Manual}{49}
-\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{50}
-\contentsline {section}{Appendix C: Description of Input Program Syntax}{55}
-\contentsline {section}{Appendix D: Input Program Code Listings}{62}
+\contentsline {section}{Appendix B: Summary of Processor Instruction Set}{52}
+\contentsline {section}{Appendix C: Description of Input Program Syntax}{57}
+\contentsline {section}{Appendix D: Input Program Code Listings}{64}

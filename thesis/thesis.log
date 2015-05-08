@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  8 MAY 2015 17:29
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  8 MAY 2015 21:14
 entering extended mode
  %&-line parsing enabled.
 **thesis.tex
@@ -519,29 +519,57 @@ Underfull \hbox (badness 10000) in paragraph at lines 757--758
 pendix F, re-trieved from
  []
 
-[47] [48] [49] [50] [51] [52] [53] [54] [55] [56] [57] [58] [59] [60] [61]
-[62] [63] [64] [65] [66] [67] [68] (./thesis.aux) ) 
+[47] [48]
+Underfull \hbox (badness 10000) in paragraph at lines 779--780
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 783--784
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 800--801
+
+ []
+
+[49] <images/output.png, id=221, 731.73375pt x 375.4025pt>
+File: images/output.png Graphic file (type png)
+
+<use images/output.png>
+Underfull \hbox (badness 10000) in paragraph at lines 820--821
+
+ []
+
+[50 <./images/output.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 833--834
+
+ []
+
+[51] [52] [53] [54] [55] [56] [57] [58] [59] [60] [61] [62] [63] [64] [65]
+[66] [67] [68] [69] [70] (./thesis.aux) ) 
 Here is how much of TeX's memory you used:
- 6074 strings out of 495061
- 87840 string characters out of 1182621
+ 6079 strings out of 495061
+ 87949 string characters out of 1182621
  383836 words of memory out of 3000000
- 9158 multiletter control sequences out of 15000+50000
+ 9163 multiletter control sequences out of 15000+50000
  9565 words of font info for 35 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  44i,16n,45p,3415b,1478s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-texlive/fo
-nts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/type1/p
-ublic/amsfonts/cm/cmmi12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfo
-nts/cm/cmmi8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10
-.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/s
-hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-te
-xlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts
-/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texmf-texlive/fonts/type1/publ
-ic/amsfonts/cm/cmtt10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts
-/cm/cmtt12.pfb>
-Output written on thesis.pdf (70 pages, 1299782 bytes).
+</usr/share/texmf-texlive/fonts/type1/
+public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsf
+onts/cm/cmmi12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmm
+i8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
+/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf
+-texlive/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-texlive/font
+s/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/pub
+lic/amsfonts/cm/cmti12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfont
+s/cm/cmtt10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt12
+.pfb>
+Output written on thesis.pdf (72 pages, 1354467 bytes).
 PDF statistics:
- 315 PDF objects out of 1000 (max. 8388607)
+ 323 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 91 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 96 words of extra memory for PDF output out of 10000 (max. 10000000)
 
