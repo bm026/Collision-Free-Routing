@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  8 MAY 2015 15:11
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  8 MAY 2015 17:29
 entering extended mode
  %&-line parsing enabled.
 **thesis.tex
@@ -374,14 +374,14 @@ ap/pdftex/updmap/pdftex.map}] (./thesis.toc [2] [3])
 \openout5 = `thesis.lot'.
 
  [6] [7] [8]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 119.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 121.
 
 
 (/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 119.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 121.
  [9] [10]
 <images/trend_graph.png, id=74, 419.6478pt x 418.2024pt>
 File: images/trend_graph.png Graphic file (type png)
@@ -438,83 +438,83 @@ File: images/benes_full_perm.png Graphic file (type png)
 File: images/compiler_binary1.png Graphic file (type png)
 
 <use images/compiler_binary1.png> [31] [32 <./images/compiler_binary1.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 490--491
+Underfull \hbox (badness 10000) in paragraph at lines 492--493
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 494--495
+Underfull \hbox (badness 10000) in paragraph at lines 496--497
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 500--501
+Underfull \hbox (badness 10000) in paragraph at lines 502--503
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 504--505
+Underfull \hbox (badness 10000) in paragraph at lines 506--507
 
  []
 
 [33]
-Underfull \hbox (badness 10000) in paragraph at lines 512--513
+Underfull \hbox (badness 10000) in paragraph at lines 514--515
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 516--517
+Underfull \hbox (badness 10000) in paragraph at lines 518--519
 
  []
 
 [34]
-Underfull \hbox (badness 10000) in paragraph at lines 520--521
+Underfull \hbox (badness 10000) in paragraph at lines 522--523
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 529--530
+Underfull \hbox (badness 10000) in paragraph at lines 531--532
 
  []
 
 [35]
-Underfull \hbox (badness 10000) in paragraph at lines 543--544
+Underfull \hbox (badness 10000) in paragraph at lines 545--546
 
  []
 
 [36] [37] [38]
-Underfull \hbox (badness 10000) in paragraph at lines 570--571
+Underfull \hbox (badness 10000) in paragraph at lines 572--573
 
  []
 
 [39] [40] [41]
-Underfull \hbox (badness 10000) in paragraph at lines 623--624
+Underfull \hbox (badness 10000) in paragraph at lines 625--626
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 644--645
+Underfull \hbox (badness 10000) in paragraph at lines 646--647
 
  []
 
 [42] [43] [44] [45]
-Underfull \hbox (badness 10000) in paragraph at lines 721--725
+Underfull \hbox (badness 10000) in paragraph at lines 724--728
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 721--725
+Underfull \hbox (badness 10000) in paragraph at lines 724--728
 
  []
 
 [46]
-Underfull \hbox (badness 10000) in paragraph at lines 754--755
+Underfull \hbox (badness 10000) in paragraph at lines 757--758
 []\OT1/cmr/m/n/12 Hennessy, J. L., Pat-ter-son, D. A. (2011). \OT1/cmr/m/it/12 
 Com-puter Ar-chi-tec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 754--755
+Underfull \hbox (badness 10000) in paragraph at lines 757--758
 \OT1/cmr/m/it/12 ture: A Quan-ti-ta-tive Ap-proach\OT1/cmr/m/n/12 . On-line ap-
 pendix F, re-trieved from
  []
@@ -539,7 +539,7 @@ xlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts
 /type1/public/amsfonts/cm/cmti12.pfb></usr/share/texmf-texlive/fonts/type1/publ
 ic/amsfonts/cm/cmtt10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts
 /cm/cmtt12.pfb>
-Output written on thesis.pdf (70 pages, 1298261 bytes).
+Output written on thesis.pdf (70 pages, 1299782 bytes).
 PDF statistics:
  315 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
