@@ -4,6 +4,7 @@
 
 \addtolength{\oddsidemargin}{-0.5in}
 \addtolength{\evensidemargin}{-0.5in}
+%\addtolength{\topmargin}{-0.25in}
 \addtolength{\textwidth}{1in}
 \addtolength{\topmargin}{-0.5in}
 \addtolength{\textheight}{1in}
@@ -709,14 +710,23 @@ The performance metrics show that a speedup of 15.5 was achieved by adding paral
 
 \newpage
 \section{Conclusion}
+\noindent\textbf{\large 8.1 \ \ Summary of achievements}
+\addcontentsline{toc}{subsection}{8.1 \ \ Summary of achievements}
 
-\subsection{Summary of achievements}
+\noindent During development of the emulation, the majority of stages in the software development life cycle were carried out using a largely sequential approach typically referred to as the waterfall model. An agile approach was considered, however because the primary use of the emulation is for research and demonstration -- not large-scale public distribution -- the needs and opinions of a diverse user base were not essential to the functionality and success of the software so the waterfall methodology was considered a better choice.
 
+In the first stage of the development life cycle, the problem of inefficiency in general-purpose parallel architectures was identified and a potential solution to this problem was suggested that involved reducing the number of data collisions in the interconnection networks of these parallel architectures. It was established that an emulation of a parallel architecture was required to demonstrate this solution, so a specification was drawn up which outlined the requirements of this emulation and the way in which it demonstrated the effectiveness of the solution.
+The emulated network was then designed alongside the main component of the solution: the routing algorithm, responsible for reducing the number of collisions in the network. These designs were fully implemented to produce a functional emulation of a general-purpose parallel architecture, which is able to execute parallel input programs and meets all but one of the specification requirements. Finally, the emulation was comprehensively tested and its correct functionality was confirmed.
 
-
-\subsection{Possible future developments}
-
-
+The resulting emulation is able to demonstrate that the developed routing algorithm has a positive effect on the efficiency of parallel execution. For both full and partial permutations, it removes the possibility of collisions between the packets being transmitted and also reduces the possibility of collisions between packets belonging to different permutations. The emulated network is also fully scalable, and shows that the routing algorithm can calculate collision-free routes for both small and large networks connecting an arbitrary number of processors. This suggests that the routing algorithm has the potential to be introduced into large general-purpose parallel architectures made up of thousands or millions of interfaces, and help deliver real-time processing capabilities to application areas such as embedded intelligence and robotics.\\ \ \\ \ \\
+\noindent\textbf{\large 8.2 \ \ Possible future developments}
+\addcontentsline{toc}{subsection}{8.2 \ \ Possible future developments}
+\vspace{-2mm}
+\begin{itemize}[leftmargin=*]
+	\item The routing algorithm could be further improved if the state of the network was tracked and packets currently traversing the network were avoided during route allocation. Statistical analysis could also be carried out to try and predict future routes to avoid.
+	\item A user interface could be developed to make changing the parameters of the network, the number of connected processors for example, more accessible.
+	\item The verbose output that describes the route of every packet during the emulation could be displayed in a more aesthetic, readable format, especially for large input programs. 
+\end{itemize}
 
 \newpage
 \section{References}

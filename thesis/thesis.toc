@@ -55,8 +55,8 @@
 \contentsline {subsection}{\numberline {7.1}Performance compared to two-phase randomised routing}{42}
 \contentsline {subsection}{\numberline {7.2}Performance compared to a serial equivalent}{45}
 \contentsline {section}{\numberline {8}Conclusion}{46}
-\contentsline {subsection}{\numberline {8.1}Summary of achievements}{46}
-\contentsline {subsection}{\numberline {8.2}Possible future developments}{46}
+\contentsline {subsection}{8.1 \ \ Summary of achievements}{46}
+\contentsline {subsection}{8.2 \ \ Possible future developments}{46}
 \contentsline {section}{\numberline {9}References}{47}
 \contentsline {section}{Appendix A: User Manual}{49}
 \contentsline {section}{Appendix B: Summary of Processor Instruction Set}{50}
