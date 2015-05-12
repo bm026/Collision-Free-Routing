@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  8 MAY 2015 21:14
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.3.26)  11 MAY 2015 10:01
 entering extended mode
  %&-line parsing enabled.
 **thesis.tex
@@ -330,64 +330,77 @@ Package caption Info: End \AtBeginDocument code.
 ) ABD: EveryShipout initializing macros
 \c@lstlisting=\count139
 
-<frontpage.pdf, id=5, page=1, 597.23125pt x 845.1575pt>
-File: frontpage.pdf Graphic file (type pdf)
+<frontpage_shifted.pdf, id=5, page=1, 597.23125pt x 845.1575pt>
+File: frontpage_shifted.pdf Graphic file (type pdf)
 
-<use frontpage.pdf, page 1>
-File: frontpage.pdf Graphic file (type pdf)
- <use frontpage.pdf, page 1>
-File: frontpage.pdf Graphic file (type pdf)
+<use frontpage_shifted.pdf, page 1>
+File: frontpage_shifted.pdf Graphic file (type pdf)
+ <use frontpage_shifted.pdf, page 1>
+File: frontpage_shifted.pdf Graphic file (type pdf)
 
-<use frontpage.pdf, page 1>
-File: frontpage.pdf Graphic file (type pdf)
- <use frontpage.pdf, page 1>
-File: frontpage.pdf Graphic file (type pdf)
+<use frontpage_shifted.pdf, page 1>
+File: frontpage_shifted.pdf Graphic file (type pdf)
+ <use frontpage_shifted.pdf, page 1>
+File: frontpage_shifted.pdf Graphic file (type pdf)
 
-<use frontpage.pdf, page 1> [0
+<use frontpage_shifted.pdf, page 1> [0
 
- <./frontpage.pdf>]
-<declaration.pdf, id=27, page=1, 597.23125pt x 845.1575pt>
-File: declaration.pdf Graphic file (type pdf)
+ <./frontpage_shifted.pdf>]
+<declaration_shifted.pdf, id=27, page=1, 597.23125pt x 845.1575pt>
+File: declaration_shifted.pdf Graphic file (type pdf)
 
-<use declaration.pdf, page 1>
-File: declaration.pdf Graphic file (type pdf)
- <use declaration.pdf, page 1>
-File: declaration.pdf Graphic file (type pdf)
+<use declaration_shifted.pdf, page 1>
+File: declaration_shifted.pdf Graphic file (type pdf)
+ <use declaration_shifted.pdf, page 1>
+File: declaration_shifted.pdf Graphic file (type pdf)
 
-<use declaration.pdf, page 1>
-File: declaration.pdf Graphic file (type pdf)
- <use declaration.pdf, page 1>
-File: declaration.pdf Graphic file (type pdf)
+<use declaration_shifted.pdf, page 1>
+File: declaration_shifted.pdf Graphic file (type pdf)
+ <use declaration_shifted.pdf, page 1>
+File: declaration_shifted.pdf Graphic file (type pdf)
 
-<use declaration.pdf, page 1> [1 <./declaration.pdf>] [1{/var/lib/texmf/fonts/m
-ap/pdftex/updmap/pdftex.map}] (./thesis.toc [2] [3])
+<use declaration_shifted.pdf, page 1> [1 <./declaration_shifted.pdf>] [2{/var/l
+ib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./thesis.toc [3]
+Underfull \vbox (badness 2512) has occurred while \output is active []
+
+ [4])
 \tf@toc=\write3
 \openout3 = `thesis.toc'.
 
- [4] (./thesis.lof)
+
+[5] (./thesis.lof)
 \tf@lof=\write4
 \openout4 = `thesis.lof'.
 
-
-[5] (./thesis.lot)
+ [6] (./thesis.lot)
 \tf@lot=\write5
 \openout5 = `thesis.lot'.
 
- [6] [7] [8]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 121.
+ [7] [8] [9]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 122.
 
 
 (/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 121.
- [9] [10]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 122.
+ [10] [11]
 <images/trend_graph.png, id=74, 419.6478pt x 418.2024pt>
 File: images/trend_graph.png Graphic file (type png)
 
-<use images/trend_graph.png> [11] [12 <./images/trend_graph.png (PNG copy)>]
-[13] [14] <images/mesh_network.png, id=88, 511.9125pt x 490.83376pt>
+<use images/trend_graph.png>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [12]
+[13 <./images/trend_graph.png (PNG copy)>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [14]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [15]
+<images/mesh_network.png, id=88, 511.9125pt x 490.83376pt>
 File: images/mesh_network.png Graphic file (type png)
 
 <use images/mesh_network.png>
@@ -410,13 +423,25 @@ File: images/clos_network.png Graphic file (type png)
 <images/benes_network.png, id=93, 691.58376pt x 397.485pt>
 File: images/benes_network.png Graphic file (type png)
 
-<use images/benes_network.png> [15] [16 <./images/mesh_network.png (PNG copy)> 
-<./images/toroidal_network.png (PNG copy)> <./images/hypercubic_network.png (PN
-G copy)> <./images/fat_tree_network.png (PNG copy)> <./images/clos_network.png 
-(PNG copy)> <./images/benes_network.png (PNG copy)>] [17] [18] [19] [20]
-[21] [22] [23] [24] [25]
+<use images/benes_network.png>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [16]
+Underfull \vbox (badness 1721) has occurred while \output is active []
+
+ [17 <./images/mesh_network.png (PNG copy)> <./images/toroidal_network.png (PNG
+ copy)> <./images/hypercubic_network.png (PNG copy)> <./images/fat_tree_network
+.png (PNG copy)> <./images/clos_network.png (PNG copy)> <./images/benes_network
+.png (PNG copy)>]
+Underfull \vbox (badness 7221) has occurred while \output is active []
+
+ [18]
+Underfull \vbox (badness 3281) has occurred while \output is active []
+
+ [19]
+[20] [21] [22] [23] [24] [25] [26]
 File: images/benes_network.png Graphic file (type png)
- <use images/benes_network.png> [26]
+ <use images/benes_network.png> [27]
 <images/switch_directions.png, id=133, 597.1911pt x 119.9682pt>
 File: images/switch_directions.png Graphic file (type png)
 
@@ -424,150 +449,165 @@ File: images/switch_directions.png Graphic file (type png)
 <images/switch_buffer.png, id=135, 597.1911pt x 119.9682pt>
 File: images/switch_buffer.png Graphic file (type png)
 
-<use images/switch_buffer.png> [27 <./images/switch_directions.png> <./images/s
+<use images/switch_buffer.png> [28 <./images/switch_directions.png> <./images/s
 witch_buffer.png>]
 <images/benes_sectioned.png, id=141, 480.1137pt x 278.7213pt>
 File: images/benes_sectioned.png Graphic file (type png)
 
-<use images/benes_sectioned.png> [28 <./images/benes_sectioned.png>]
+<use images/benes_sectioned.png> [29 <./images/benes_sectioned.png>]
 <images/benes_full_perm.png, id=147, 480.1137pt x 239.2137pt>
 File: images/benes_full_perm.png Graphic file (type png)
 
-<use images/benes_full_perm.png> [29] [30 <./images/benes_full_perm.png>]
+<use images/benes_full_perm.png> [30] [31 <./images/benes_full_perm.png>]
 <images/compiler_binary1.png, id=157, 578.16pt x 220.1826pt>
 File: images/compiler_binary1.png Graphic file (type png)
 
-<use images/compiler_binary1.png> [31] [32 <./images/compiler_binary1.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 492--493
+<use images/compiler_binary1.png>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [32]
+[33 <./images/compiler_binary1.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 493--494
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 496--497
+Underfull \hbox (badness 10000) in paragraph at lines 497--498
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 502--503
+Underfull \hbox (badness 10000) in paragraph at lines 503--504
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 506--507
-
- []
-
-[33]
-Underfull \hbox (badness 10000) in paragraph at lines 514--515
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 518--519
+Underfull \hbox (badness 10000) in paragraph at lines 507--508
 
  []
 
 [34]
-Underfull \hbox (badness 10000) in paragraph at lines 522--523
+Underfull \hbox (badness 10000) in paragraph at lines 515--516
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 531--532
+Underfull \hbox (badness 10000) in paragraph at lines 519--520
 
  []
 
 [35]
-Underfull \hbox (badness 10000) in paragraph at lines 545--546
-
- []
-
-[36] [37] [38]
-Underfull \hbox (badness 10000) in paragraph at lines 572--573
-
- []
-
-[39] [40] [41]
-Underfull \hbox (badness 10000) in paragraph at lines 625--626
+Underfull \hbox (badness 10000) in paragraph at lines 523--524
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 646--647
+Underfull \hbox (badness 10000) in paragraph at lines 532--533
 
  []
 
-[42] [43] [44] [45]
-Underfull \hbox (badness 10000) in paragraph at lines 724--728
+[36]
+Underfull \hbox (badness 10000) in paragraph at lines 546--547
+
+ []
+
+[37] [38] [39]
+Underfull \hbox (badness 10000) in paragraph at lines 573--574
+
+ []
+
+[40] [41] [42]
+Underfull \hbox (badness 10000) in paragraph at lines 626--627
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 724--728
+Underfull \hbox (badness 10000) in paragraph at lines 647--648
 
  []
 
+[43] [44]
+Underfull \vbox (badness 5302) has occurred while \output is active []
+
+ [45]
 [46]
-Underfull \hbox (badness 10000) in paragraph at lines 757--758
+Underfull \hbox (badness 10000) in paragraph at lines 725--729
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 725--729
+
+ []
+
+[47]
+Underfull \hbox (badness 10000) in paragraph at lines 758--759
 []\OT1/cmr/m/n/12 Hennessy, J. L., Pat-ter-son, D. A. (2011). \OT1/cmr/m/it/12 
 Com-puter Ar-chi-tec-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 757--758
+Underfull \hbox (badness 10000) in paragraph at lines 758--759
 \OT1/cmr/m/it/12 ture: A Quan-ti-ta-tive Ap-proach\OT1/cmr/m/n/12 . On-line ap-
 pendix F, re-trieved from
  []
 
-[47] [48]
-Underfull \hbox (badness 10000) in paragraph at lines 779--780
+[48] [49]
+Underfull \hbox (badness 10000) in paragraph at lines 780--781
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 783--784
+Underfull \hbox (badness 10000) in paragraph at lines 784--785
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 800--801
+Underfull \hbox (badness 10000) in paragraph at lines 801--802
 
  []
 
-[49] <images/output.png, id=221, 731.73375pt x 375.4025pt>
+[50] <images/output.png, id=221, 731.73375pt x 375.4025pt>
 File: images/output.png Graphic file (type png)
 
 <use images/output.png>
-Underfull \hbox (badness 10000) in paragraph at lines 820--821
+Underfull \hbox (badness 10000) in paragraph at lines 821--822
 
  []
 
-[50 <./images/output.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 833--834
+[51 <./images/output.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 834--835
 
  []
 
-[51] [52] [53] [54] [55] [56] [57] [58] [59] [60] [61] [62] [63] [64] [65]
-[66] [67] [68] [69] [70] (./thesis.aux) ) 
+[52] [53] [54]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [55]
+[56] [57] [58] [59]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [60]
+[61] [62] [63] [64] [65] [66] [67] [68] [69] [70] [71] (./thesis.aux) ) 
 Here is how much of TeX's memory you used:
- 6079 strings out of 495061
- 87949 string characters out of 1182621
- 383836 words of memory out of 3000000
- 9163 multiletter control sequences out of 15000+50000
+ 6080 strings out of 495061
+ 88059 string characters out of 1182621
+ 383888 words of memory out of 3000000
+ 9164 multiletter control sequences out of 15000+50000
  9565 words of font info for 35 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 44i,16n,45p,3415b,1478s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-texlive/fonts/type1/
-public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsf
-onts/cm/cmmi12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmm
-i8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
-/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf
--texlive/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-texlive/font
-s/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/pub
-lic/amsfonts/cm/cmti12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfont
-s/cm/cmtt10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt12
-.pfb>
-Output written on thesis.pdf (72 pages, 1354467 bytes).
+ 44i,16n,45p,3415b,1482s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/sh
+are/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-t
+exlive/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-texlive/font
+s/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-texlive/fonts/type1/publ
+ic/amsfonts/cm/cmr10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/
+cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr8.pfb>
+</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share
+/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texmf-texl
+ive/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texmf-texlive/fonts/t
+ype1/public/amsfonts/cm/cmtt12.pfb>
+Output written on thesis.pdf (72 pages, 1354642 bytes).
 PDF statistics:
  323 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

@@ -100,11 +100,8 @@ int main (int argc,  char* argv[]) {
 
                             case o_in: 
 
-                            	//if (n -> cores[i] -> ports[areg[i]] == NULL) {
                             	if (n -> cores[i] -> ports[areg[i]] -> count == 0) {
                             		is_wait[i] = true;
-                            		//pc[i] = pc[i] - 2;
-                            		//printf("core %d waiting for input\n", i);
                             	}
                             	else {
                             		breg[i] = areg[i];
@@ -134,11 +131,8 @@ int main (int argc,  char* argv[]) {
         	    }
             }
             else if (running[i] && is_wait[i]) {
-                //if (n -> cores[i] -> ports[areg[i]] != NULL) {
             	if (n -> cores[i] -> ports[areg[i]] -> count != 0) {
                     breg[i] = areg[i];
-                    //areg[i] = n -> cores[i] -> ports[breg[i]] -> data;
-                    //n -> cores[i] -> ports[breg[i]] = NULL;
                     areg[i] = buffer_read(n -> cores[i] -> ports[breg[i]], PORT_DEPTH) -> data;
                     is_wait[i] = false;
                     oreg[i] = 0;
@@ -211,11 +205,9 @@ void load() {
     
     for (i=0; i<NUM_CORES; i++) {
         low = inbin();	
-        length = ((inbin() << 16) | low);// << 2;
-        //printf("length[%d]: %d\n", i, length);
+        length = ((inbin() << 16) | low);
         low = inbin();	
         pc[i] = ((inbin() << 16) | low) << 2;
-        //printf("pc[%d]: %d\n", i, pc[i]);
         for (n = 0; n < length; n++) {
             pmem[i][n] = fgetc(codefile);
         }
@@ -284,7 +276,6 @@ Network *init_network (Network *n) {
 	for (i=0; i<NUM_CORES; i++) {
 		n -> cores[i] = (Core *)malloc(sizeof(Core));
 		n -> cores[i] -> send = NULL;
-		//for (j=0; j<NUM_PORTS; j++) n -> cores[i] -> ports[j] = NULL;
 		for (j=0; j<NUM_CORES; j++) {
 			n -> cores[i] -> ports[j] = new_buffer(PORT_DEPTH);
 		}
@@ -396,9 +387,6 @@ void network_timesteps(Network *n, int iterations) {
 
 		// move temp values to links, completing parallel emulation
 		link_cleanup(n);
-
-		// for testing
-		//print_network_state(n);
 	}
 }
 
@@ -432,9 +420,6 @@ int buffer_write(Buffer *buffer, Packet *p, int max_size) {
 
 void add_packet_to_core(Network *n, Packet *p, int core_num) {
 	n -> cores[core_num] -> send = p;
-	/*if (verbose) {
-		printf("Packet added to core %d\n", core_num);
-	}*/
 }
 
 void send_packets_from_switches(Network *n) {
@@ -696,19 +681,6 @@ void check_cores_for_received_packets(Network *n) {
 		if (c -> io0 -> comm != NULL) {
 			// checks for correct direction
 			if (c -> io0 -> comm -> direction == CORE) {
-				/*if(c -> ports[c -> io0 -> comm -> port] == NULL) {
-					c -> ports[c -> io0 -> comm -> port] = c -> io0 -> comm;
-					if (verbose) {
-						printf("%d - Packet [%d->%d] received by processor %d (port %d) with data: %d\n", 
-							timestep_count, c -> io0 -> comm -> source, c -> io0 -> comm -> destination, i, 
-							c -> io0 -> comm -> port, c -> io0 -> comm -> data);
-					}
-					c -> io0 -> comm = NULL;
-				}
-				else {
-					printf("%d - COLLISION in processor %d, port %d\n", timestep_count, i, c -> io0 -> comm -> port);
-				}*/
-
 				buffer_write(c -> ports[c -> io0 -> comm -> port], c -> io0 -> comm, PORT_DEPTH);
 				if (verbose) {
 					printf("%d - Packet [%d->%d] received by processor %d (port %d) with data: %d\n", 
@@ -723,19 +695,6 @@ void check_cores_for_received_packets(Network *n) {
 		if (c -> io1 -> comm != NULL) {
 			// checks for correct direction
 			if (c -> io1 -> comm -> direction == CORE) {
-				/*if(c -> ports[c -> io1 -> comm -> port] == NULL) {
-					c -> ports[c -> io1 -> comm -> port] = c -> io1 -> comm;
-					if (verbose) {
-						printf("%d - Packet [%d->%d] received by processor %d (port %d) with data: %d\n", 
-							timestep_count, c -> io1 -> comm -> source, c -> io1 -> comm -> destination, i, 
-							c -> io1 -> comm -> port, c -> io1 -> comm -> data);
-					}
-					c -> io1 -> comm = NULL;
-				}
-				else {
-					printf("%d - COLLISION in processor %d, port %d\n", timestep_count, i, c -> io1 -> comm -> port);
-				}*/
-
 				buffer_write(c -> ports[c -> io1 -> comm -> port], c -> io1 -> comm, PORT_DEPTH);
 				if (verbose) {
 					printf("%d - Packet [%d->%d] received by processor %d (port %d) with data: %d\n", 
@@ -766,58 +725,6 @@ void link_cleanup(Network *n) {
 	}
 }
 
-void print_network_state(Network *n) {
-
-	int i, j;
-
-	// print each network layer
-	for (i=NUM_LAYERS-1; i>=0; i--) {
-
-		printf("\nLAYER %d\n----------------------\n\nActive switch buffers:\n\n", i);
-
-		// print each active switch buffer
-		for (j=0; j<NUM_CORES; j++) {
-			if (n -> switches[i][j] -> c0buffer -> count != 0) {
-				printf("Core %d c0buffer[%d]\n", j, n -> switches[i][j] -> c0buffer -> count);
-			}
-			if (n -> switches[i][j] -> c1buffer -> count != 0) {
-				printf("Core %d c1buffer[%d]\n", j, n -> switches[i][j] -> c1buffer -> count);
-			}
-			// exclude top layer
-			if (i != NUM_LAYERS-1) {
-				if (n -> switches[i][j] -> e0buffer -> count != 0) {
-					printf("Core %d e0buffer[%d]\n", j, n -> switches[i][j] -> e0buffer -> count);
-				}
-				if (n -> switches[i][j] -> e1buffer -> count != 0) {
-					printf("Core %d e1buffer[%d]\n", j, n -> switches[i][j] -> e1buffer -> count);
-				}
-			}
-		}
-
-		printf("\nActive links:\n\n");
-
-		// print each active link
-		for (j=0; j<2*NUM_CORES; j++) {
-			if (n -> links[i][j] -> comm != NULL) {
-				printf("Link %d occupied\n", j);
-			}
-		}
-	}
-
-	printf("\nActive cores:\n\n");
-
-	// print each active core
-	/*for (j=0; j<NUM_CORES; j++) {
-		if (n -> cores[j] -> send != NULL) {
-			printf("Core %d data to send: %d\n", j, n -> cores[j] -> send -> data);
-		}
-		for (i=0; i<NUM_PORTS; i++) {
-			if (n -> cores[j] -> ports[i] != NULL) {
-				printf("Core %d data received on port %d: %d\n", j, i, n -> cores[j] -> ports[i] -> data);
-			}
-		}
-	}*/
-}
 
 Packet *create_packet(int source, int destination, int port, int data) {
 
@@ -837,6 +744,147 @@ Packet *create_packet(int source, int destination, int port, int data) {
 	return p;
 }
 
+
+/*Packet **offline_route_planner(char *active_cores, int **active_core_data) {
+
+	int i, j, base;
+	char switch_state[2][NUM_CORES*NUM_LAYERS];
+	int route_positions[2][NUM_CORES];
+	Packet **packets = (Packet **) malloc (NUM_CORES*sizeof(Packet *));
+
+	for (i=0; i<NUM_CORES*NUM_LAYERS; i++) {
+		switch_state[0][i] = 1;
+		switch_state[1][i] = 1;
+	}
+
+	// create packets
+	for (i=0; i<NUM_CORES; i++) {
+		if (active_cores[i] == 1) {
+			packets[i] = create_packet(active_core_data[i][0], active_core_data[i][1],
+				active_core_data[i][2], active_core_data[i][3]);
+		}
+		else packets[i] = NULL;
+	}
+
+	for (i=1; i<=NUM_LAYERS; i++) {
+		base = (int)pow(2,i);
+		for (j=0; j<NUM_CORES; j++) {
+
+			if (packets[j] != NULL) {
+				if (packets[j] -> count == 0) {
+					// for first link
+					if (i == 1) {
+
+						// evenly distribute packets across halves of network
+						packets[j] -> rout[0] = packet_count % 2;
+						//if (packets[j] -> destination % 2 == 0) packets[j] -> rout[0] = 0;
+						//else packets[j] -> rout[0] = 1;
+
+						// update packet count
+						packet_count++;
+						
+						if (packets[j] -> rout[0] == 0) {
+							// update route position and set back route
+							if (packets[j] -> source % 2 == 0) {
+								route_positions[0][j] = packets[j] -> source;
+							}
+							else {
+								route_positions[0][j] = packets[j] -> source-1;
+							}
+							if (packets[j] -> destination % 2 == 0) {
+								route_positions[1][j] = packets[j] -> destination;
+								packets[j] -> addr[0] = 0;
+							}
+							else {
+								route_positions[1][j] = packets[j] -> destination-1;
+								packets[j] -> addr[0] = 1;
+							}
+
+						}
+						else {
+							// update route position and set back route
+							if (packets[j] -> source % 2 == 0) {
+								route_positions[0][j] = packets[j] -> source+1;
+							}
+							else {
+								route_positions[0][j] = packets[j] -> source;
+							}
+							if (packets[j] -> destination % 2 == 0) {
+								route_positions[1][j] = packets[j] -> destination+1;
+								packets[j] -> addr[0] = 0;
+							}
+							else {
+								route_positions[1][j] = packets[j] -> destination;
+								packets[j] -> addr[0] = 1;
+							}
+						}
+					}
+
+					// main network traversal
+					else {
+						// out switch is unused
+						if (switch_state[0][(i-2)*NUM_CORES+route_positions[0][j]] == 1) {
+							// in switch is unused
+							if (switch_state[1][(i-2)*NUM_CORES+route_positions[1][j]] == 1) {
+								// route packet left
+								switch_state[0][(i-2)*NUM_CORES+route_positions[0][j]] = 0;
+								switch_state[1][(i-2)*NUM_CORES+route_positions[1][j]] = 0;
+								// route left
+								packets[j] -> rout[i-1] = 0;
+								// update route position and set back route
+								if (route_positions[0][j] % base < base/2) {
+									// position stays same	
+								}
+								else {
+									route_positions[0][j] -= (base/2);
+								}
+								if (route_positions[1][j] % base < base/2) {
+									packets[j] -> addr[i-1] = 0;
+								}
+								else {
+									packets[j] -> addr[i-1] = 1;
+									route_positions[1][j] -= (base/2);
+								}
+							}
+							else {
+								// route packet right
+								switch_state[0][(i-2)*NUM_CORES+route_positions[0][j]] = 1;
+								switch_state[1][(i-2)*NUM_CORES+route_positions[1][j]] = 1;
+
+							}
+						}
+						// out switch is used
+						else {
+							// route right
+							switch_state[0][(i-2)*NUM_CORES+route_positions[0][j]] = 1;
+							switch_state[1][(i-2)*NUM_CORES+route_positions[1][j]] = 1;
+							// route right
+							packets[j] -> rout[i-1] = 1;
+							// update route position and set back route
+							if (route_positions[0][j] % base < base/2) {
+								route_positions[0][j] += (base/2);	
+							}
+							if (route_positions[1][j] % base < base/2) {
+								packets[j] -> addr[i-1] = 0;
+								route_positions[1][j] += (base/2);
+							}
+							else {
+								packets[j] -> addr[i-1] = 1;
+							}
+						}
+					}
+
+					// check for completed path
+					if (route_positions[0][j] == route_positions[1][j]) {
+						packets[j] -> count = i;
+					}
+				}
+			}
+		}
+	}
+
+	return packets;
+}*/
 
 Packet **offline_route_planner(char *active_cores, int **active_core_data) {
 
@@ -868,7 +916,9 @@ Packet **offline_route_planner(char *active_cores, int **active_core_data) {
 					if (i == 1) {
 
 						// evenly distribute packets across halves of network
-						packets[j] -> rout[0] = packet_count % 2;
+						//packets[j] -> rout[0] = packet_count % 2;
+						if (packets[j] -> destination % 2 == 0) packets[j] -> rout[0] = 0;
+						else packets[j] -> rout[0] = 1;
 
 						// update packet count
 						packet_count++;

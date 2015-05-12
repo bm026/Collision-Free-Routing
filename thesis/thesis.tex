@@ -1,6 +1,6 @@
-\documentclass[a4paper, 12pt]{article}
+%\documentclass[a4paper, 12pt]{article}
 % to add double-side margins
-%\documentclass[a4paper, 12pt, twoside]{article}
+\documentclass[a4paper, 12pt, twoside]{article}
 
 \addtolength{\oddsidemargin}{-0.5in}
 \addtolength{\evensidemargin}{-0.5in}
@@ -51,16 +51,17 @@
 \begin{document}
 
 \setcounter{page}{0}
-\includepdf[pages={1}]{frontpage.pdf}
-\includepdf[pages={1}]{declaration.pdf}
+\includepdf[pages={1}]{frontpage_shifted.pdf}
+\includepdf[pages={1}]{declaration_shifted.pdf}
 
 \newpage
 \pagenumbering{arabic}
+\setcounter{page}{2}
 \section*{Abstract}
 
 In modern general-purpose parallel architectures, the execution times of parallel programs are unpredictable. One of the reasons for this is that the most commonly used algorithm to route communication data packets across the interconnection network of the architecture incorporates a random element, meaning that the paths allocated for each packet are selected non-deterministically. This leads to an unpredictable number of non-deterministic collisions to occur during execution of a program, where two packets require use of a single interconnect at a given moment. It is not physically possible for both packets to travel down the interconnect concurrently, so one of the packets is forced to wait for the interconnect to become vacant before it can continue its transmission. This adds latency to the communication and, depending on the total number of collisions that occur, reduces the efficiency of the execution by a variable amount.
 
-This thesis proposes a routing algorithm that reduces the number of collisions in the interconnection network during the execution of a parallel program, making the execution more efficient and the execution time more predictable. The performance of this routing algorithm is demonstrated using an emulation of a general-purpose parallel architecture, which includes an emulated interconnection network and a variable number of emulated processors. The emulation takes a parallel program as input and executes this program using the routing algorithm to calculate paths through the interconnection when communication between processors is required. The performance metrics output by the emulation indicate that the routing algorithm is scalable and provides a platform for more efficient execution of parallel programs than some current solutions. This suggests that it has the potential to help deliver real-time processing capabilities to general-purpose parallel architectures in both smaller applications, such as wearable technology, and larger applications such as general-purpose supercomputers.
+This thesis proposes a routing algorithm that reduces the number of collisions in the interconnection network during the execution of a parallel program, making the execution more efficient and the execution time more predictable. The performance of this routing algorithm is demonstrated using an emulation of a general-purpose parallel architecture, which includes an emulated interconnection network and a variable number of emulated processors. The emulation takes a parallel program as input and executes this program using the routing algorithm to calculate paths through the interconnection network when communication between processors is required. The performance metrics output by the emulation indicate that the routing algorithm is scalable and provides a platform for more efficient execution of parallel programs than some current solutions. This suggests that it has the potential to help deliver real-time processing capabilities to general-purpose parallel architectures in both smaller applications, such as wearable technology, and larger applications such as general-purpose supercomputers.
 
 \newpage
 \setcounter{tocdepth}{2}
@@ -278,7 +279,7 @@ InfiniBand is an industry-wide networking standard developed in 2000 by a consor
 
 \subsubsection{IBM Blue Gene/L 3D Torus Network}
 
-In 2005, the IBM Blue Gene/L was the largest, most powerful supercomputer in the world, according to www.top500.org \cite{Hen11}. It used a 32x32x64 3D torus interconnection network, which connected all of its 64000 nodes. When communication between two nodes was required, either node could be used for  communication protocol processing while the other may have been carrying out other computation. Packet sizes ranged from 32 bytes to 256 bytes, with an 8 byte header containing routing, virtual channel and link-level flow control, as well as a 1 byte CRC for packet validation. Virtual cut-through switching and credit-based control flow were again used, along with various other schemes which provided the low latency and high bandwidth requirements of a machine designed to execute computation as quickly and efficiently as possible.
+In 2005, the IBM Blue Gene/L was the largest, most powerful supercomputer in the world, according to www.top500.org \cite{Hen11}. It used a $32 \times 32 \times 64$ 3D torus interconnection network, which connected all of its 64000 nodes. When communication between two nodes was required, either node could be used for  communication protocol processing while the other may have been carrying out other computation. Packet sizes ranged from 32 bytes to 256 bytes, with an 8 byte header containing routing, virtual channel and link-level flow control, as well as a 1 byte CRC for packet validation. Virtual cut-through switching and credit-based control flow were again used, along with various other schemes which provided the low latency and high bandwidth requirements of a machine designed to execute computation as quickly and efficiently as possible.
 
 
 \newpage

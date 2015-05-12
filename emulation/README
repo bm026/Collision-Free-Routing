@@ -1,0 +1,29 @@
+
+DESCRIPTION OF SUBMITTED FILES
+-------------------------------
+
+network.c       A C file that contains the majority of the code
+                used to create the emulation, including the
+                emulated processors, the emulated network, and
+                the routing algorithm. 
+
+network.h       A header file that contains the library declarations, 
+                defintions, data structures, global variables and
+                function definitions used by network.c.
+
+blur.x          An example of a parallel input program that the 
+                emulation is able to execute.
+
+compiler.x      The source code of a self compiling compiler 
+                required to compile the input programs for the
+                emulation. This file was provided by David May.
+
+serial.c        A serial processor used to execute the compiler
+                source. This file was provided by David May.
+
+compiler.bin    The resulting binary of the compiler once it has
+                compiled itself.
+
+run.sh          A bash script file that allows compilation and
+                execution of an input program using one command
+                line instruction.
