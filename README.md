@@ -1,8 +1,8 @@
-# Final Year Project
+#### Final Year Project
 
 This work was completed as a final-year individual project, including both code and a dissertation, which contributed significantly towards my degree classification. The project is research-based, entitled 'Reducing the Number of Collisions in the Interconnection Network of a General-Purpose Parallel Architecture'.
 
-# Abstract
+#### Abstract
 
 In modern general-purpose parallel architectures, the execution times of parallel programs are unpredictable. One of the reasons for this is that the most commonly used algorithm to route communication data packets across the interconnection network of the architecture incorporates a random element, meaning that the paths allocated for each packet are selected non-deterministically. This leads to an unpredictable number of non-deterministic collisions to occur during execution of a program, where two packets require use of a single interconnect at a given moment. It is not physically possible for both packets to travel down the interconnect concurrently, so one of the packets is forced to wait for the interconnect to become vacant before it can continue its transmission. This adds latency to the communication and, depending on the total number of collisions that occur, reduces the efficiency of the execution by a variable amount.
 
